@@ -39,6 +39,23 @@
     return (x < 0 ? "−" : "+") + s;
   }
 
+  /* ---------------- motion helpers ---------------- */
+  var ease = function (x) { return x >= 1 ? 1 : 1 - Math.pow(2, -10 * x); };          // exponential ease-out
+  var easeIO = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  function tween(dur, step, done) {               // calls step(p) with p from 0 to 1 over dur ms
+    if (reduced || dur <= 0) { step(1); if (done) done(); return function () {}; }
+    var start = null, stop = false;
+    function frame(ts) { if (stop) return; if (start === null) start = ts; var p = Math.min(1, (ts - start) / dur); step(p); if (p < 1) requestAnimationFrame(frame); else if (done) done(); }
+    requestAnimationFrame(frame);
+    return function () { stop = true; };
+  }
+  function onView(node, fn, margin) {             // runs fn once, when node first scrolls into view
+    if (!node) return;
+    if (reduced || !("IntersectionObserver" in window)) { fn(); return; }
+    var o = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { o.disconnect(); fn(); } }, { rootMargin: margin || "0px 0px -15% 0px", threshold: 0.1 });
+    o.observe(node);
+  }
+
   /* ---------------- first paint: masked headline ---------------- */
   requestAnimationFrame(function () { requestAnimationFrame(function () { doc.classList.add("ready"); }); });
 
@@ -73,8 +90,11 @@
     groups.forEach(function (sel) {
       var list = document.querySelectorAll(sel);
       Array.prototype.forEach.call(list, function (node, i) {
+        if (node.tagName === "H2") return;              // headings get their own masked reveal below
         node.classList.add("rise");
-        node.style.setProperty("--d", Math.min(i, 8) * 70 + "ms");
+        var d = Math.min(i, 8) * 70;
+        if (sel === ".cut") d = ((i % 6) + Math.floor(i / 6)) * 55;   // a wave across the board
+        node.style.setProperty("--d", d + "ms");
         io.observe(node);
       });
     });
@@ -88,6 +108,45 @@
     }
     window.addEventListener("scroll", function () { if (!pending) { pending = true; requestAnimationFrame(sweep); } }, { passive: true });
     window.addEventListener("hashchange", sweep);
+
+    // every section heading rises from behind its own baseline, like the hero headline
+    Array.prototype.forEach.call(document.querySelectorAll("main h2:not(.sr-only)"), function (h) {
+      var inner = document.createElement("span"); inner.className = "mask-in";
+      while (h.firstChild) inner.appendChild(h.firstChild);
+      var outer = document.createElement("span"); outer.className = "mask-out"; outer.appendChild(inner);
+      h.appendChild(outer); h.classList.add("masked");
+      onView(h, function () { h.classList.add("in"); }, "0px 0px -10% 0px");
+    });
+
+    // big figures count up from zero the first time they are seen
+    Array.prototype.forEach.call(document.querySelectorAll(".big-figure"), function (n) {
+      var target = parseFloat(n.textContent.replace("\u2212", "-").replace("+", "")), dec = (n.textContent.split(".")[1] || "").length;
+      n.textContent = "+" + (0).toFixed(dec);
+      onView(n, function () { tween(1400, function (p) { n.textContent = "+" + (target * ease(p)).toFixed(dec); }); });
+    });
+
+    // footer name: letters rise one after another
+    var fname = document.querySelector(".foot-name");
+    if (fname) {
+      var txtc = fname.textContent; fname.textContent = "";
+      txtc.split("").forEach(function (ch, i) {
+        var sp = document.createElement("span"); sp.className = "ltr"; sp.textContent = ch === " " ? "\u00a0" : ch;
+        sp.style.setProperty("--d", i * 28 + "ms"); fname.appendChild(sp);
+      });
+      onView(fname, function () { fname.classList.add("in"); }, "0px 0px -5% 0px");
+    }
+
+    // reading progress along the top edge, and a slow parallax on the hero film
+    var bar = document.createElement("div"); bar.className = "progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
+    var mast = document.querySelector(".masthead video, .masthead img"), ticking = false;
+    function onScroll() {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? window.scrollY / max : 0) + ")";
+      if (mast && window.scrollY < window.innerHeight * 1.2) mast.style.transform = "translateY(" + window.scrollY * 0.18 + "px) scale(1.06)";
+    }
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    onScroll();
   }
 
   /* ---------------- "many into one" diagram ---------------- */
@@ -107,9 +166,19 @@
       } else {                 // ordered comparison rows
         var j = i - 100; x = 640 + (j % 11) * 22; y = 30 + Math.floor(j / 11) * 36; fill = C.ink;
       }
-      el("rect", { x: x.toFixed(1), y: y.toFixed(1), width: s + 2, height: s + 2, fill: fill }, g);
+      var r = el("rect", { x: x.toFixed(1), y: y.toFixed(1), width: s + 2, height: s + 2, fill: fill }, g);
+      if (!reduced && i >= 64) {     // the ribbon and the rows start among the scattered answers and flow to their place
+        var sx = 10 + rnd() * 270, sy = 10 + rnd() * (H - 30);
+        r.style.transform = "translate(" + (sx - x).toFixed(1) + "px," + (sy - y).toFixed(1) + "px)";
+        r.style.fill = i % 2 ? C.blue : C.red;
+        r.style.transition = "transform 1400ms cubic-bezier(0.16,1,0.3,1) " + ((i - 64) * 12) + "ms, fill 600ms ease " + (500 + (i - 64) * 12) + "ms";
+        r.dataset.flow = "1";
+      }
     }
     if (narrow) svg.setAttribute("viewBox", "0 0 900 200");
+    onView(svg, function () {
+      Array.prototype.forEach.call(svg.querySelectorAll("[data-flow]"), function (r) { r.style.transform = "none"; r.style.fill = ""; });
+    });
   })();
 
   /* ---------------- calendar drawing in the about tile ---------------- */
@@ -123,7 +192,8 @@
         var idx = startDow + d - 1, col = idx % 7, row = Math.floor(idx / 7);
         var x = x0 + col * cw, y = 50 + row * ch;
         var on = d === mark;
-        el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? C.ink : "rgba(0,0,0,0.18)" }, g);
+        var day = el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? C.ink : "rgba(0,0,0,0.18)", class: "day" + (on ? " holiday" : "") }, g);
+        day.style.transitionDelay = (d * 18 + (x0 > 100 ? 300 : 0)) + "ms";
       }
     }
     // 2022: October starts on Saturday (Canadian Thanksgiving Mon 10 Oct); November starts Tuesday (US Thu 24 Nov)
@@ -131,6 +201,7 @@
     month(160, "November", 1, 30, 24);
     txt(g, 18, 186, "Canada", { "font-size": 14, fill: C.ink });
     txt(g, 160, 186, "United States", { "font-size": 14, fill: C.ink });
+    onView(g, function () { g.classList.add("in"); });
   })();
 
   /* ---------------- film clips: pause button, reduced motion, play only while visible ---------------- */
@@ -169,15 +240,26 @@
       discussion: "In the Thanksgiving week, people are about 5 percentage points more likely to talk politics with parents, siblings or grown-up children than the week before.",
       opinion: "How much more a family one point further right pulls opinions, week by week. Positive in the Thanksgiving week, but the range is wide: the effect is small and short-lived."
     };
-    function draw() {
+    var shownVals = null, stopT = null, seen = false;
+    function draw(instant) {
+      var target = R[state.measure][state.sample];
+      var from = shownVals || { week: target.week, b: target.b.map(function () { return 0; }), se: target.se.map(function () { return 0; }) };
+      if (!seen) { render(from, target); return; }          // wait until the chart is on screen
+      if (stopT) stopT();
+      stopT = tween(instant ? 0 : 700, function (p) {
+        var e = easeIO(p);
+        var mid = { week: target.week, b: target.b.map(function (v, i) { return from.b[i] + (v - from.b[i]) * e; }), se: target.se.map(function (v, i) { return from.se[i] + (v - from.se[i]) * e; }) };
+        render(mid, target); shownVals = mid;
+      });
+    }
+    function render(d, target) {
       clear(svg);
-      var d = R[state.measure][state.sample];
       var small = svg.getBoundingClientRect().width < 520;
       var W = small ? 420 : 720, H = small ? 340 : 380, L = small ? 58 : 70, Rr = small ? 8 : 20, T = 30, B = 60;
       svg.setAttribute("viewBox", "0 0 " + W + " " + H);
       var FS = small ? 18 : 14;   // about 14px on screen either way
-      var lo = Math.min.apply(null, d.b.map(function (b, i) { return b - 1.96 * d.se[i]; }));
-      var hi = Math.max.apply(null, d.b.map(function (b, i) { return b + 1.96 * d.se[i]; }));
+      var lo = Math.min.apply(null, target.b.map(function (b, i) { return b - 1.96 * target.se[i]; }));
+      var hi = Math.max.apply(null, target.b.map(function (b, i) { return b + 1.96 * target.se[i]; }));
       var pad = (hi - lo) * 0.08; lo = Math.min(lo - pad, -0.02); hi = Math.max(hi + pad, 0.02);
       var xs = function (i) { return L + (i + 0.5) * (W - L - Rr) / d.week.length; };
       var ys = function (v) { return T + (hi - v) / (hi - lo) * (H - T - B); };
@@ -196,7 +278,7 @@
       d.week.forEach(function (w, i) {
         var b = d.b[i], se = d.se[i], x = xs(i);
         if (se > 0) el("rect", { x: x - 2, y: ys(b + 1.96 * se), width: 4, height: Math.max(2, ys(b - 1.96 * se) - ys(b + 1.96 * se)), fill: C.ink }, svg);
-        var c = el("circle", { class: "mark", style: "--md:" + i * 60 + "ms", cx: x, cy: ys(b), r: i === 2 ? 9 : 7, fill: i === 2 ? C.orange : C.ink, stroke: C.ink, "stroke-width": 2 }, svg);
+        var c = el("circle", { cx: x, cy: ys(b), r: i === 2 ? 9 : 7, fill: i === 2 ? C.orange : C.ink, stroke: C.ink, "stroke-width": 2 }, svg);
         var tl = el("title", {}, c);
         tl.textContent = "Week " + w + ": " + (pct ? (b * 100).toFixed(1) + " percentage points" : b.toFixed(3)) + (se > 0 ? " (95% range " + (pct ? ((b - 1.96 * se) * 100).toFixed(1) + " to " + ((b + 1.96 * se) * 100).toFixed(1) : (b - 1.96 * se).toFixed(3) + " to " + (b + 1.96 * se).toFixed(3)) + ")" : " (reference week)");
         var wl = w === -2 ? (small ? "−2+" : "−2 or earlier") : w === 3 ? (small ? "+3+" : "+3 or later") : (w > 0 ? "+" : w < 0 ? "−" : "") + Math.abs(w);
@@ -205,8 +287,8 @@
       txt(svg, L + (W - L - Rr) / 2, H - 8, "Weeks relative to Thanksgiving", { "text-anchor": "middle", "font-size": FS });
       caption.textContent = captions[state.measure];
       var live = document.getElementById("chart-data");
-      if (live) live.textContent = state.sample + ", " + (pct ? "talking politics" : "pull of the family") + ": " + d.week.map(function (w, i) {
-        return "week " + w + " " + (pct ? (d.b[i] * 100).toFixed(1) + " percentage points" : d.b[i].toFixed(3));
+      if (live) live.textContent = state.sample + ", " + (pct ? "talking politics" : "pull of the family") + ": " + target.week.map(function (w, i) {
+        return "week " + w + " " + (pct ? (target.b[i] * 100).toFixed(1) + " percentage points" : target.b[i].toFixed(3));
       }).join("; ") + ".";
     }
     function bindSeg(attr, key) {
@@ -221,7 +303,8 @@
     }
     bindSeg("measure", "measure"); bindSeg("sample", "sample");
     draw();
-    var t1; window.addEventListener("resize", function () { clearTimeout(t1); t1 = setTimeout(draw, 150); });
+    onView(svg, function () { seen = true; draw(); });
+    var t1; window.addEventListener("resize", function () { clearTimeout(t1); t1 = setTimeout(function () { draw(true); }, 150); });
   })();
 
   /* ---------------- the live thing: seat your family ---------------- */
@@ -233,11 +316,16 @@
     var cells = document.querySelectorAll("#strip .cell");
     var dist = {}; (R.family_distribution || []).forEach(function (x) { dist[x.v] = x.share; });
     var maxShare = Math.max.apply(null, Object.keys(dist).map(function (k) { return dist[k]; }).concat([0.01]));
-    Array.prototype.forEach.call(cells, function (c) {
+    Array.prototype.forEach.call(cells, function (c, i) {
       var sh = dist[c.getAttribute("data-v")] || 0;
-      c.style.setProperty("--h", Math.round(sh / maxShare * 100) + "%");
+      c.style.setProperty("--h", reduced ? Math.round(sh / maxShare * 100) + "%" : "0%");
+      c.querySelector(".bar").style.transitionDelay = i * 70 + "ms";
       c.setAttribute("title", Math.round(sh * 100) + "% of families at " + c.getAttribute("data-v"));
     });
+    onView(document.getElementById("strip"), function () {
+      Array.prototype.forEach.call(cells, function (c) { c.style.setProperty("--h", Math.round((dist[c.getAttribute("data-v")] || 0) / maxShare * 100) + "%"); });
+    });
+    var shownEst = null, stopNum = null;
     function side(v, dark) { return v < 3 ? (dark ? C.blueDark : C.blue) : v > 3 ? (dark ? C.redDark : C.red) : ""; }
     function update() {
       var o = Number(own.value), f = Number(fam.value);
@@ -258,7 +346,10 @@
       for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) v += g[i] * V[i][j] * g[j];
       var se = Math.sqrt(v), lo = est - 1.96 * se, hi = est + 1.96 * se;
       var rf = document.getElementById("res-figure");
-      rf.textContent = fmt(est);
+      var from = shownEst === null ? est : shownEst;
+      if (stopNum) stopNum();
+      stopNum = tween(Math.abs(est - from) < 1e-9 ? 0 : 450, function (p) { shownEst = from + (est - from) * ease(p); rf.textContent = fmt(shownEst); });
+      rf.classList.remove("bump"); void rf.offsetWidth; if (from !== est) rf.classList.add("bump");
       rf.classList.toggle("to-right", est >= 0.005); rf.classList.toggle("to-left", est <= -0.005);
       var dir = Math.abs(est) < 0.005 ? "would hardly move" : "would move " + Math.abs(est).toFixed(2) + " points to the " + (est > 0 ? "right" : "left");
       var share = Math.round(Math.abs(est) / sd * 100);
@@ -269,13 +360,29 @@
     }
     own.addEventListener("input", update); fam.addEventListener("input", update);
     update();
+    // first visit: the family slider demonstrates itself once (3 -> 6 -> 5), unless the reader is faster
+    var touched = false;
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { own.addEventListener(ev, function () { touched = true; }); fam.addEventListener(ev, function () { touched = true; }); });
+    var hint = document.createElement("span"); hint.className = "drag-hint"; hint.setAttribute("aria-hidden", "true"); hint.textContent = "Drag me";
+    fam.parentNode.appendChild(hint);
+    onView(fam, function () {
+      if (reduced) return;
+      var seq = [6, 5], start = Number(fam.value), k = 0;
+      hint.classList.add("show");
+      function next() {
+        if (touched || k >= seq.length) { hint.classList.remove("show"); return; }
+        var a = Number(fam.value), z = seq[k++];
+        tween(900, function (p) { if (touched) return; var v = Math.round(a + (z - a) * easeIO(p)); if (v !== Number(fam.value)) { fam.value = v; update(); } }, function () { setTimeout(next, 500); });
+      }
+      setTimeout(next, 600);
+    }, "0px 0px -30% 0px");
   })();
 
   /* ---------------- robustness: one table with a range plot in every row ---------------- */
   (function robustness() {
     var chips = document.getElementById("chips"), tbody = document.querySelector("#rob-table tbody"), axis = document.getElementById("rob-axis");
     if (!chips || !tbody || !axis) return;
-    var rows = R.robustness, unit = "sd", shown = {};
+    var rows = R.robustness, unit = "sd", shown = {}, robSeen = false;
     var PAD = 4;   // per cent of the plot cell kept free at each end
     rows.forEach(function (r, i) {
       shown[r.spec] = i < 5;
@@ -319,9 +426,14 @@
         var zero = document.createElement("i"); zero.className = "zero"; zero.style.left = xs(0) + "%"; track.appendChild(zero);
         var bar = document.createElement("i"); bar.className = "bar";
         bar.style.left = xs(v[0] - 1.96 * v[1]) + "%"; bar.style.width = (xs(v[0] + 1.96 * v[1]) - xs(v[0] - 1.96 * v[1])) + "%"; track.appendChild(bar);
-        var dot = document.createElement("i"); dot.className = "dot dot-" + g + " plot-dot mark";
-        dot.style.left = xs(v[0]) + "%"; dot.style.setProperty("--md", i * 60 + "ms"); track.appendChild(dot);
+        var dot = document.createElement("i"); dot.className = "dot dot-" + g + " plot-dot";
+        dot.style.left = xs(v[0]) + "%"; track.appendChild(dot);
         c2.appendChild(track); tr.appendChild(c2);
+        if (!reduced) {     // start every range at zero, then let it travel to its estimate
+          bar.dataset.l = bar.style.left; bar.dataset.w = bar.style.width; dot.dataset.l = dot.style.left;
+          bar.style.left = xs(0) + "%"; bar.style.width = "0%"; dot.style.left = xs(0) + "%";
+          tr.style.setProperty("--d", i * 70 + "ms"); tr.classList.add("row-in");
+        }
         var c3 = document.createElement("td"); c3.className = "num";
         c3.innerHTML = ""; var eff = document.createElement("strong"); eff.textContent = fmt(v[0], 3); c3.appendChild(eff);
         var gr = document.createElement("span"); gr.className = "grade"; gr.textContent = gradeText[g]; c3.appendChild(gr);
@@ -336,11 +448,20 @@
         s.textContent = tv === 0 ? "0" : (tv > 0 ? "+" : "\u2212") + Math.abs(tv).toFixed(2);
         s.style.left = xs(tv) + "%"; axis.appendChild(s);
       }
+      if (!reduced) requestAnimationFrame(function () { requestAnimationFrame(function () {
+        if (!robSeen) return;
+        Array.prototype.forEach.call(tbody.querySelectorAll("tr"), function (tr) {
+          tr.classList.add("shown");
+          var bb = tr.querySelector(".bar"), dd = tr.querySelector(".plot-dot");
+          if (bb && bb.dataset.l) { bb.style.left = bb.dataset.l; bb.style.width = bb.dataset.w; dd.style.left = dd.dataset.l; }
+        });
+      }); });
       var cap = document.createElement("span"); cap.className = "axis-title";
       cap.textContent = unit === "sd" ? "Effect per point, as a share of the spread of opinions" : "Effect per point, in score points (0\u20136 scale)";
       axis.appendChild(cap);
     }
     draw();
+    onView(tbody, function () { robSeen = true; draw(); });
   })();
 
   /* ---------------- quiz: validation and feedback (nothing is sent) ---------------- */
@@ -350,7 +471,7 @@
       var fb = f.querySelector(".feedback"), model = f.querySelector(".model");
       f.addEventListener("submit", function (e) {
         e.preventDefault();
-        fb.className = "feedback";
+        fb.className = "feedback"; void fb.offsetWidth;   // restarts the feedback animation
         var q = f.getAttribute("data-quiz");
         if (q === "1") {
           var pick = f.querySelector("input[name=q1]:checked");

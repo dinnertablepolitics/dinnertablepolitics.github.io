@@ -473,3 +473,62 @@ p, li, dd { text-wrap: pretty; }
   white-space: nowrap; font-size: var(--step-small); font-weight: 600; color: var(--ink); background: var(--bg); padding: 2px 8px;
 }
 .strip figcaption { margin-top: 14px; font-size: var(--step-body); color: var(--soft-on-dark); max-width: 56ch; }
+
+/* ================= motion layer ================= */
+/* section headings rise from behind their baseline */
+.js h2.masked .mask-out { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.js h2.masked .mask-in { display: block; transform: translateY(105%); transition: transform 1000ms var(--ease-out); }
+.js h2.masked.in .mask-in { transform: none; }
+
+/* footer name, letter by letter */
+.js .foot-name .ltr { display: inline-block; transform: translateY(0.6em); opacity: 0; transition: transform 800ms var(--ease-out), opacity 500ms ease; transition-delay: var(--d, 0ms); }
+.js .foot-name.in .ltr { transform: none; opacity: 1; }
+
+/* reading progress */
+.progress { position: fixed; left: 0; top: 0; height: 4px; width: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; pointer-events: none; }
+
+/* hero film drifts slower than the page */
+.masthead video { will-change: transform; }
+
+/* the picture board arrives as a wave */
+.js .cut.rise { transform: translateY(18px) scale(0.94); }
+.js .cut.rise.in { transform: none; }
+
+/* calendar days fill in, the two holidays pulse */
+#cal .day { opacity: 0; transition: opacity 300ms ease; }
+#cal.in .day { opacity: 1; }
+#cal.in .holiday { transform-box: fill-box; transform-origin: center; animation: pulse 1.8s ease-in-out 1.4s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+
+/* calculator: bars grow, the result bumps when it changes, a one-time hint */
+.strip .cell .bar { transition: height 900ms var(--ease-out); }
+.result-figure.bump { animation: bump 450ms var(--ease-out); }
+@keyframes bump { 30% { transform: scale(1.06); } 100% { transform: none; } }
+.cell[data-pin]::before { transition: bottom 500ms var(--ease-out); }
+.scale-row { position: relative; }
+.drag-hint {
+  position: absolute; right: 0; bottom: 52px; padding: 6px 12px; background: var(--mint); color: var(--ink);
+  font-size: var(--step-small); font-weight: 600; opacity: 0; transform: translateY(6px); transition: opacity 300ms ease, transform 300ms var(--ease-out); pointer-events: none;
+}
+.drag-hint.show { opacity: 1; transform: none; animation: nudge 1.2s ease-in-out 0.3s 3; }
+@keyframes nudge { 50% { transform: translateX(-8px); } }
+
+/* robustness rows slide in; ranges travel out from zero */
+#rob-table tbody tr.row-in { opacity: 0; transform: translateY(14px); transition: opacity 500ms ease, transform 600ms var(--ease-out); transition-delay: var(--d, 0ms); }
+#rob-table tbody tr.row-in.shown { opacity: 1; transform: none; }
+.track .bar, .track .plot-dot { transition: left 800ms var(--ease-out), width 800ms var(--ease-out); }
+.chip { transition: background-color 200ms, color 200ms, transform 160ms var(--ease-out); }
+
+/* quiz feedback */
+.feedback.no { animation: shake 380ms ease; }
+.feedback.ok { animation: pop 380ms var(--ease-out); }
+@keyframes shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+@keyframes pop { 40% { transform: scale(1.06); } }
+.model:not([hidden]) { animation: drop 450ms var(--ease-out); }
+@keyframes drop { from { opacity: 0; transform: translateY(-8px); } }
+
+/* buttons answer the pointer */
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); }
+  .chip:hover { transform: translateY(-1px); }
+}
