@@ -52,8 +52,8 @@ and `results.js`; the page picks them up on reload.
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Privacy policy page | `privacy.html`. Fill in the team name. |
-| 2 | Terms & conditions page | `terms.html`. Fill in the team name and the code licence. |
+| 1 | Privacy policy page | `privacy.html` |
+| 2 | Terms & conditions page | `terms.html` (add the code licence once chosen) |
 | 3 | Secrets off the frontend | No keys or tokens exist; `config.js` holds public settings only. |
 | 4 | Force HTTPS | CSP `upgrade-insecure-requests` on every page; tick “Enforce HTTPS” in GitHub Pages (step 3 above). |
 | 5 | Cookie consent banner | Built and consent-gated. It only appears if analytics is switched on, because the site sets no cookies otherwise. |
@@ -75,10 +75,8 @@ and `results.js`; the page picks them up on reload.
 
 ## Still to do before submission
 
-- Choose the team name (privacy, terms, footer).
-- Read and rewrite the copy and the three quiz questions in your own words (marked drafts).
 - Decide the code licence and add a `LICENSE` file.
-- Set the real URLs (step 4) and tick Enforce HTTPS.
+- Optional: switch on GoatCounter (see `assets/js/config.js`).
 
 ## Credits
 
