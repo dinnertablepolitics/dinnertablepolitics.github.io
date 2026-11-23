@@ -61,7 +61,7 @@
   /* ---------------- section entrances (heading, text, picture, staggered) ---------------- */
   var groups = [
     ".tile", ".how-head > *", ".how-figure", ".how-steps > div", ".chart-head > *", ".chart-figure",
-    ".cut", ".try-head > *", ".calc > *", ".sure-head > *", ".sure-body > *", ".quiz-pic",
+    ".cut", ".try-head > *", ".calc > *", ".sure-top > *", ".sure-controls", ".table-wrap", ".quiz-pic",
     ".about > h2", ".about > .lead", ".about-photo"
   ];
   if ("IntersectionObserver" in window && !reduced) {
@@ -151,6 +151,7 @@
       var small = svg.getBoundingClientRect().width < 520;
       var W = small ? 420 : 720, H = small ? 340 : 380, L = small ? 58 : 70, Rr = small ? 8 : 20, T = 30, B = 60;
       svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      var FS = small ? 18 : 14;   // about 14px on screen either way
       var lo = Math.min.apply(null, d.b.map(function (b, i) { return b - 1.96 * d.se[i]; }));
       var hi = Math.max.apply(null, d.b.map(function (b, i) { return b + 1.96 * d.se[i]; }));
       var pad = (hi - lo) * 0.08; lo = Math.min(lo - pad, -0.02); hi = Math.max(hi + pad, 0.02);
@@ -161,13 +162,13 @@
       var step = (hi - lo) > 0.25 ? 0.1 : 0.05;
       for (var v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) {
         var lab = pct ? Math.round(v * 100) + " pp" : v.toFixed(2);
-        txt(svg, L - 12, ys(v) + 5, lab.replace("-", "−"), { "text-anchor": "end", "font-size": 14 });
+        txt(svg, L - 12, ys(v) + 5, lab.replace("-", "−"), { "text-anchor": "end", "font-size": FS });
       }
       el("rect", { x: L, y: ys(0) - 1, width: W - L - Rr, height: 2, fill: C.ink }, svg);
       // Thanksgiving week band
       var bw = (W - L - Rr) / d.week.length;
       el("rect", { x: xs(2) - bw / 2, y: T, width: bw, height: H - T - B, fill: C.mint }, svg);
-      txt(svg, xs(2), T - 10, "Thanksgiving week", { "text-anchor": "middle", "font-size": 14, "font-weight": 600 });
+      txt(svg, xs(2), T - 10, "Thanksgiving week", { "text-anchor": "middle", "font-size": FS, "font-weight": 600 });
       d.week.forEach(function (w, i) {
         var b = d.b[i], se = d.se[i], x = xs(i);
         if (se > 0) el("rect", { x: x - 2, y: ys(b + 1.96 * se), width: 4, height: Math.max(2, ys(b - 1.96 * se) - ys(b + 1.96 * se)), fill: C.ink }, svg);
@@ -175,9 +176,9 @@
         var tl = el("title", {}, c);
         tl.textContent = "Week " + w + ": " + (pct ? (b * 100).toFixed(1) + " percentage points" : b.toFixed(3)) + (se > 0 ? " (95% range " + (pct ? ((b - 1.96 * se) * 100).toFixed(1) + " to " + ((b + 1.96 * se) * 100).toFixed(1) : (b - 1.96 * se).toFixed(3) + " to " + (b + 1.96 * se).toFixed(3)) + ")" : " (reference week)");
         var wl = w === -2 ? (small ? "−2+" : "−2 or earlier") : w === 3 ? (small ? "+3+" : "+3 or later") : (w > 0 ? "+" : w < 0 ? "−" : "") + Math.abs(w);
-        txt(svg, x, H - B + 26, wl, { "text-anchor": "middle", "font-size": 14 });
+        txt(svg, x, H - B + 26, wl, { "text-anchor": "middle", "font-size": FS });
       });
-      txt(svg, L + (W - L - Rr) / 2, H - 8, "Weeks relative to Thanksgiving", { "text-anchor": "middle", "font-size": 14 });
+      txt(svg, L + (W - L - Rr) / 2, H - 8, "Weeks relative to Thanksgiving", { "text-anchor": "middle", "font-size": FS });
       caption.textContent = captions[state.measure];
       var live = document.getElementById("chart-data");
       if (live) live.textContent = state.sample + ", " + (pct ? "talking politics" : "pull of the family") + ": " + d.week.map(function (w, i) {
@@ -246,25 +247,22 @@
     update();
   })();
 
-  /* ---------------- robustness: checks, unit, chart and table ---------------- */
+  /* ---------------- robustness: one table with a range plot in every row ---------------- */
   (function robustness() {
-    var box = document.getElementById("checks"), svg = document.getElementById("forest");
-    var tbody = document.querySelector("#rob-table tbody");
-    if (!box || !svg || !tbody) return;
-    var rows = R.robustness;
-    var unit = "sd";
-    var shown = {};
+    var chips = document.getElementById("chips"), tbody = document.querySelector("#rob-table tbody"), axis = document.getElementById("rob-axis");
+    if (!chips || !tbody || !axis) return;
+    var rows = R.robustness, unit = "sd", shown = {};
+    var PAD = 4;   // per cent of the plot cell kept free at each end
     rows.forEach(function (r, i) {
       shown[r.spec] = i < 5;
-      var id = "chk-" + i;
-      var lab = document.createElement("label");
-      lab.setAttribute("for", id);
-      var inp = document.createElement("input");
-      inp.type = "checkbox"; inp.id = id; inp.checked = shown[r.spec]; inp.disabled = r.spec === "Baseline";
-      inp.addEventListener("change", function () { shown[r.spec] = inp.checked; draw(); });
-      lab.appendChild(inp);
-      lab.appendChild(document.createTextNode(r.spec));
-      box.appendChild(lab);
+      if (r.spec === "Baseline") return;          // the baseline is always shown
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = r.spec;
+      b.setAttribute("aria-pressed", String(shown[r.spec]));
+      b.addEventListener("click", function () {
+        shown[r.spec] = !shown[r.spec]; b.setAttribute("aria-pressed", String(shown[r.spec])); draw();
+      });
+      chips.appendChild(b);
     });
     var ubtns = document.querySelectorAll("[data-unit]");
     Array.prototype.forEach.call(ubtns, function (b) {
@@ -273,50 +271,52 @@
         unit = b.getAttribute("data-unit"); draw();
       });
     });
-    function verdict(p) { return p < 0.05 ? "Yes" : p < 0.10 ? "Borderline" : "No"; }
+    function grade(p) { return p < 0.05 ? "yes" : p < 0.10 ? "mid" : "no"; }
+    var gradeText = { yes: "reliable", mid: "borderline", no: "not reliable" };
     function draw() {
       var list = rows.filter(function (r) { return shown[r.spec]; });
       var val = function (r) { return unit === "sd" ? [r.b_sd, r.se_sd] : [r.b, r.se]; };
-      var d = unit === "sd" ? 3 : 3;
-      // table
+      // one scale shared by every row (and by the axis below), always including zero
+      var lo = 0, hi = 0;
+      rows.forEach(function (r) { var v = val(r); lo = Math.min(lo, v[0] - 1.96 * v[1]); hi = Math.max(hi, v[0] + 1.96 * v[1]); });
+      var step = unit === "sd" ? 0.04 : 0.05;
+      lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+      var xs = function (x) { return PAD + (x - lo) / (hi - lo) * (100 - 2 * PAD); };   // in per cent
       tbody.innerHTML = "";
-      list.forEach(function (r) {
-        var v = val(r), tr = document.createElement("tr");
-        var c1 = document.createElement("td");
-        var nm = document.createElement("strong"); nm.textContent = r.spec; c1.appendChild(nm);
-        var ab = document.createElement("span"); ab.className = "about-check"; ab.textContent = r.about; c1.appendChild(ab);
+      list.forEach(function (r, i) {
+        var v = val(r), g = grade(r.p_wild), tr = document.createElement("tr");
+        if (r.spec === "Baseline") tr.className = "is-base";
+        var c1 = document.createElement("th"); c1.scope = "row";
+        var nm = document.createElement("span"); nm.className = "check-name"; nm.textContent = r.spec; c1.appendChild(nm);
+        var ab = document.createElement("span"); ab.className = "check-about"; ab.textContent = r.about; c1.appendChild(ab);
         tr.appendChild(c1);
-        [fmt(v[0], d), fmt(v[0] - 1.96 * v[1], d) + " to " + fmt(v[0] + 1.96 * v[1], d), verdict(r.p_wild), r.n.toLocaleString("en-US")].forEach(function (s) {
-          var td = document.createElement("td"); td.textContent = s; tr.appendChild(td);
-        });
+        var c2 = document.createElement("td"); c2.className = "col-plot";
+        var track = document.createElement("div"); track.className = "track"; track.setAttribute("aria-hidden", "true");
+        var zero = document.createElement("i"); zero.className = "zero"; zero.style.left = xs(0) + "%"; track.appendChild(zero);
+        var bar = document.createElement("i"); bar.className = "bar";
+        bar.style.left = xs(v[0] - 1.96 * v[1]) + "%"; bar.style.width = (xs(v[0] + 1.96 * v[1]) - xs(v[0] - 1.96 * v[1])) + "%"; track.appendChild(bar);
+        var dot = document.createElement("i"); dot.className = "dot dot-" + g + " plot-dot mark";
+        dot.style.left = xs(v[0]) + "%"; dot.style.setProperty("--md", i * 60 + "ms"); track.appendChild(dot);
+        c2.appendChild(track); tr.appendChild(c2);
+        var c3 = document.createElement("td"); c3.className = "num";
+        c3.innerHTML = ""; var eff = document.createElement("strong"); eff.textContent = fmt(v[0], 3); c3.appendChild(eff);
+        var gr = document.createElement("span"); gr.className = "grade"; gr.textContent = gradeText[g]; c3.appendChild(gr);
+        tr.appendChild(c3);
+        var c4 = document.createElement("td"); c4.className = "num col-range"; c4.textContent = fmt(v[0] - 1.96 * v[1], 3) + " to " + fmt(v[0] + 1.96 * v[1], 3); tr.appendChild(c4);
+        var c5 = document.createElement("td"); c5.className = "num col-n"; c5.textContent = r.n.toLocaleString("en-US"); tr.appendChild(c5);
         tbody.appendChild(tr);
       });
-      // forest chart
-      clear(svg);
-      var small = svg.getBoundingClientRect().width < 520;
-      var W = small ? 400 : 640, rowH = 38, T = 20, B = 44, L = small ? 128 : 170, Rr = small ? 10 : 24;
-      var H = T + B + rowH * list.length; svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-      var lo = 0, hi = 0;
-      list.forEach(function (r) { var v = val(r); lo = Math.min(lo, v[0] - 1.96 * v[1]); hi = Math.max(hi, v[0] + 1.96 * v[1]); });
-      var pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
-      var xs = function (x) { return L + (x - lo) / (hi - lo) * (W - L - Rr); };
-      el("rect", { x: xs(0) - 1, y: T - 6, width: 2, height: rowH * list.length + 6, fill: C.ink }, svg);
-      list.forEach(function (r, i) {
-        var v = val(r), y = T + rowH * i + rowH / 2;
-        txt(svg, 0, y + 5, r.spec, { "font-size": 14, "font-weight": r.spec === "Baseline" ? 600 : 400 });
-        el("rect", { x: xs(v[0] - 1.96 * v[1]), y: y - 3, width: Math.max(2, xs(v[0] + 1.96 * v[1]) - xs(v[0] - 1.96 * v[1])), height: 6, fill: C.mid }, svg);
-        var c = el("circle", { class: "mark", style: "--md:" + i * 60 + "ms", cx: xs(v[0]), cy: y, r: 8, fill: r.spec === "Placebo week" ? C.bg : r.p_wild < 0.05 ? C.ink : C.mid, stroke: C.ink, "stroke-width": 2 }, svg);
-        el("title", {}, c).textContent = r.spec + ": " + fmt(v[0], 3);
-      });
-      var ticks = unit === "sd" ? [-0.04, 0, 0.04, 0.08] : [-0.04, 0, 0.04, 0.08];
-      ticks.forEach(function (t) {
-        if (t < lo || t > hi) return;
-        txt(svg, xs(t), H - B + 26, t === 0 ? "0" : (t > 0 ? "+" : "−") + Math.abs(t).toFixed(2), { "text-anchor": "middle", "font-size": 14 });
-      });
-      txt(svg, L + (W - L - Rr) / 2, H - 6, unit === "sd" ? (small ? "Share of the spread of opinions" : "Effect per point, as a share of the spread of opinions") : (small ? "Score points (0–6 scale)" : "Effect per point, in score points (0–6 scale)"), { "text-anchor": "middle", "font-size": 14 });
+      axis.innerHTML = "";
+      for (var t = lo; t <= hi + 1e-9; t += step) {
+        var tv = Math.round(t * 1000) / 1000, s = document.createElement("span");
+        s.textContent = tv === 0 ? "0" : (tv > 0 ? "+" : "\u2212") + Math.abs(tv).toFixed(2);
+        s.style.left = xs(tv) + "%"; axis.appendChild(s);
+      }
+      var cap = document.createElement("span"); cap.className = "axis-title";
+      cap.textContent = unit === "sd" ? "Effect per point, as a share of the spread of opinions" : "Effect per point, in score points (0\u20136 scale)";
+      axis.appendChild(cap);
     }
     draw();
-    var t2; window.addEventListener("resize", function () { clearTimeout(t2); t2 = setTimeout(draw, 150); });
   })();
 
   /* ---------------- quiz: validation and feedback (nothing is sent) ---------------- */

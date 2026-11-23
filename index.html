@@ -21,7 +21,7 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/config.js" defer></script>
   <script src="assets/data/results.js" defer></script>
@@ -176,32 +176,37 @@
   </div>
 </section>
 
-<!-- ============ HOW SURE: interactive table ============ -->
+<!-- ============ HOW SURE: one table, a range plot in every row ============ -->
 <section class="field field-grey sure" id="sure" aria-labelledby="sure-title">
-  <div class="sure-grid">
-    <div class="sure-head">
-      <h2 id="sure-title">How sure are we?</h2>
-      <p>We changed one thing at a time and re-estimated the family effect. Pick the checks to compare, and the unit to read them in.</p>
-      <fieldset class="checks" id="checks">
-        <legend>Checks shown</legend>
-      </fieldset>
-      <div class="seg seg-dark" role="group" aria-label="Unit">
-        <button type="button" aria-pressed="true" data-unit="sd">Share of spread</button>
-        <button type="button" aria-pressed="false" data-unit="raw">Score points</button>
-      </div>
-    </div>
-    <div class="sure-body">
-      <svg id="forest" viewBox="0 0 640 300" role="img" aria-labelledby="forest-title"><title id="forest-title">Family effect under each check, with 95% ranges</title></svg>
-      <div class="table-wrap">
-        <table id="rob-table">
-          <caption>Family effect per point the family stands further right, in the Thanksgiving week</caption>
-          <thead><tr><th scope="col">Check</th><th scope="col">Effect</th><th scope="col">95% range</th><th scope="col">Reliable?</th><th scope="col">Answers</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <p class="note">“Reliable?” uses a wild cluster bootstrap: yes means p &lt; 0.05, borderline p &lt; 0.10. In the chart, black dots are reliable, grey dots are not, and the hollow dot is the placebo. “Share of spread” divides the effect by the standard deviation of opinions.</p>
+  <div class="sure-top">
+    <h2 id="sure-title">How sure are we?</h2>
+    <p class="verdict" id="verdict">The family effect holds in every check we tried. Only the fake Thanksgiving shows nothing, which is what it should do.</p>
+  </div>
+  <div class="sure-controls">
+    <div class="chips" role="group" aria-label="Checks to show" id="chips"></div>
+    <div class="seg seg-dark" role="group" aria-label="Unit">
+      <button type="button" aria-pressed="true" data-unit="sd">Share of spread</button>
+      <button type="button" aria-pressed="false" data-unit="raw">Score points</button>
     </div>
   </div>
+  <div class="table-wrap">
+    <table id="rob-table">
+      <caption class="sr-only">Family effect per point the family stands further right, in the Thanksgiving week, under each check</caption>
+      <thead>
+        <tr>
+          <th scope="col">Check</th>
+          <th scope="col" class="col-plot"><span class="legend"><i class="dot dot-yes"></i>reliable <i class="dot dot-mid"></i>borderline <i class="dot dot-no"></i>not reliable</span></th>
+          <th scope="col" class="num">Effect</th>
+          <th scope="col" class="num col-range">95% range</th>
+          <th scope="col" class="num col-n">Answers</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot><tr><td></td><td class="col-plot"><div class="axis" id="rob-axis" aria-hidden="true"></div></td><td colspan="3"></td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">Each bar is the 95% range of the family effect, the dot its estimate; the black line is zero. Reliable means p &lt; 0.05 in a wild cluster bootstrap over country-by-week clusters, borderline p &lt; 0.10. “Share of spread” divides by the standard deviation of opinions, so checks with different scales can be compared.</p>
+  <noscript><p>The interactive table needs JavaScript. In short: the family effect stays between about 0.04 and 0.05 standard deviations per point in every check, and is zero in the placebo week.</p></noscript>
 </section>
 
 <!-- ============ QUIZ: large questions, answers beside ============ -->
