@@ -254,8 +254,9 @@
     var pend = false;
     function update() {
       pend = false;
-      var r = hero.getBoundingClientRect(), span = Math.max(1, hero.offsetHeight * 0.95);
-      var p = Math.min(1, Math.max(0, -r.top / span));
+      // progress runs from the very first pixel of scrolling (page top) until the hero has nearly left the screen
+      var r = hero.getBoundingClientRect(), end = Math.max(1, r.top + window.scrollY + hero.offsetHeight * 0.95);
+      var p = Math.min(1, Math.max(0, window.scrollY / end));
       want = Math.round(p * (N - 1)); draw(want);
     }
     window.addEventListener("scroll", function () { if (!pend) { pend = true; requestAnimationFrame(update); } }, { passive: true });
