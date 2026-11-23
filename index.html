@@ -8,7 +8,9 @@
   <title>Dinner Table Politics: does Thanksgiving change your views?</title>
   <meta name="description" content="A plain-language replication of Cornelson (2026): in the week of Thanksgiving, Americans and Canadians shift their political opinions towards their family's side. Try it with your own family.">
   <link rel="canonical" href="https://dinnertablepolitics.github.io/">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101211" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Dinner Table Politics: does Thanksgiving change your views?">
   <meta property="og:description" content="In the week of Thanksgiving, opinions move towards the family's side. A student replication of Cornelson (2026) with an interactive calculator.">
@@ -22,7 +24,18 @@
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/seq/hero-01.webp" as="image" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "WebPage", "name": "Dinner Table Politics: does Thanksgiving change your views?",
+   "url": "https://dinnertablepolitics.github.io/", "inLanguage": "en",
+   "description": "A plain-language replication of Cornelson (2026): in the week of Thanksgiving, Americans and Canadians shift their political opinions towards their family's side.",
+   "author": {"@type": "Organization", "name": "Dinner Table Politics team", "url": "https://github.com/dinnertablepolitics"},
+   "about": {"@type": "ScholarlyArticle", "name": "Politics at the Dinner Table: Thanksgiving and Social Influences on Political Polarisation",
+     "author": {"@type": "Person", "name": "Kirsten Cornelson"}, "isPartOf": {"@type": "Periodical", "name": "The Economic Journal"},
+     "datePublished": "2026", "sameAs": "https://doi.org/10.1093/ej/ueaf085"},
+   "isBasedOn": {"@type": "Dataset", "name": "Replication package for Politics at the Dinner Table", "url": "https://doi.org/10.5281/zenodo.16962525", "license": "https://creativecommons.org/licenses/by/4.0/"}}
+  </script>
   <script src="assets/js/config.js" defer></script>
   <script src="assets/data/results.js" defer></script>
   <script src="assets/js/main.js" defer></script>
@@ -41,16 +54,23 @@
   <a class="btn btn-small top-action" href="#try">Seat your family</a>
 </header>
 
+<nav class="chapters" aria-label="Chapters">
+  <a href="#summary"><span>The short version</span></a>
+  <a href="#how"><span>Two holidays</span></a>
+  <a href="#table-talk"><span>Table talk</span></a>
+  <a href="#try"><span>Seat your family</span></a>
+  <a href="#sure"><span>How sure</span></a>
+  <a href="#quiz"><span>Test yourself</span></a>
+  <a href="#about"><span>About</span></a>
+</nav>
+
 <main id="main">
 
 <!-- ============ HERO: masthead band, title on the axis ============ -->
 <section class="hero" aria-labelledby="title">
   <figure class="masthead">
-    <video class="clip" autoplay muted loop playsinline preload="auto" poster="assets/video/hero-table-3d-poster.webp" aria-describedby="masthead-desc">
-      <source src="assets/video/hero-table-3d.mp4" type="video/mp4">
-    </video>
-    <figcaption class="sr-only" id="masthead-desc">Animated 3D scene, no sound: the camera circles a round Thanksgiving table where six capsule figures, coloured from dark blue (left) to dark red (right), sit around a turkey.</figcaption>
-    <button class="vid-toggle" type="button" aria-pressed="false">Pause</button>
+    <img class="hero-poster" src="assets/seq/hero-01.webp" width="1280" height="720" alt="" fetchpriority="high">
+    <canvas class="hero-canvas" id="hero-canvas" width="1280" height="720" role="img" aria-label="3D scene: a round Thanksgiving table where six figures, coloured from dark blue (left) to dark red (right), sit around a turkey. As you scroll, the camera circles the table and moves in."></canvas>
   </figure>
   <div class="hero-body">
     <h1 id="title" class="mask-title"><span class="line"><span>Family dinner</span></span><span class="line"><span>moves opinions</span></span></h1>
@@ -62,7 +82,7 @@
 </section>
 
 <!-- ============ SUMMARY: statement tiles ============ -->
-<section class="summary" aria-labelledby="summary-title">
+<section class="summary" id="summary" aria-labelledby="summary-title">
   <div class="tiles">
     <div class="tile tile-a"><h2 id="summary-title">The short version</h2></div>
     <div class="tile tile-b" aria-hidden="true"><span class="big-figure">+0.05</span></div>
@@ -72,7 +92,7 @@
     <div class="tile tile-text">
       <p class="summary-text"><strong>The question.</strong> Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?
       <strong>The study.</strong> Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.
-      <strong>The answer.</strong> In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right. Nobody became more extreme overall.
+      <strong>The answer.</strong> In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Nobody became more extreme overall.
       <strong>Our check.</strong> We rebuilt the analysis from the raw data and got the same picture.</p>
     </div>
   </div>
@@ -94,6 +114,19 @@
     <div><h3>Narrow</h3><p>606 of those answers were given in the week right after their own country's Thanksgiving.</p></div>
     <div><h3>Compare</h3><p>Each person is compared with their own other weeks, and with the other country in the same week.</p></div>
   </div>
+  <details class="method">
+    <summary>The method, in more detail</summary>
+    <div class="method-body">
+      <p class="eq">opinion<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + β<sub>1</sub>·TG<sub>it</sub> + β<sub>2</sub>·TG<sub>it</sub>×family<sub>i</sub> + β<sub>3</sub>·TG<sub>it</sub>×own<sub>i</sub> + γ·controls + ε<sub>it</sub></p>
+      <dl class="method-list">
+        <div><dt>α<sub>i</sub>, person fixed effects</dt><dd>Everything stable about a person, such as their general political stance, drops out. Each person is compared only with themselves.</dd></div>
+        <div><dt>λ<sub>t</sub>, survey-week fixed effects</dt><dd>Anything that hits all respondents in the same week, such as national news, drops out too.</dd></div>
+        <div><dt>β<sub>2</sub>, the number we care about</dt><dd>How much more opinions move in the Thanksgiving week for every point the family stands further right: 0.050 in our replication, 0.048 in the paper.</dd></div>
+        <div><dt>The key assumption</dt><dd>Without Thanksgiving, people with left- and right-leaning families would have moved alike in that week. The date is fixed by the calendar, which makes this plausible; events that hit only one country in that week are the main worry.</dd></div>
+        <div><dt>Uncertainty</dt><dd>Standard errors are clustered as in the paper. Because the holiday varies only by country and week (66 clusters, 11 with a Thanksgiving week), we also report a wild cluster bootstrap.</dd></div>
+      </dl>
+    </div>
+  </details>
 </section>
 
 <!-- ============ CHART: full-bleed colour page ============ -->
@@ -119,7 +152,7 @@
       <desc id="event-chart-desc">Dots show the change compared with the week before Thanksgiving; bars show the 95% range.</desc>
     </svg>
     <p class="sr-only" id="chart-data" aria-live="polite"></p>
-    <figcaption>Change compared with the week before Thanksgiving (week −1). Dots are estimates, bars the 95% range. Week 0 is the Thanksgiving week.</figcaption>
+    <figcaption>Change compared with the week before Thanksgiving (week −1). Dots are estimates, bars the 95% range. Week 0 is the Thanksgiving week.<a class="fn" href="#n2" id="r2" aria-label="Note 2">2</a></figcaption>
     <noscript><p>The interactive chart needs JavaScript. In short: political talk with close family rises by about 5 percentage points in the Thanksgiving week and falls back afterwards.</p></noscript>
   </figure>
 </section>
@@ -147,13 +180,14 @@
   <div class="try-grid">
     <div class="try-head">
       <h2 id="try-title">Seat your family</h2>
-      <p>Place yourself and your family on the survey's own scale, from 0 (extremely left wing) to 6 (extremely right wing). We compute how far your opinions would move in the Thanksgiving week, from our replication of the study.</p>
-      <figure class="try-clip">
-        <video class="clip" autoplay muted loop playsinline preload="metadata" poster="assets/video/scale-step-3d-poster.webp" aria-describedby="vote-desc">
-          <source src="assets/video/scale-step-3d.mp4" type="video/mp4">
-        </video>
-        <button class="vid-toggle" type="button" aria-pressed="false">Pause</button>
-        <figcaption id="vote-desc">On the 0–6 scale, a light-blue guest hops towards the dark-red family and back: the Thanksgiving pull, much exaggerated.</figcaption>
+      <p>Place yourself and your family on the survey's own scale, from 0 (extremely left wing) to 6 (extremely right wing). We compute how far your opinions would move in the Thanksgiving week, from our replication of the study.<a class="fn" href="#n4" id="r4" aria-label="Note 4">4</a></p>
+      <figure class="seat-stage" id="seat-stage">
+        <div class="stage-box" aria-hidden="true">
+          <img class="st-bg" src="assets/img/calc/stage.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
+          <img class="st-fam" id="st-fam" src="assets/img/calc/family-5.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
+          <img class="st-you" id="st-you" src="assets/img/calc/you-2.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
+        </div>
+        <figcaption id="stage-desc">You and your family at the table. Move the sliders: the figures take your colours, and you shift towards your family by the estimated amount (drawn 40 times larger so you can see it).</figcaption>
       </figure>
     </div>
     <form class="calc" id="calc" novalidate>
@@ -185,7 +219,7 @@
 <section class="field field-grey sure" id="sure" aria-labelledby="sure-title">
   <div class="sure-top">
     <h2 id="sure-title">How sure are we?</h2>
-    <p class="verdict" id="verdict">The family effect holds in every check we tried. Only the fake Thanksgiving shows nothing, which is what it should do.</p>
+    <p class="verdict" id="verdict">The family effect holds in every check we tried. Only the fake Thanksgiving shows nothing, which is what it should do.<a class="fn" href="#n3" id="r3" aria-label="Note 3">3</a></p>
   </div>
   <div class="sure-controls">
     <div class="chips" role="group" aria-label="Checks to show" id="chips"></div>
@@ -273,6 +307,10 @@
       <div class="model" hidden><p>Week fixed effects only absorb shocks that hit both countries. Canada's 2019 federal election came one week after Canadian Thanksgiving. If the campaign pushed people with right-leaning families further right, the omitted variable raises opinions (γ &gt; 0) and is positively related to Thanksgiving × family (δ &gt; 0), so the bias γ·δ is upward, away from zero. Dropping 2019 leaves the estimate at 0.051 but makes it much less precise.</p></div>
     </form>
   </div>
+  <div class="qa-row quiz-score" id="quiz-score" hidden>
+    <p class="score-line" id="score-line" role="status"></p>
+    <p class="score-tips" id="score-tips"></p>
+  </div>
 </section>
 
 <!-- ============ ABOUT: wide photo, colour tile, facts ============ -->
@@ -298,6 +336,25 @@
         <div><dt>Years</dt><dd>2019, 2021, 2022</dd></div>
         <div><dt>Method</dt><dd>Panel regression with fixed effects</dd></div>
       </dl>
+    </div>
+  </div>
+  <div class="about-extra">
+    <div class="notes" id="notes">
+      <h3>Where the numbers come from</h3>
+      <ol>
+        <li id="n1">Table 1, column 1 of the paper; our estimate from <a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io/blob/main/replication/code/02_table1.R">02_table1.R</a>. <a href="#r1" aria-label="Back to the text">↩</a></li>
+        <li id="n2">Figure 1, panels a–c; our event study in <a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io/blob/main/replication/code/03_figures.R">03_figures.R</a>. <a href="#r2" aria-label="Back to the text">↩</a></li>
+        <li id="n3">Robustness checks in <a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io/blob/main/replication/code/04_extension.R">04_extension.R</a> and <a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io/blob/main/replication/code/05_threats.R">05_threats.R</a>. <a href="#r3" aria-label="Back to the text">↩</a></li>
+        <li id="n4">Coefficients and their covariance from Table 1, column 1, exported by <a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io/blob/main/replication/code/06_website_data.R">06_website_data.R</a>. <a href="#r4" aria-label="Back to the text">↩</a></li>
+      </ol>
+    </div>
+    <div class="cite">
+      <h3>Cite this page</h3>
+      <p class="cite-text" id="cite-site">Dinner Table Politics team (2026). Dinner Table Politics: a replication of Cornelson (2026). https://dinnertablepolitics.github.io/</p>
+      <button type="button" class="btn btn-small btn-ghost copy" data-copy="cite-site">Copy citation</button>
+      <h3>Cite the paper</h3>
+      <p class="cite-text" id="cite-paper">Cornelson, K. (2026). Politics at the Dinner Table: Thanksgiving and Social Influences on Political Polarisation. The Economic Journal, 136(675), 1125–1139. https://doi.org/10.1093/ej/ueaf085</p>
+      <button type="button" class="btn btn-small btn-ghost copy" data-copy="cite-paper">Copy citation</button>
     </div>
   </div>
 </section>

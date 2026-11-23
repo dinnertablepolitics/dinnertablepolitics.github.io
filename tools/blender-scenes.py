@@ -55,7 +55,17 @@ for k in ("Transmission Weight", "Transmission"):
     if k in _lp.inputs: _lp.inputs[k].default_value = 1.0
 _lp.inputs["IOR"].default_value = 1.35
 POL = ["#1e3a8a", "#2f5fd0", "#8aa8ec", "#c5c5c5", "#f2a3a3", "#d93636", "#991b1b"]
-for i, c in enumerate(POL): M["pol%d" % i] = mat("pol%d" % i, c, 0.5)
+def clay(m):
+    p = m.node_tree.nodes["Principled BSDF"]
+    for k, v in (("Subsurface Weight", 0.12), ("Sheen Weight", 0.35), ("Coat Weight", 0.08), ("Roughness", 0.62)):
+        if k in p.inputs: p.inputs[k].default_value = v
+    if "Subsurface Radius" in p.inputs: p.inputs["Subsurface Radius"].default_value = (0.3, 0.15, 0.1)
+    return m
+for i, c in enumerate(POL): M["pol%d" % i] = clay(mat("pol%d" % i, c, 0.5))
+M["hi"] = mat("hi", "#ffffff", 0.2, 0.5, emit=0.6)
+M["mouth"] = mat("mouth", "#3a1d1d", 0.5)
+M["snow"] = clay(mat("snow", "#eceef0", 0.6)); M["spot"] = mat("spot", "#2b2d30", 0.55); M["nose"] = mat("nose", "#8a6f72", 0.45)
+M["bean"] = mat("bean", "#1b1b1d", 0.35, 0.5); M["eyeL"] = mat("eyeL", "#030303", 0.12, 0.35)
 
 def figure(x, y, ci, face_to=(0, 0), z0=0.0, scale=1.0, name=None):
     """capsule body + head + eyes, looking at face_to; returns an empty that holds it"""
@@ -65,7 +75,14 @@ def figure(x, y, ci, face_to=(0, 0), z0=0.0, scale=1.0, name=None):
     b = add("uv_sphere", (0, 0, 0.83), (0.42, 0.42, 0.8), segments=48, ring_count=24, material=col, parent=root); smooth(b)
     h = add("uv_sphere", (0, 0, 1.9), (0.42, 0.42, 0.42), segments=48, ring_count=24, material=col, parent=root); smooth(h)
     for s in (-1, 1):
-        smooth(add("uv_sphere", (0.37, 0.15 * s, 1.98), (0.06, 0.06, 0.08), material=M["eye"], parent=root))
+        smooth(add("uv_sphere", (0.37, 0.15 * s, 1.98), (0.065, 0.065, 0.085), material=M["eye"], parent=root))
+        smooth(add("uv_sphere", (0.415, 0.15 * s + 0.02, 2.02), (0.018, 0.018, 0.018), material=M["hi"], parent=root))
+        arm = smooth(add("uv_sphere", (0.05, 0.44 * s, 0.95), (0.13, 0.13, 0.36), segments=24, ring_count=12, material=col, parent=root))
+        arm.rotation_euler = (0, 0.15, -0.35 * s)
+    bpy.ops.mesh.primitive_torus_add(location=(0.4, 0, 1.8), major_radius=0.07, minor_radius=0.014, rotation=(0, math.radians(90), 0))
+    mo = bpy.context.active_object; mo.parent = root; mo.data.materials.append(M["mouth"])
+    cut = add("cube", (0.4, 0, 1.86), (0.12, 0.12, 0.06), parent=root); cut.hide_render = True; cut.hide_viewport = True
+    bm = mo.modifiers.new("smile", "BOOLEAN"); bm.object = cut; bm.operation = "DIFFERENCE"
     root.rotation_euler = (0, 0, math.atan2(face_to[1] - y, face_to[0] - x))
     return root
 
@@ -106,9 +123,14 @@ def lights(strength=1.0):
     k.data.energy = 2600 * strength; k.data.size = 9; k.rotation_euler = (math.radians(38), 0, math.radians(35))
     bpy.ops.object.light_add(type="AREA", location=(-7, 2, 6)); f = bpy.context.active_object
     f.data.energy = 800 * strength; f.data.size = 10; f.rotation_euler = (math.radians(60), 0, math.radians(-70))
+    bpy.ops.object.light_add(type="AREA", location=(-2, 9, 7)); r = bpy.context.active_object
+    r.data.energy = 900 * strength; r.data.size = 6; r.rotation_euler = (math.radians(-50), 0, math.radians(190))
     w = bpy.data.worlds.new("w"); scene.world = w; w.use_nodes = True
     w.node_tree.nodes["Background"].inputs["Color"].default_value = hexcol("#f3fcef")
     w.node_tree.nodes["Background"].inputs["Strength"].default_value = 1.0
+
+def dof(cam, target, fstop=5.6):
+    cam.data.dof.use_dof = True; cam.data.dof.focus_object = target; cam.data.dof.aperture_fstop = fstop
 
 def camera(loc, target, lens=34):
     bpy.ops.object.camera_add(location=loc); cam = bpy.context.active_object; scene.camera = cam; cam.data.lens = lens
@@ -167,6 +189,73 @@ elif MODE == "magnifier":
     lens = add("cylinder", (0, 0, 0), radius=1.08, depth=0.04, vertices=96, material=M["lens"], parent=g)
     hnd = smooth(add("cylinder", (0, -1.75, 0), (1, 1, 1), radius=0.12, depth=1.3, material=M["ink"], parent=g)); hnd.rotation_euler = (math.radians(90), 0, 0)
     camera((2.0, -7.2, 7.4), (0.2, 0, 1.8), 36)
+
+elif MODE == "scroll":
+    table_scene()
+    rig = bpy.data.objects.new("rig", None); scene.collection.objects.link(rig)
+    cam, t = camera((0, -10.2, 6.6), (0, 0.2, 1.4), 30); cam.parent = rig; t.parent = None; dof(cam, t, 8)
+    anim = True; scene.frame_start, scene.frame_end = 1, 72
+    rig.rotation_euler = (0, 0, 0); rig.keyframe_insert("rotation_euler", frame=1)
+    rig.rotation_euler = (0, 0, math.radians(-110)); rig.keyframe_insert("rotation_euler", frame=72)
+    cam.location = (0, -10.2, 6.6); cam.keyframe_insert("location", frame=1)
+    cam.location = (0, -5.6, 3.9); cam.keyframe_insert("location", frame=72)
+    t.location = (0, 0.2, 1.4); t.keyframe_insert("location", frame=1)
+    t.location = (0, 0, 1.85); t.keyframe_insert("location", frame=72)
+elif MODE.startswith("calc_"):
+    # calculator stage and figure layers, all from the same camera; figure layers are transparent with a shadow catcher
+    part = MODE.split("_")[1]
+    cam, t = camera((0, -11.5, 4.6), (0, 0, 1.6), 40)
+    if part == "stage":
+        table_scene(chairs=False, seats=[(60, 3), (120, 3)])
+        for o in list(scene.objects):
+            if o.name.startswith("fig"): o.hide_render = True
+            for ch in o.children_recursive if hasattr(o, "children_recursive") else []:
+                if o.name.startswith("fig"): ch.hide_render = True
+        for o in scene.objects:
+            if o.parent and o.parent.name.startswith("fig"): o.hide_render = True
+        for o in scene.objects:
+            if o.type == "MESH" and o.location.y != 0: pass
+    else:
+        ci = int(MODE.split("_")[2])
+        for o in list(scene.objects):
+            if o.type == "MESH" and o.data.materials and o.data.materials[0].name == "floor": o.is_shadow_catcher = True
+        if part == "you": figure(-2.6, -2.2, ci, (0, -11), z0=0.0, scale=1.05, name="you")
+        else: figure(2.6, -2.2, ci, (0, -11), z0=0.0, scale=1.05, name="family")
+        scene.render.film_transparent = True
+elif MODE == "leopard":
+    import random; random.seed(7)
+    def on_ellipsoid(c, r, az, el, inset=0.985):
+        # point on an ellipsoid surface (az around z, 180 deg = facing the camera at -x)
+        return (c[0] + inset * r[0] * math.cos(el) * math.cos(az), c[1] + inset * r[1] * math.cos(el) * math.sin(az), c[2] + inset * r[2] * math.sin(el))
+    BC, BR = (0, 0, 0.95), (0.62, 0.56, 0.95)
+    HC, HR = (0, 0, 2.3), (0.7, 0.66, 0.6)
+    smooth(add("uv_sphere", BC, BR, segments=64, ring_count=32, material=M["snow"]))
+    smooth(add("uv_sphere", HC, HR, segments=64, ring_count=32, material=M["snow"]))
+    smooth(add("uv_sphere", (-0.52, 0, 2.08), (0.26, 0.36, 0.2), segments=48, ring_count=24, material=M["snow"]))   # muzzle
+    for s in (-1, 1):
+        ear = smooth(add("uv_sphere", (0.05, 0.47 * s, 2.82), (0.12, 0.2, 0.22), material=M["snow"])); ear.rotation_euler = (0.3 * s, 0, 0)
+        smooth(add("uv_sphere", (-0.03, 0.47 * s, 2.82), (0.06, 0.12, 0.14), material=M["spot"]))
+        smooth(add("uv_sphere", (-0.5, 0.27 * s, 2.4), (0.17, 0.2, 0.21), segments=48, ring_count=24, material=M["eyeL"]))
+        smooth(add("uv_sphere", (-0.66, 0.24 * s, 2.48), (0.04, 0.04, 0.04), material=M["hi"]))
+        smooth(add("uv_sphere", (-0.66, 0.31 * s, 2.36), (0.018, 0.018, 0.018), material=M["hi"]))
+    smooth(add("uv_sphere", (-0.76, 0, 2.15), (0.06, 0.1, 0.07), material=M["nose"]))
+    for k in range(26):     # forehead freckles
+        az = math.radians(180 + random.uniform(-38, 38)); el = math.radians(random.uniform(28, 62))
+        smooth(add("uv_sphere", on_ellipsoid(HC, HR, az, el), (0.028, 0.028, 0.028), segments=12, ring_count=8, material=M["spot"]))
+    for k in range(60):     # rosettes on the body, front half only
+        az = math.radians(180 + random.uniform(-62, 62)); el = math.radians(random.uniform(-50, 45))
+        r = random.uniform(0.04, 0.065)
+        smooth(add("uv_sphere", on_ellipsoid(BC, BR, az, el, 0.955), (r * 0.8, r * 1.2, r), segments=16, ring_count=8, material=M["spot"]))
+    # raised paw with toe beans, held up towards the camera
+    smooth(add("uv_sphere", (-0.62, 0.16, 1.25), (0.2, 0.2, 0.5), segments=32, ring_count=16, material=M["snow"]))
+    smooth(add("uv_sphere", (-0.8, 0.16, 1.72), (0.22, 0.3, 0.33), segments=48, ring_count=24, material=M["snow"]))
+    smooth(add("uv_sphere", (-1.0, 0.16, 1.64), (0.05, 0.15, 0.12), material=M["bean"]))
+    for dy, dz in ((-0.18, 1.85), (-0.065, 1.94), (0.065, 1.94), (0.18, 1.85)):
+        smooth(add("uv_sphere", (-1.0, 0.16 + dy, dz), (0.035, 0.055, 0.065), material=M["bean"]))
+    for o in list(scene.objects):
+        if o.type == "MESH" and o.data.materials and o.data.materials[0].name == "floor": o.is_shadow_catcher = True
+    scene.render.film_transparent = True
+    cam, t = camera((-7.2, 0.3, 2.2), (0, 0, 1.75), 78)
 
 # ---------------- render ----------------
 eng = ENGINE

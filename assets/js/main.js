@@ -143,7 +143,7 @@
 
     // reading progress along the top edge, and a slow parallax on the hero film
     var bar = document.createElement("div"); bar.className = "progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
-    var mast = document.querySelector(".masthead video, .masthead img"), ticking = false;
+    var mast = null, ticking = false;
     function onScroll() {
       ticking = false;
       var max = document.documentElement.scrollHeight - window.innerHeight;
@@ -191,21 +191,21 @@
     var g = document.getElementById("cal");
     if (!g) return;
     function month(x0, name, startDow, days, mark) {
-      txt(g, x0, 34, name, { "font-size": 18, "font-weight": 600, fill: C.ink });
+      txt(g, x0, 34, name, { "font-size": 18, "font-weight": 600, fill: "#000" });
       var cw = 17, ch = 17;
       for (var d = 1; d <= days; d++) {
         var idx = startDow + d - 1, col = idx % 7, row = Math.floor(idx / 7);
         var x = x0 + col * cw, y = 50 + row * ch;
         var on = d === mark;
-        var day = el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? C.ink : "rgba(0,0,0,0.18)", class: "day" + (on ? " holiday" : "") }, g);
+        var day = el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? "#000" : "rgba(0,0,0,0.18)", class: "day" + (on ? " holiday" : "") }, g);
         day.style.transitionDelay = (d * 18 + (x0 > 100 ? 300 : 0)) + "ms";
       }
     }
     // 2022: October starts on Saturday (Canadian Thanksgiving Mon 10 Oct); November starts Tuesday (US Thu 24 Nov)
     month(18, "October", 5, 31, 10);
     month(160, "November", 1, 30, 24);
-    txt(g, 18, 186, "Canada", { "font-size": 14, fill: C.ink });
-    txt(g, 160, 186, "United States", { "font-size": 14, fill: C.ink });
+    txt(g, 18, 186, "Canada", { "font-size": 14, fill: "#000" });
+    txt(g, 160, 186, "United States", { "font-size": 14, fill: "#000" });
     onView(g, function () { g.classList.add("in"); });
   })();
 
@@ -231,6 +231,81 @@
       }, { threshold: 0.2 });
       Array.prototype.forEach.call(vids, function (v) { vio.observe(v); });
     }
+  })();
+
+  /* ---------------- hero: 3D camera move driven by the scroll position ---------------- */
+  (function heroSequence() {
+    var cv = document.getElementById("hero-canvas"), hero = document.querySelector(".hero");
+    if (!cv || !cv.getContext) return;
+    var N = 72, frames = new Array(N), ctx = cv.getContext("2d"), current = -1, want = 0;
+    function src(i) { return "assets/seq/hero-" + String(i + 1).padStart(2, "0") + ".webp"; }
+    function draw(i) {
+      var j = i; while (j > 0 && !(frames[j] && frames[j].complete && frames[j].naturalWidth)) j--;   // nearest loaded frame below
+      var im = frames[j]; if (!im || !im.complete || !im.naturalWidth || j === current) return;
+      ctx.drawImage(im, 0, 0, cv.width, cv.height); current = j; cv.classList.add("ready");
+    }
+    function load(i) { if (frames[i]) return; var im = new Image(); im.decoding = "async"; im.src = src(i); im.onload = function () { if (Math.abs(i - want) < 3 || i === 0) draw(want); }; frames[i] = im; }
+    load(0);
+    if (reduced) return;                         // reduced motion: the first frame stays as a still
+    function loadAll() { for (var i = 1; i < N; i++) load(i); }
+    if (document.readyState === "complete") setTimeout(loadAll, 200); else window.addEventListener("load", function () { setTimeout(loadAll, 200); });
+    var pend = false;
+    function update() {
+      pend = false;
+      var r = hero.getBoundingClientRect(), span = Math.max(1, hero.offsetHeight * 0.95);
+      var p = Math.min(1, Math.max(0, -r.top / span));
+      want = Math.round(p * (N - 1)); draw(want);
+    }
+    window.addEventListener("scroll", function () { if (!pend) { pend = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  })();
+
+  /* ---------------- chapter navigation: highlight the section on screen ---------------- */
+  (function chapters() {
+    var nav = document.querySelector(".chapters"); if (!nav || !("IntersectionObserver" in window)) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
+    var map = {}; links.forEach(function (a) { var t = document.querySelector(a.getAttribute("href")); if (t) map[t.id] = a; });
+    var vis = {};
+    var o = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { vis[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+      var best = null, bv = 0; Object.keys(vis).forEach(function (k) { if (vis[k] > bv) { bv = vis[k]; best = k; } });
+      links.forEach(function (a) { a.classList.toggle("on", map[best] === a); if (map[best] === a) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+      var foot = document.querySelector("footer"), fr = foot ? foot.getBoundingClientRect().top : 1e9;
+      nav.classList.toggle("show", window.scrollY > window.innerHeight * 0.6 && fr > window.innerHeight * 0.85);
+    }, { threshold: [0, 0.15, 0.3, 0.5, 0.7] });
+    Object.keys(map).forEach(function (id) { o.observe(document.getElementById(id)); });
+    if (document.querySelector("footer")) o.observe(document.querySelector("footer"));
+  })();
+
+  /* ---------------- copy buttons for the citations ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll("button.copy"), function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.getAttribute("data-copy")).textContent.trim();
+      var done = function () { var old = b.textContent; b.textContent = "Copied"; b.classList.add("copied"); setTimeout(function () { b.textContent = old; b.classList.remove("copied"); }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () {});
+      else { var r = document.createRange(); r.selectNodeContents(document.getElementById(b.getAttribute("data-copy"))); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); done(); }
+    });
+  });
+
+  /* ---------------- easter egg: a snow leopard (click the +0.05 tile five times, or type "snow") ---------------- */
+  (function easterEgg() {
+    var shown = false, clicks = 0, typed = "";
+    function peek() {
+      if (shown) return; shown = true;
+      var box = document.createElement("div"); box.className = "leopard"; box.setAttribute("role", "status");
+      box.innerHTML = '<img src="assets/img/leopard.webp" width="400" height="500" alt="A 3D snow leopard with big eyes raises its paw.">' +
+        '<p>Psst. Snow leopards have no party. They just want the turkey.</p>';
+      document.body.appendChild(box);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add("in"); }); });
+      setTimeout(function () { box.classList.remove("in"); setTimeout(function () { box.remove(); shown = false; }, 900); }, 5200);
+    }
+    var tile = document.querySelector(".tile-b");
+    if (tile) tile.addEventListener("click", function () { if (++clicks >= 5) { clicks = 0; peek(); } });
+    document.addEventListener("keydown", function (e) {
+      if (e.target.closest && e.target.closest("input, textarea")) return;
+      typed = (typed + (e.key || "").toLowerCase()).slice(-4); if (typed === "snow") peek();
+    });
+    if (window.console && console.log) console.log("%cLooking for something? Type \"snow\" on the page.", "color:#ff6831;font-weight:600");
   })();
 
   if (!R) return;  // the remaining parts need the data file
@@ -350,6 +425,15 @@
       var v = 0;
       for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) v += g[i] * V[i][j] * g[j];
       var se = Math.sqrt(v), lo = est - 1.96 * se, hi = est + 1.96 * se;
+      var sy = document.getElementById("st-you"), sf = document.getElementById("st-fam");
+      if (sy && sf) {
+        if (sy.dataset.v !== String(o)) { sy.src = "assets/img/calc/you-" + o + ".webp"; sy.dataset.v = o; }
+        if (sf.dataset.v !== String(f)) { sf.src = "assets/img/calc/family-" + f + ".webp"; sf.dataset.v = f; }
+        // the guest slides towards the family figure by the size of the pull, drawn 40 times larger (in % of the stage width);
+        // a pull in the family's direction (right if the family is to your right, left if it is to your left) moves you closer
+        var toward = f === o ? 0 : est * Math.sign(f - o);
+        sy.style.transform = "translateX(" + Math.max(-6, Math.min(24, toward * 40 * 3.2)) + "%)";
+      }
       var rf = document.getElementById("res-figure");
       var from = shownEst === null ? est : shownEst;
       if (stopNum) stopNum();
@@ -366,6 +450,9 @@
     own.addEventListener("input", update); fam.addEventListener("input", update);
     update();
     // first visit: the family slider demonstrates itself once (3 -> 6 -> 5), unless the reader is faster
+    onView(document.getElementById("seat-stage"), function () {
+      for (var v = 0; v < 7; v++) { new Image().src = "assets/img/calc/you-" + v + ".webp"; new Image().src = "assets/img/calc/family-" + v + ".webp"; }
+    }, "0px 0px 400px 0px");
     var touched = false;
     ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { own.addEventListener(ev, function () { touched = true; }); fam.addEventListener(ev, function () { touched = true; }); });
     var hint = document.createElement("span"); hint.className = "drag-hint"; hint.setAttribute("aria-hidden", "true"); hint.textContent = "Drag me";
@@ -472,6 +559,19 @@
   /* ---------------- quiz: validation and feedback (nothing is sent) ---------------- */
   (function quiz() {
     var forms = document.querySelectorAll("form[data-quiz]");
+    var result = {}, box = document.getElementById("quiz-score");
+    function score() {
+      if (!box) return;
+      var tried = Object.keys(result).length; if (!tried) return;
+      var right = ["1", "2"].filter(function (k) { return result[k] === true; }).length, checkable = ["1", "2"].filter(function (k) { return k in result; }).length;
+      box.hidden = false;
+      document.getElementById("score-line").textContent = (checkable ? right + " of " + checkable + " checkable answers right" : "No checkable answers yet") + ("3" in result ? ", and you compared your bias argument with the model answer." : ".");
+      var tips = [];
+      if (result["1"] === false) tips.push('Question 1: re-read <a href="#how">Two holidays, one test</a>.');
+      if (result["2"] === false) tips.push('Question 2: try the <a href="#try">calculator</a> with you at 3 and your family at 6.');
+      if (!("3" in result)) tips.push("Question 3 is still open.");
+      document.getElementById("score-tips").innerHTML = tips.join(" ");
+    }
     Array.prototype.forEach.call(forms, function (f) {
       var fb = f.querySelector(".feedback"), model = f.querySelector(".model");
       f.addEventListener("submit", function (e) {
@@ -481,7 +581,7 @@
         if (q === "1") {
           var pick = f.querySelector("input[name=q1]:checked");
           if (!pick) { fb.textContent = "Pick one answer first."; fb.classList.add("no"); return; }
-          var ok = pick.value === "c";
+          var ok = pick.value === "c"; if (!("1" in result)) result["1"] = ok; score();
           fb.textContent = ok ? "Correct." : "Not quite. Think about what happens in the same calendar week in the other country.";
           fb.classList.add(ok ? "ok" : "no");
           if (ok) model.hidden = false;
@@ -495,7 +595,7 @@
             fb.classList.add("no"); inp.focus(); return;
           }
           inp.removeAttribute("aria-invalid");
-          var good = Math.abs(x - 0.16) <= 0.011;
+          var good = Math.abs(x - 0.16) <= 0.011; if (!("2" in result)) result["2"] = good; score();
           fb.textContent = good ? "Correct: +0.16." : "Not quite. Add up all three parts, each multiplied by its scale value.";
           fb.classList.add(good ? "ok" : "no");
           model.hidden = false;
@@ -508,7 +608,7 @@
             fb.classList.add("no"); ta.focus(); return;
           }
           ta.removeAttribute("aria-invalid");
-          fb.textContent = "Here is one possible answer. Did you name the omitted variable, γ, δ and the direction?";
+          fb.textContent = "Here is one possible answer. Did you name the omitted variable, γ, δ and the direction?"; result["3"] = true; score();
           model.hidden = false;
         }
       });
