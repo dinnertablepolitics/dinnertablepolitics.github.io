@@ -102,16 +102,16 @@
 <section class="field field-mint chart-section" id="table-talk" aria-labelledby="talk-title">
   <div class="chart-head">
     <h2 id="talk-title">More politics at the table</h2>
-    <p id="chart-caption">In the Thanksgiving week, people are about 5 percentage points more likely to talk politics with parents, siblings or grown-up children than the week before.</p>
+    <p id="chart-caption" aria-live="polite">In the Thanksgiving week, people are about 5 percentage points more likely to talk politics with parents, siblings or grown-up children than the week before.</p>
     <div class="toggles" role="group" aria-label="Choose what the chart shows">
-      <div class="seg" role="radiogroup" aria-label="Measure">
-        <button type="button" role="radio" aria-checked="true" data-measure="discussion">Talking politics</button>
-        <button type="button" role="radio" aria-checked="false" data-measure="opinion">Pull of the family</button>
+      <div class="seg" role="group" aria-label="Measure">
+        <button type="button" aria-pressed="true" data-measure="discussion">Talking politics</button>
+        <button type="button" aria-pressed="false" data-measure="opinion">Pull of the family</button>
       </div>
-      <div class="seg" role="radiogroup" aria-label="Country">
-        <button type="button" role="radio" aria-checked="true" data-sample="Combined">Both</button>
-        <button type="button" role="radio" aria-checked="false" data-sample="US">US</button>
-        <button type="button" role="radio" aria-checked="false" data-sample="Canada">Canada</button>
+      <div class="seg" role="group" aria-label="Country">
+        <button type="button" aria-pressed="true" data-sample="Combined">Both</button>
+        <button type="button" aria-pressed="false" data-sample="US">US</button>
+        <button type="button" aria-pressed="false" data-sample="Canada">Canada</button>
       </div>
     </div>
   </div>
@@ -120,6 +120,7 @@
       <title id="event-chart-title">Change by week around Thanksgiving</title>
       <desc id="event-chart-desc">Dots show the change compared with the week before Thanksgiving; bars show the 95% range.</desc>
     </svg>
+    <p class="sr-only" id="chart-data" aria-live="polite"></p>
     <figcaption>Change compared with the week before Thanksgiving (week −1). Dots are estimates, bars the 95% range. Week 0 is the Thanksgiving week.</figcaption>
     <noscript><p>The interactive chart needs JavaScript. In short: political talk with close family rises by about 5 percentage points in the Thanksgiving week and falls back afterwards.</p></noscript>
   </figure>
@@ -166,6 +167,10 @@
         <input type="range" id="fam" name="fam" min="0" max="6" step="1" value="5" aria-describedby="fam-out">
         <output id="fam-out" for="fam">Right wing</output>
       </div>
+      <figure class="strip">
+        <div class="strip-cells" id="strip"><span class="cell" data-v="0"><i class="bar"></i><b>0</b></span><span class="cell" data-v="1"><i class="bar"></i><b>1</b></span><span class="cell" data-v="2"><i class="bar"></i><b>2</b></span><span class="cell" data-v="3"><i class="bar"></i><b>3</b></span><span class="cell" data-v="4"><i class="bar"></i><b>4</b></span><span class="cell" data-v="5"><i class="bar"></i><b>5</b></span><span class="cell" data-v="6"><i class="bar"></i><b>6</b></span></div>
+        <figcaption>Bars show where the 2,006 respondents placed their own families. Blue is left and red is right, as in the US; in Canada the Liberals use red, so read the colours as left and right, not as parties.</figcaption>
+      </figure>
       <noscript><p>The calculator needs JavaScript. Rule of thumb: for every point your family stands to your right, expect your opinion score to move about 0.05 points right in the Thanksgiving week.</p></noscript>
     </form>
   </div>
@@ -180,9 +185,9 @@
       <fieldset class="checks" id="checks">
         <legend>Checks shown</legend>
       </fieldset>
-      <div class="seg seg-dark" role="radiogroup" aria-label="Unit">
-        <button type="button" role="radio" aria-checked="true" data-unit="sd">Share of spread</button>
-        <button type="button" role="radio" aria-checked="false" data-unit="raw">Score points</button>
+      <div class="seg seg-dark" role="group" aria-label="Unit">
+        <button type="button" aria-pressed="true" data-unit="sd">Share of spread</button>
+        <button type="button" aria-pressed="false" data-unit="raw">Score points</button>
       </div>
     </div>
     <div class="sure-body">
@@ -194,7 +199,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="note">“Reliable?” uses a wild cluster bootstrap: yes means p &lt; 0.05, borderline p &lt; 0.10. “Share of spread” divides the effect by the standard deviation of opinions.</p>
+      <p class="note">“Reliable?” uses a wild cluster bootstrap: yes means p &lt; 0.05, borderline p &lt; 0.10. In the chart, black dots are reliable, grey dots are not, and the hollow dot is the placebo. “Share of spread” divides the effect by the standard deviation of opinions.</p>
     </div>
   </div>
 </section>
@@ -277,10 +282,13 @@
       <p class="overlay">Same sample, same model: our main estimate is 0.050, the paper's 0.048. The small gap comes from how ties are broken in the opinion score.</p>
     </figure>
     <div class="about-colour">
+      <div class="cal-tile">
       <svg viewBox="0 0 300 200" role="img" aria-labelledby="cal-title">
         <title id="cal-title">Two calendar pages: October with the second Monday marked for Canada, November with the fourth Thursday marked for the US.</title>
         <g id="cal"></g>
       </svg>
+      <p>In 2022: Monday 10 October in Canada, Thursday 24 November in the US. Six weeks apart.</p>
+      </div>
       <dl class="facts">
         <div><dt>Paper</dt><dd>Cornelson, Economic Journal, 2026</dd></div>
         <div><dt>Data</dt><dd>10,092 answers, 2,006 people</dd></div>

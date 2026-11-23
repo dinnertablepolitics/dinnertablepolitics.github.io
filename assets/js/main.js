@@ -7,10 +7,18 @@
   var R = window.RESULTS;
   var SVGNS = "http://www.w3.org/2000/svg";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var css = getComputedStyle(doc);
+  function tok(name) { return css.getPropertyValue(name).trim(); }
+  var C = { ink: tok("--ink"), bg: tok("--bg"), mint: tok("--mint"), orange: tok("--orange"), grey: tok("--grey"), mid: tok("--chart-mid"),
+    blue: tok("--blue"), red: tok("--red"), blueDark: tok("--blue-on-dark"), redDark: tok("--red-on-dark") };
+  var POL = [0, 1, 2, 3, 4, 5, 6].map(function (v) { return tok("--pol-" + v); });
 
   function el(name, attrs, parent) {
     var e = document.createElementNS(SVGNS, name);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    for (var k in attrs) {
+      if (k === "style") e.style.cssText = attrs[k];   // CSSOM, allowed by the page's Content-Security-Policy
+      else e.setAttribute(k, attrs[k]);
+    }
     if (parent) parent.appendChild(e);
     return e;
   }
@@ -42,6 +50,9 @@
       var open = links.classList.toggle("open");
       menuBtn.setAttribute("aria-expanded", String(open));
     });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && links.classList.contains("open")) { links.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); menuBtn.focus(); }
+    });
     links.addEventListener("click", function (e) {
       if (e.target.tagName === "A") { links.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); }
     });
@@ -51,7 +62,7 @@
   var groups = [
     ".tile", ".how-head > *", ".how-figure", ".how-steps > div", ".chart-head > *", ".chart-figure",
     ".cut", ".try-head > *", ".calc > *", ".sure-head > *", ".sure-body > *", ".quiz-pic",
-    ".about > h2", ".about > .lead", ".about-tiles > *"
+    ".about > h2", ".about > .lead", ".about-photo"
   ];
   if ("IntersectionObserver" in window && !reduced) {
     var io = new IntersectionObserver(function (entries) {
@@ -67,6 +78,16 @@
         io.observe(node);
       });
     });
+    // anything the reader has already scrolled past (fast scroll, anchor jump) is shown at once
+    var pending = false;
+    function sweep() {
+      pending = false;
+      Array.prototype.forEach.call(document.querySelectorAll(".rise:not(.in)"), function (n) {
+        if (n.getBoundingClientRect().top < window.innerHeight) { n.classList.add("in"); io.unobserve(n); }
+      });
+    }
+    window.addEventListener("scroll", function () { if (!pending) { pending = true; requestAnimationFrame(sweep); } }, { passive: true });
+    window.addEventListener("hashchange", sweep);
   }
 
   /* ---------------- "many into one" diagram ---------------- */
@@ -80,11 +101,11 @@
     for (var i = 0; i < n; i++) {
       var x, y, fill;
       if (i < 64) {            // scattered answers
-        x = 10 + rnd() * 270; y = 10 + rnd() * (H - 30); fill = i % 3 ? "#c5c5c5" : "#8a8a8a";
+        x = 10 + rnd() * 270; y = 10 + rnd() * (H - 30); fill = i % 2 ? C.blue : C.red;
       } else if (i < 100) {    // the narrow Thanksgiving-week ribbon
-        var k = i - 64; x = 330 + (k % 12) * 20; y = 75 + Math.floor(k / 12) * 18; fill = "#ff6831";
+        var k = i - 64; x = 330 + (k % 12) * 20; y = 75 + Math.floor(k / 12) * 18; fill = C.orange;
       } else {                 // ordered comparison rows
-        var j = i - 100; x = 640 + (j % 11) * 22; y = 30 + Math.floor(j / 11) * 36; fill = "#000000";
+        var j = i - 100; x = 640 + (j % 11) * 22; y = 30 + Math.floor(j / 11) * 36; fill = C.ink;
       }
       el("rect", { x: x.toFixed(1), y: y.toFixed(1), width: s + 2, height: s + 2, fill: fill }, g);
     }
@@ -96,20 +117,20 @@
     var g = document.getElementById("cal");
     if (!g) return;
     function month(x0, name, startDow, days, mark) {
-      txt(g, x0, 34, name, { "font-size": 18, "font-weight": 600, fill: "#000" });
+      txt(g, x0, 34, name, { "font-size": 18, "font-weight": 600, fill: C.ink });
       var cw = 17, ch = 17;
       for (var d = 1; d <= days; d++) {
         var idx = startDow + d - 1, col = idx % 7, row = Math.floor(idx / 7);
         var x = x0 + col * cw, y = 50 + row * ch;
         var on = d === mark;
-        el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? "#000" : "rgba(0,0,0,0.18)" }, g);
+        el("rect", { x: x, y: y, width: cw - 3, height: ch - 3, fill: on ? C.ink : "rgba(0,0,0,0.18)" }, g);
       }
     }
     // 2022: October starts on Saturday (Canadian Thanksgiving Mon 10 Oct); November starts Tuesday (US Thu 24 Nov)
     month(18, "October", 5, 31, 10);
     month(160, "November", 1, 30, 24);
-    txt(g, 18, 186, "Canada", { "font-size": 14, fill: "#000" });
-    txt(g, 160, 186, "United States", { "font-size": 14, fill: "#000" });
+    txt(g, 18, 186, "Canada", { "font-size": 14, fill: C.ink });
+    txt(g, 160, 186, "United States", { "font-size": 14, fill: C.ink });
   })();
 
   if (!R) return;  // the remaining parts need the data file
@@ -142,15 +163,15 @@
         var lab = pct ? Math.round(v * 100) + " pp" : v.toFixed(2);
         txt(svg, L - 12, ys(v) + 5, lab.replace("-", "−"), { "text-anchor": "end", "font-size": 14 });
       }
-      el("rect", { x: L, y: ys(0) - 1, width: W - L - Rr, height: 2, fill: "#000" }, svg);
+      el("rect", { x: L, y: ys(0) - 1, width: W - L - Rr, height: 2, fill: C.ink }, svg);
       // Thanksgiving week band
       var bw = (W - L - Rr) / d.week.length;
-      el("rect", { x: xs(2) - bw / 2, y: T, width: bw, height: H - T - B, fill: "#a7ff9c" }, svg);
+      el("rect", { x: xs(2) - bw / 2, y: T, width: bw, height: H - T - B, fill: C.mint }, svg);
       txt(svg, xs(2), T - 10, "Thanksgiving week", { "text-anchor": "middle", "font-size": 14, "font-weight": 600 });
       d.week.forEach(function (w, i) {
         var b = d.b[i], se = d.se[i], x = xs(i);
-        if (se > 0) el("rect", { x: x - 2, y: ys(b + 1.96 * se), width: 4, height: Math.max(2, ys(b - 1.96 * se) - ys(b + 1.96 * se)), fill: "#000" }, svg);
-        var c = el("circle", { cx: x, cy: ys(b), r: i === 2 ? 9 : 7, fill: i === 2 ? "#ff6831" : "#000", stroke: "#000", "stroke-width": 2 }, svg);
+        if (se > 0) el("rect", { x: x - 2, y: ys(b + 1.96 * se), width: 4, height: Math.max(2, ys(b - 1.96 * se) - ys(b + 1.96 * se)), fill: C.ink }, svg);
+        var c = el("circle", { class: "mark", style: "--md:" + i * 60 + "ms", cx: x, cy: ys(b), r: i === 2 ? 9 : 7, fill: i === 2 ? C.orange : C.ink, stroke: C.ink, "stroke-width": 2 }, svg);
         var tl = el("title", {}, c);
         tl.textContent = "Week " + w + ": " + (pct ? (b * 100).toFixed(1) + " percentage points" : b.toFixed(3)) + (se > 0 ? " (95% range " + (pct ? ((b - 1.96 * se) * 100).toFixed(1) + " to " + ((b + 1.96 * se) * 100).toFixed(1) : (b - 1.96 * se).toFixed(3) + " to " + (b + 1.96 * se).toFixed(3)) + ")" : " (reference week)");
         var wl = w === -2 ? (small ? "−2+" : "−2 or earlier") : w === 3 ? (small ? "+3+" : "+3 or later") : (w > 0 ? "+" : w < 0 ? "−" : "") + Math.abs(w);
@@ -158,12 +179,16 @@
       });
       txt(svg, L + (W - L - Rr) / 2, H - 8, "Weeks relative to Thanksgiving", { "text-anchor": "middle", "font-size": 14 });
       caption.textContent = captions[state.measure];
+      var live = document.getElementById("chart-data");
+      if (live) live.textContent = state.sample + ", " + (pct ? "talking politics" : "pull of the family") + ": " + d.week.map(function (w, i) {
+        return "week " + w + " " + (pct ? (d.b[i] * 100).toFixed(1) + " percentage points" : d.b[i].toFixed(3));
+      }).join("; ") + ".";
     }
     function bindSeg(attr, key) {
       var btns = document.querySelectorAll("[data-" + attr + "]");
       Array.prototype.forEach.call(btns, function (b) {
         b.addEventListener("click", function () {
-          Array.prototype.forEach.call(btns, function (o) { o.setAttribute("aria-checked", String(o === b)); });
+          Array.prototype.forEach.call(btns, function (o) { o.setAttribute("aria-pressed", String(o === b)); });
           state[key] = b.getAttribute("data-" + attr);
           draw();
         });
@@ -180,10 +205,26 @@
     if (!own || !fam) return;
     var labels = ["Extremely left wing", "Left wing", "Somewhat left wing", "Neither left nor right", "Somewhat right wing", "Right wing", "Extremely right wing"];
     var b = R.main.b, V = R.main.vcov, sd = R.sample.index_sd;
+    var cells = document.querySelectorAll("#strip .cell");
+    var dist = {}; (R.family_distribution || []).forEach(function (x) { dist[x.v] = x.share; });
+    var maxShare = Math.max.apply(null, Object.keys(dist).map(function (k) { return dist[k]; }).concat([0.01]));
+    Array.prototype.forEach.call(cells, function (c) {
+      var sh = dist[c.getAttribute("data-v")] || 0;
+      c.style.setProperty("--h", Math.round(sh / maxShare * 100) + "%");
+      c.setAttribute("title", Math.round(sh * 100) + "% of families at " + c.getAttribute("data-v"));
+    });
+    function side(v, dark) { return v < 3 ? (dark ? C.blueDark : C.blue) : v > 3 ? (dark ? C.redDark : C.red) : ""; }
     function update() {
       var o = Number(own.value), f = Number(fam.value);
-      document.getElementById("own-out").textContent = labels[o];
-      document.getElementById("fam-out").textContent = labels[f];
+      var oo = document.getElementById("own-out"), fo = document.getElementById("fam-out");
+      oo.textContent = labels[o]; fo.textContent = labels[f];
+      oo.style.color = side(o, true); fo.style.color = side(f, true);
+      own.style.setProperty("--thumb", POL[o]); fam.style.setProperty("--thumb", POL[f]);
+      Array.prototype.forEach.call(cells, function (c) {
+        var v = Number(c.getAttribute("data-v"));
+        var pin = v === o && v === f ? "You + family" : v === o ? "You" : v === f ? "Family" : "";
+        if (pin) c.setAttribute("data-pin", pin); else c.removeAttribute("data-pin");
+      });
       own.setAttribute("aria-valuetext", o + ": " + labels[o]);
       fam.setAttribute("aria-valuetext", f + ": " + labels[f]);
       var g = [1, f, o];
@@ -191,7 +232,9 @@
       var v = 0;
       for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) v += g[i] * V[i][j] * g[j];
       var se = Math.sqrt(v), lo = est - 1.96 * se, hi = est + 1.96 * se;
-      document.getElementById("res-figure").textContent = fmt(est);
+      var rf = document.getElementById("res-figure");
+      rf.textContent = fmt(est);
+      rf.classList.toggle("to-right", est >= 0.005); rf.classList.toggle("to-left", est <= -0.005);
       var dir = Math.abs(est) < 0.005 ? "would hardly move" : "would move " + Math.abs(est).toFixed(2) + " points to the " + (est > 0 ? "right" : "left");
       var share = Math.round(Math.abs(est) / sd * 100);
       document.getElementById("res-text").textContent = "Your opinions " + dir + " in the Thanksgiving week" + (share >= 1 ? ", about " + share + "% of the typical spread of opinions." : ".");
@@ -226,7 +269,7 @@
     var ubtns = document.querySelectorAll("[data-unit]");
     Array.prototype.forEach.call(ubtns, function (b) {
       b.addEventListener("click", function () {
-        Array.prototype.forEach.call(ubtns, function (o) { o.setAttribute("aria-checked", String(o === b)); });
+        Array.prototype.forEach.call(ubtns, function (o) { o.setAttribute("aria-pressed", String(o === b)); });
         unit = b.getAttribute("data-unit"); draw();
       });
     });
@@ -257,12 +300,12 @@
       list.forEach(function (r) { var v = val(r); lo = Math.min(lo, v[0] - 1.96 * v[1]); hi = Math.max(hi, v[0] + 1.96 * v[1]); });
       var pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
       var xs = function (x) { return L + (x - lo) / (hi - lo) * (W - L - Rr); };
-      el("rect", { x: xs(0) - 1, y: T - 6, width: 2, height: rowH * list.length + 6, fill: "#000" }, svg);
+      el("rect", { x: xs(0) - 1, y: T - 6, width: 2, height: rowH * list.length + 6, fill: C.ink }, svg);
       list.forEach(function (r, i) {
         var v = val(r), y = T + rowH * i + rowH / 2;
         txt(svg, 0, y + 5, r.spec, { "font-size": 14, "font-weight": r.spec === "Baseline" ? 600 : 400 });
-        el("rect", { x: xs(v[0] - 1.96 * v[1]), y: y - 3, width: Math.max(2, xs(v[0] + 1.96 * v[1]) - xs(v[0] - 1.96 * v[1])), height: 6, fill: "#8a8a8a" }, svg);
-        var c = el("circle", { cx: xs(v[0]), cy: y, r: 8, fill: r.spec === "Placebo week" ? "#ffffff" : r.p_wild < 0.05 ? "#ff6831" : "#000", stroke: "#000", "stroke-width": 2 }, svg);
+        el("rect", { x: xs(v[0] - 1.96 * v[1]), y: y - 3, width: Math.max(2, xs(v[0] + 1.96 * v[1]) - xs(v[0] - 1.96 * v[1])), height: 6, fill: C.mid }, svg);
+        var c = el("circle", { class: "mark", style: "--md:" + i * 60 + "ms", cx: xs(v[0]), cy: y, r: 8, fill: r.spec === "Placebo week" ? C.bg : r.p_wild < 0.05 ? C.ink : C.mid, stroke: C.ink, "stroke-width": 2 }, svg);
         el("title", {}, c).textContent = r.spec + ": " + fmt(v[0], 3);
       });
       var ticks = unit === "sd" ? [-0.04, 0, 0.04, 0.08] : [-0.04, 0, 0.04, 0.08];
