@@ -601,7 +601,7 @@ p, li, dd { text-wrap: pretty; }
 .leopard { position: fixed; right: 24px; bottom: 0; z-index: 70; width: 220px; transform: translateY(105%); transition: transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; }
 .leopard.in { transform: translateY(18%); }
 .leopard img { width: 100%; height: auto; display: block; }
-.leopard p { position: absolute; right: 150px; top: 12px; width: 200px; background: #fff; color: #000; padding: 10px 12px; font-size: var(--step-small); font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,0.18); /* taste-skill-ignore: a speech bubble really floats */ }
+.leopard p { position: absolute; right: 150px; top: 12px; width: auto; white-space: nowrap; background: #fff; color: #000; padding: 8px 16px; font-size: 1.25rem; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,0.18); /* taste-skill-ignore: a speech bubble really floats */ }
 
 /* smooth page transitions between the pages of the site */
 @view-transition { navigation: auto; }
@@ -615,7 +615,7 @@ p, li, dd { text-wrap: pretty; }
   .method-body { padding-left: 0; }
   .score-line, .score-tips { grid-column: 1; }
   .leopard { width: 160px; right: 8px; }
-  .leopard p { right: 132px; top: -6px; width: 170px; }
+  .leopard p { right: 132px; top: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }

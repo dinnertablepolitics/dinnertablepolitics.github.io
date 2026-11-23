@@ -306,8 +306,8 @@
     function peek() {
       if (shown) return; shown = true;
       var box = document.createElement("div"); box.className = "leopard"; box.setAttribute("role", "status");
-      box.innerHTML = '<img src="assets/img/leopard.svg" width="400" height="530" alt="A drawn snow leopard with big eyes raises its paw.">' +
-        '<p>Psst. Snow leopards have no party. They just want the turkey.</p>';
+      box.innerHTML = '<img src="assets/img/leopard-drawing.webp" srcset="assets/img/leopard-drawing.webp 400w, assets/img/leopard-drawing-800.webp 800w" sizes="220px" width="400" height="531" alt="Pencil drawing of a snow leopard with big round eyes raising its paw.">' +
+        '<p>Hi</p>';
       document.body.appendChild(box);
       requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add("in"); }); });
       setTimeout(function () { box.classList.remove("in"); setTimeout(function () { box.remove(); shown = false; }, 900); }, 5200);
