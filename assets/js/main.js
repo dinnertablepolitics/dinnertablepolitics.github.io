@@ -616,9 +616,9 @@
         } else {
           var ta = f.querySelector("#q3");
           var words = ta.value.trim().split(/\s+/).filter(Boolean).length;
-          if (words < 15) {
+          if (words < 5) {
             ta.setAttribute("aria-invalid", "true");
-            fb.textContent = "Write a little more first (at least 15 words), then compare with the model answer.";
+            fb.textContent = "Write a little more first (at least 5 words), then compare with the model answer.";
             fb.classList.add("no"); ta.focus(); return;
           }
           ta.removeAttribute("aria-invalid");
