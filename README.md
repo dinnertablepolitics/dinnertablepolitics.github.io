@@ -19,7 +19,7 @@ Plain HTML, CSS and JavaScript. No build step, no libraries, no third-party requ
 | `assets/js/config.js` | public settings (analytics off by default); never put secrets here |
 | `assets/data/results.json` / `results.js` | all numbers, exported by `replication/code/06_website_data.R` |
 | `assets/img/` | compressed WebP pictures, favicons, social preview |
-| `assets/fonts/` | Jost (SIL Open Font License), self-hosted |
+| `assets/fonts/` | Bricolage Grotesque (SIL Open Font License), self-hosted |
 | `robots.txt`, `sitemap.xml`, `.nojekyll` | for search engines and GitHub Pages |
 | `tools/` | helper scripts (not needed by visitors): local server, link check, URL setter |
 
@@ -86,5 +86,5 @@ Pictures: Marjory Collins, “Thanksgiving grace” and “Thanksgiving dinner a
 Landis”, 1942, Library of Congress (public domain); Winslow Homer, “Thanksgiving Day – The Dinner”,
 1858, Cleveland Museum of Art (CC0); J. S. Pughe, “Our international Thanksgiving dinner”, Puck,
 1901, and J. Keppler, “Thanksgiving”, Puck, 1883, Library of Congress (public domain). Source pages
-are listed in `assets/img/credits.json`. Typeface: Jost, SIL Open Font License 1.1.
+are listed in `assets/img/credits.json`. Typeface: Bricolage Grotesque, SIL Open Font License 1.1.
 Data: Cornelson (2025), replication package, Zenodo, doi:10.5281/zenodo.16962525, CC BY 4.0.
