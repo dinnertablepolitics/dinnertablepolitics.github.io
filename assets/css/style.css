@@ -88,7 +88,11 @@ input, textarea { caret-color: var(--orange); }
   display: grid; grid-template-columns: var(--axis) 1fr auto; align-items: center;
   padding: 28px var(--m); gap: 16px; position: relative; z-index: 5;
 }
-.wordmark { font-weight: 600; font-size: var(--step-body); letter-spacing: -0.02em; text-decoration: none; }
+.wordmark { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); justify-self: start; }
+.logo-mark { width: 42px; height: 42px; flex: none; transition: transform 700ms var(--ease-out); }
+.lm-l { fill: var(--blue); } .lm-r { fill: var(--red); } .lm-plate { fill: var(--bg); } .lm-dot { fill: var(--orange); }
+.logo-text { display: flex; flex-direction: column; font-weight: 600; font-size: 1.125rem; line-height: 0.95; letter-spacing: -0.03em; }
+.logo-text span + span { color: var(--muted); font-weight: 500; }
 .top-links { display: flex; gap: 28px; }
 .top-links a { text-decoration: none; padding: 12px 0; }
 .menu-toggle { display: none; }
@@ -146,9 +150,9 @@ input, textarea { caret-color: var(--orange); }
 
 /* ---------- how: many into one ---------- */
 .how { padding: var(--section) var(--m) 0; }
-.how-head { display: grid; grid-template-columns: var(--axis) minmax(0, 40ch); gap: 0; align-items: start; }
-.how-head h2 { font-size: var(--step-head); }
-.how-head p { padding-top: 6px; }
+.how-head { display: grid; grid-template-columns: var(--axis) minmax(0, 44ch); gap: 0; align-items: end; }
+.how-head h2 { font-size: var(--step-head); padding-right: clamp(32px, 4vw, 72px); max-width: 11ch; }
+.how-head p { padding-bottom: 0.35em; }
 .how-figure { margin-top: 56px; }
 #how-svg { width: 100%; height: auto; }
 .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 28px; }
@@ -441,6 +445,7 @@ p, li, dd { text-wrap: pretty; }
 
 /* hover only where a real pointer can hover, so taps on phones leave no sticky state */
 @media (hover: hover) {
+  .wordmark:hover .logo-mark { transform: rotate(180deg); }
   a:hover { text-decoration-color: var(--orange); }
   .btn:hover { background: var(--mint-hover); }
   .btn-ghost:hover { background: rgba(255, 255, 255, 0.12); }
