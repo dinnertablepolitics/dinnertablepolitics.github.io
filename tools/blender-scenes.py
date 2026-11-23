@@ -270,6 +270,10 @@ if eng == "EEVEE":
     except Exception as ex: print("eevee settings:", ex)
 else:
     scene.render.engine = "CYCLES"; scene.cycles.samples = SAMPLES; scene.cycles.use_denoising = True
+    scene.cycles.use_adaptive_sampling = True; scene.cycles.adaptive_threshold = 0.005
+    try: scene.cycles.denoiser = "OPENIMAGEDENOISE"; scene.cycles.denoising_input_passes = "RGB_ALBEDO_NORMAL"
+    except Exception: pass
+    scene.render.filter_size = 1.2
     try:
         p = bpy.context.preferences.addons["cycles"].preferences; p.compute_device_type = "METAL"; p.get_devices()
         for d in p.devices: d.use = True

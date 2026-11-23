@@ -24,7 +24,7 @@
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/seq/hero-01.webp" as="image" fetchpriority="high">
+  <link rel="preload" as="image" fetchpriority="high" imagesrcset="assets/seq/hero-01.webp 1280w, assets/seq/hd/hero-01.webp 1920w" imagesizes="100vw">
   <link rel="stylesheet" href="assets/css/style.css">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "WebPage", "name": "Dinner Table Politics: does Thanksgiving change your views?",
@@ -40,7 +40,7 @@
   <script src="assets/data/results.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
-<body>
+<body id="top">
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
@@ -69,8 +69,8 @@
 <!-- ============ HERO: masthead band, title on the axis ============ -->
 <section class="hero" aria-labelledby="title">
   <figure class="masthead">
-    <img class="hero-poster" src="assets/seq/hero-01.webp" width="1280" height="720" alt="" fetchpriority="high">
-    <canvas class="hero-canvas" id="hero-canvas" width="1280" height="720" role="img" aria-label="3D scene: a round Thanksgiving table where six figures, coloured from dark blue (left) to dark red (right), sit around a turkey. As you scroll, the camera circles the table and moves in."></canvas>
+    <img class="hero-poster" src="assets/seq/hero-01.webp" srcset="assets/seq/hero-01.webp 1280w, assets/seq/hd/hero-01.webp 1920w" sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high">
+    <canvas class="hero-canvas" id="hero-canvas" width="1920" height="1080" role="img" aria-label="3D scene: a round Thanksgiving table where six figures, coloured from dark blue (left) to dark red (right), sit around a turkey. As you scroll, the camera circles the table and moves in."></canvas>
   </figure>
   <div class="hero-body">
     <h1 id="title" class="mask-title"><span class="line"><span>Family dinner</span></span><span class="line"><span>moves opinions</span></span></h1>
@@ -87,7 +87,7 @@
     <div class="tile tile-a"><h2 id="summary-title">The short version</h2></div>
     <div class="tile tile-b" aria-hidden="true"><span class="big-figure">+0.05</span></div>
     <figure class="tile tile-c">
-      <img src="assets/img/3d-turkey-800.webp" width="800" height="800" loading="lazy" decoding="async" alt="3D close-up of the table: a roast turkey on a white plate, side dishes in orange and mint, a red and a blue figure at the edge.">
+      <img src="assets/img/3d-turkey-800.webp" srcset="assets/img/3d-turkey-800.webp 800w, assets/img/3d-turkey-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 50vw" width="800" height="800" loading="lazy" decoding="async" alt="3D close-up of the table: a roast turkey on a white plate, side dishes in orange and mint, a red and a blue figure at the edge.">
     </figure>
     <div class="tile tile-text">
       <p class="summary-text"><strong>The question.</strong> Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?
@@ -170,7 +170,7 @@
     <div class="cut ctile ctile-fact"><p>No survey in 2020: Covid kept families apart</p></div><div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut ctile ctile-action"><a href="#try">Seat your family</a></div>
   </div>
   <figure class="show-photo">
-    <img src="assets/img/3d-topdown-800.webp" width="800" height="533" loading="lazy" decoding="async" alt="The Thanksgiving table seen from straight above, six figures from blue to red seated around the turkey.">
+    <img src="assets/img/3d-topdown-800.webp" srcset="assets/img/3d-topdown-800.webp 800w, assets/img/3d-topdown-1200.webp 1200w, assets/img/3d-topdown-2400.webp 2400w" sizes="100vw" width="800" height="533" loading="lazy" decoding="async" alt="The Thanksgiving table seen from straight above, six figures from blue to red seated around the turkey.">
   </figure>
   <p class="credit-line">The table from above: everyone gets a seat, whatever their politics.</p>
 </section>
@@ -183,9 +183,9 @@
       <p>Place yourself and your family on the survey's own scale, from 0 (extremely left wing) to 6 (extremely right wing). We compute how far your opinions would move in the Thanksgiving week, from our replication of the study.<a class="fn" href="#n4" id="r4" aria-label="Note 4">4</a></p>
       <figure class="seat-stage" id="seat-stage">
         <div class="stage-box" aria-hidden="true">
-          <img class="st-bg" src="assets/img/calc/stage.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
-          <img class="st-fam" id="st-fam" src="assets/img/calc/family-5.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
-          <img class="st-you" id="st-you" src="assets/img/calc/you-2.webp" width="1200" height="750" alt="" loading="lazy" decoding="async">
+          <img class="st-bg" src="assets/img/calc/stage.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+          <img class="st-fam" id="st-fam" src="assets/img/calc/family-5.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+          <img class="st-you" id="st-you" src="assets/img/calc/you-2.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async">
         </div>
         <figcaption id="stage-desc">You and your family at the table. Move the sliders: the figures take your colours, and you shift towards your family by the estimated amount (drawn 40 times larger so you can see it).</figcaption>
       </figure>
@@ -254,7 +254,7 @@
     <h2 id="quiz-title">Test yourself</h2>
     <p>Three exam-style questions, from easy to hard. Nothing you type leaves this page.</p>
     <figure class="quiz-pic">
-      <img src="assets/img/3d-question-800.webp" width="800" height="500" loading="lazy" decoding="async" alt="3D scene: a grey figure between a blue and a red figure, with a big orange question mark above its head.">
+      <img src="assets/img/3d-question-800.webp" srcset="assets/img/3d-question-800.webp 800w, assets/img/3d-question-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 50vw" width="800" height="500" loading="lazy" decoding="async" alt="3D scene: a grey figure between a blue and a red figure, with a big orange question mark above its head.">
       <figcaption>Stuck between both sides? Test what you learned.</figcaption>
     </figure>
   </div>
@@ -319,7 +319,7 @@
   <p class="lead">We are students in Empirical Methods at the University of Zurich. We rebuilt the paper's analysis in R from the author's raw survey data, then tested how far the result bends.</p>
   <div class="about-tiles">
     <figure class="about-photo">
-      <img src="assets/img/3d-magnifier-1200.webp" width="1200" height="750" loading="lazy" decoding="async" alt="3D scene: a magnifying glass hovers over the Thanksgiving table while blue and red figures look on.">
+      <img src="assets/img/3d-magnifier-1200.webp" srcset="assets/img/3d-magnifier-1200.webp 1200w, assets/img/3d-magnifier-2400.webp 2400w" sizes="(max-width: 760px) 100vw, 60vw" width="1200" height="750" loading="lazy" decoding="async" alt="3D scene: a magnifying glass hovers over the Thanksgiving table while blue and red figures look on.">
       <p class="overlay">Same sample, same model: our main estimate is 0.050, the paper's 0.048. The small gap comes from how ties are broken in the opinion score.</p>
     </figure>
     <div class="about-colour">
@@ -386,8 +386,8 @@
     </div>
   </div>
   <div class="foot-legal">
-    <p>Student project, Empirical Methods, University of Zurich, autumn 2026. Not affiliated with the author or the journal.</p>
-    <a href="#title">Back to top</a>
+    <p>Made by Julian Hasler, Lilly Schiemann and Yuhan Ye. Student project, Empirical Methods, University of Zurich, autumn 2026. Not affiliated with the author or the journal.</p>
+    <a href="#top" class="to-top">Back to top</a>
   </div>
 </footer>
 

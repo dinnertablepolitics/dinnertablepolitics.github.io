@@ -238,7 +238,9 @@
     var cv = document.getElementById("hero-canvas"), hero = document.querySelector(".hero");
     if (!cv || !cv.getContext) return;
     var N = 72, frames = new Array(N), ctx = cv.getContext("2d"), current = -1, want = 0;
-    function src(i) { return "assets/seq/hero-" + String(i + 1).padStart(2, "0") + ".webp"; }
+    var hd = (cv.clientWidth || window.innerWidth) * (window.devicePixelRatio || 1) > 1400;   // big or retina screens get the 1920 px frames
+    if (!hd) { cv.width = 1280; cv.height = 720; }
+    function src(i) { return "assets/seq/" + (hd ? "hd/" : "") + "hero-" + String(i + 1).padStart(2, "0") + ".webp"; }
     function draw(i) {
       var j = i; while (j > 0 && !(frames[j] && frames[j].complete && frames[j].naturalWidth)) j--;   // nearest loaded frame below
       var im = frames[j]; if (!im || !im.complete || !im.naturalWidth || j === current) return;
@@ -277,6 +279,17 @@
     if (document.querySelector("footer")) o.observe(document.querySelector("footer"));
   })();
 
+  /* ---------------- back to top: all the way to the very top of the page ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll("a.to-top"), function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      var h = document.getElementById("title");
+      if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    });
+  });
+
   /* ---------------- copy buttons for the citations ---------------- */
   Array.prototype.forEach.call(document.querySelectorAll("button.copy"), function (b) {
     b.addEventListener("click", function () {
@@ -293,7 +306,7 @@
     function peek() {
       if (shown) return; shown = true;
       var box = document.createElement("div"); box.className = "leopard"; box.setAttribute("role", "status");
-      box.innerHTML = '<img src="assets/img/leopard.webp" width="400" height="500" alt="A 3D snow leopard with big eyes raises its paw.">' +
+      box.innerHTML = '<img src="assets/img/leopard.svg" width="400" height="530" alt="A drawn snow leopard with big eyes raises its paw.">' +
         '<p>Psst. Snow leopards have no party. They just want the turkey.</p>';
       document.body.appendChild(box);
       requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add("in"); }); });
