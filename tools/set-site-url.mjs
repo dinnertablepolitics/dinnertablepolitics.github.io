@@ -8,8 +8,8 @@ if (!site || !/^https:\/\/.+\/$/.test(site)) {
   console.error("Give the site address with https:// and a trailing slash, e.g. https://team.github.io/dinner-table-politics/");
   process.exit(1);
 }
-const OLD_SITE = "https://example.github.io/dinner-table-politics/";
-const OLD_REPO = "https://github.com/example/dinner-table-politics";
+const OLD_SITE = process.env.OLD_SITE || "https://dinnertablepolitics.github.io/site/";
+const OLD_REPO = process.env.OLD_REPO || "https://github.com/dinnertablepolitics/site";
 const basePath = new URL(site).pathname;
 for (const f of ["index.html", "privacy.html", "terms.html", "404.html", "sitemap.xml", "robots.txt"]) {
   let t = readFileSync(f, "utf8");
