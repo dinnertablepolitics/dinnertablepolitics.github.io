@@ -158,7 +158,7 @@ if MODE in ("hero", "still_hero", "social"):
 elif MODE == "topdown":
     table_scene(); camera((0, -0.01, 10.2), (0, 0, 1.2), 36)
 elif MODE == "turkey":
-    table_scene(); camera((3.2, -3.4, 3.6), (0, 0, 1.75), 52)
+    table_scene(); camera((1.6, -5.6, 6.6), (0, 0.3, 1.25), 40)
 elif MODE == "track":
     anim = True
     for v in range(7):
@@ -181,7 +181,7 @@ elif MODE == "question":
     smooth(add("cylinder", (0.0, 0, 3.9), radius=0.17, depth=0.5, material=M["orange"]))
     smooth(add("uv_sphere", (0, 0, 3.35), (0.2, 0.2, 0.2), material=M["orange"]))
     figure(-2.2, 0.6, 1, (0, 0), scale=1.0); figure(2.2, 0.6, 5, (0, 0), scale=1.0)
-    camera((0, -10.5, 3.9), (0, 0, 2.4), 40)
+    camera((0, -11.5, 3.9), (0, 0, 2.55), 31)
 elif MODE == "magnifier":
     table_scene(chairs=False, seats=[(120, 1), (200, 5), (300, 2), (20, 6)])
     g = bpy.data.objects.new("glass", None); scene.collection.objects.link(g); g.location = (0.4, -0.6, 3.6); g.rotation_euler = (math.radians(62), 0, math.radians(20))
