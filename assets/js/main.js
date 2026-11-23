@@ -128,10 +128,15 @@
     // footer name: letters rise one after another
     var fname = document.querySelector(".foot-name");
     if (fname) {
-      var txtc = fname.textContent; fname.textContent = "";
-      txtc.split("").forEach(function (ch, i) {
-        var sp = document.createElement("span"); sp.className = "ltr"; sp.textContent = ch === " " ? "\u00a0" : ch;
-        sp.style.setProperty("--d", i * 28 + "ms"); fname.appendChild(sp);
+      var txtc = fname.textContent, k = 0; fname.textContent = "";
+      txtc.split(" ").forEach(function (word, w) {        // letters stay inside their word, so lines only break between words
+        var wspan = document.createElement("span"); wspan.className = "word";
+        word.split("").forEach(function (ch) {
+          var sp = document.createElement("span"); sp.className = "ltr"; sp.textContent = ch;
+          sp.style.setProperty("--d", k++ * 28 + "ms"); wspan.appendChild(sp);
+        });
+        fname.appendChild(wspan);
+        if (w < txtc.split(" ").length - 1) fname.appendChild(document.createTextNode(" "));
       });
       onView(fname, function () { fname.classList.add("in"); }, "0px 0px -5% 0px");
     }
