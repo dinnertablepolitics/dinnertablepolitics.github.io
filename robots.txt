@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dinnertablepolitics.github.io/sitemap.xml

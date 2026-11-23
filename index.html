@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Dinner Table Politics: does Thanksgiving change your views?</title>
+  <meta name="description" content="A plain-language replication of Cornelson (2026): in the week of Thanksgiving, Americans and Canadians shift their political opinions towards their family's side. Try it with your own family.">
+  <link rel="canonical" href="https://dinnertablepolitics.github.io/">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dinner Table Politics: does Thanksgiving change your views?">
+  <meta property="og:description" content="In the week of Thanksgiving, opinions move towards the family's side. A student replication of Cornelson (2026) with an interactive calculator.">
+  <meta property="og:url" content="https://dinnertablepolitics.github.io/">
+  <meta property="og:image" content="https://dinnertablepolitics.github.io/assets/img/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dinner Table Politics: a 1942 photograph of a family saying grace at Thanksgiving, next to the site title.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/data/results.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="wordmark" href="./">Dinner Table Politics</a>
+  <nav class="top-links" id="top-links" aria-label="Sections">
+    <a href="#how">How we know</a>
+    <a href="#sure">How sure</a>
+    <a href="#quiz">Test yourself</a>
+  </nav>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="top-links">Menu</button>
+  <a class="btn btn-small top-action" href="#try">Seat your family</a>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO: masthead band, title on the axis ============ -->
+<section class="hero" aria-labelledby="title">
+  <figure class="masthead">
+    <picture>
+      <source srcset="assets/img/grace-1942-800.webp 800w, assets/img/grace-1942-1600.webp 1600w" sizes="100vw" type="image/webp">
+      <img src="assets/img/grace-1942-1600.webp" width="1600" height="1207" alt="Black-and-white photograph from 1942: a family of nine around a long table bows their heads in grace before a Thanksgiving dinner." fetchpriority="high">
+    </picture>
+  </figure>
+  <div class="hero-body">
+    <h1 id="title" class="mask-title"><span class="line"><span>Family dinner</span></span><span class="line"><span>moves opinions</span></span></h1>
+    <div class="hero-side">
+      <p class="standfirst">In the week of Thanksgiving, Americans and Canadians shift their political views towards the side their family is on. We re-ran the study to check.</p>
+      <a class="btn" href="#try">Seat your family</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMARY: statement tiles ============ -->
+<section class="summary" aria-labelledby="summary-title">
+  <div class="tiles">
+    <div class="tile tile-a"><h2 id="summary-title">The short version</h2></div>
+    <div class="tile tile-b" aria-hidden="true"><span class="big-figure">+0.05</span></div>
+    <figure class="tile tile-c">
+      <picture>
+        <source srcset="assets/img/landis-1942-800.webp" type="image/webp">
+        <img src="assets/img/landis-1942-800.webp" width="800" height="582" loading="lazy" decoding="async" alt="Black-and-white photograph from 1942: the host carves the turkey while relatives pass dishes across a crowded table.">
+      </picture>
+    </figure>
+    <div class="tile tile-text">
+      <p class="summary-text"><strong>The question.</strong> Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?
+      <strong>The study.</strong> Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.
+      <strong>The answer.</strong> In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right. Nobody became more extreme overall.
+      <strong>Our check.</strong> We rebuilt the analysis from the raw data and got the same picture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW WE KNOW: many into one ============ -->
+<section class="how" id="how" aria-labelledby="how-title">
+  <div class="how-head">
+    <h2 id="how-title">Two holidays, one test</h2>
+    <p>Canada celebrates on the second Monday of October, the US on the fourth Thursday of November. So in any given week, one country has just had dinner with the family and the other has not. That gap is the experiment.</p>
+  </div>
+  <figure class="how-figure">
+    <svg id="how-svg" viewBox="0 0 900 200" role="img" aria-labelledby="how-svg-title">
+      <title id="how-svg-title">Diagram: many scattered weekly answers on the left are narrowed down to the few answers given in a Thanksgiving week in the middle, and arranged into an orderly comparison on the right.</title>
+    </svg>
+  </figure>
+  <div class="how-steps">
+    <div><h3>Ask</h3><p>2,006 people answered a short survey every week for six weeks: 10,092 answers in all.</p></div>
+    <div><h3>Narrow</h3><p>606 of those answers were given in the week right after their own country's Thanksgiving.</p></div>
+    <div><h3>Compare</h3><p>Each person is compared with their own other weeks, and with the other country in the same week.</p></div>
+  </div>
+</section>
+
+<!-- ============ CHART: full-bleed colour page ============ -->
+<section class="field field-mint chart-section" id="table-talk" aria-labelledby="talk-title">
+  <div class="chart-head">
+    <h2 id="talk-title">More politics at the table</h2>
+    <p id="chart-caption">In the Thanksgiving week, people are about 5 percentage points more likely to talk politics with parents, siblings or grown-up children than the week before.</p>
+    <div class="toggles" role="group" aria-label="Choose what the chart shows">
+      <div class="seg" role="radiogroup" aria-label="Measure">
+        <button type="button" role="radio" aria-checked="true" data-measure="discussion">Talking politics</button>
+        <button type="button" role="radio" aria-checked="false" data-measure="opinion">Pull of the family</button>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Country">
+        <button type="button" role="radio" aria-checked="true" data-sample="Combined">Both</button>
+        <button type="button" role="radio" aria-checked="false" data-sample="US">US</button>
+        <button type="button" role="radio" aria-checked="false" data-sample="Canada">Canada</button>
+      </div>
+    </div>
+  </div>
+  <figure class="chart-figure">
+    <svg id="event-chart" viewBox="0 0 720 380" role="img" aria-labelledby="event-chart-title event-chart-desc">
+      <title id="event-chart-title">Change by week around Thanksgiving</title>
+      <desc id="event-chart-desc">Dots show the change compared with the week before Thanksgiving; bars show the 95% range.</desc>
+    </svg>
+    <figcaption>Change compared with the week before Thanksgiving (week −1). Dots are estimates, bars the 95% range. Week 0 is the Thanksgiving week.</figcaption>
+    <noscript><p>The interactive chart needs JavaScript. In short: political talk with close family rises by about 5 percentage points in the Thanksgiving week and falls back afterwards.</p></noscript>
+  </figure>
+</section>
+
+<!-- ============ SHOWCASE: one image across tiles ============ -->
+<section class="showcase" aria-labelledby="show-title">
+  <p class="sr-only">Picture: a cartoon from 1901, cut into tiles. Uncle Sam raises a toast at a dinner table where European monarchs sit around a turkey labelled “commercial supremacy”.</p>
+  <div class="cut-board">
+    <!-- 24 tiles in a 6 x 4 grid; each shows its piece of the same picture (see style.css) -->
+    <div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut"></div>
+    <div class="cut ctile ctile-head"><h2 id="show-title">Always on the menu</h2></div>
+    <div class="cut"></div>
+    <div class="cut"></div><div class="cut ctile ctile-fact"><p>Canada: second Monday of October</p></div><div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut"></div>
+    <div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut ctile ctile-fact"><p>US: fourth Thursday of November</p></div><div class="cut"></div><div class="cut"></div>
+    <div class="cut ctile ctile-fact"><p>No survey in 2020: Covid kept families apart</p></div><div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut"></div><div class="cut ctile ctile-action"><a href="#try">Seat your family</a></div>
+  </div>
+  <figure class="show-photo">
+    <img src="assets/img/pughe-1901-800.webp" width="800" height="474" loading="lazy" decoding="async" alt="Colour cartoon from 1901, shown in black and white: Uncle Sam raises a toast at a dinner table where European monarchs sit around a turkey labelled commercial supremacy.">
+  </figure>
+  <p class="credit-line">“Our international Thanksgiving dinner”, J. S. Pughe, Puck, 1901. Library of Congress, public domain.</p>
+</section>
+
+<!-- ============ LIVE THING: seat your family ============ -->
+<section class="field field-black try" id="try" aria-labelledby="try-title">
+  <div class="try-grid">
+    <div class="try-head">
+      <h2 id="try-title">Seat your family</h2>
+      <p>Place yourself and your family on the survey's own scale, from 0 (extremely left wing) to 6 (extremely right wing). We compute how far your opinions would move in the Thanksgiving week, from our replication of the study.</p>
+    </div>
+    <form class="calc" id="calc" novalidate>
+      <div class="result" aria-live="polite">
+        <p class="result-figure" id="res-figure">+0.11</p>
+        <p class="result-text" id="res-text">Your opinions would move 0.11 points to the right in the Thanksgiving week.</p>
+        <p class="result-range" id="res-range">95% range: +0.01 to +0.22</p>
+      </div>
+      <div class="scale-row">
+        <label for="own">Where are you?</label>
+        <input type="range" id="own" name="own" min="0" max="6" step="1" value="2" aria-describedby="own-out">
+        <output id="own-out" for="own">Somewhat left wing</output>
+      </div>
+      <div class="scale-row">
+        <label for="fam">Where is your family?</label>
+        <input type="range" id="fam" name="fam" min="0" max="6" step="1" value="5" aria-describedby="fam-out">
+        <output id="fam-out" for="fam">Right wing</output>
+      </div>
+      <noscript><p>The calculator needs JavaScript. Rule of thumb: for every point your family stands to your right, expect your opinion score to move about 0.05 points right in the Thanksgiving week.</p></noscript>
+    </form>
+  </div>
+</section>
+
+<!-- ============ HOW SURE: interactive table ============ -->
+<section class="field field-grey sure" id="sure" aria-labelledby="sure-title">
+  <div class="sure-grid">
+    <div class="sure-head">
+      <h2 id="sure-title">How sure are we?</h2>
+      <p>We changed one thing at a time and re-estimated the family effect. Pick the checks to compare, and the unit to read them in.</p>
+      <fieldset class="checks" id="checks">
+        <legend>Checks shown</legend>
+      </fieldset>
+      <div class="seg seg-dark" role="radiogroup" aria-label="Unit">
+        <button type="button" role="radio" aria-checked="true" data-unit="sd">Share of spread</button>
+        <button type="button" role="radio" aria-checked="false" data-unit="raw">Score points</button>
+      </div>
+    </div>
+    <div class="sure-body">
+      <svg id="forest" viewBox="0 0 640 300" role="img" aria-labelledby="forest-title"><title id="forest-title">Family effect under each check, with 95% ranges</title></svg>
+      <div class="table-wrap">
+        <table id="rob-table">
+          <caption>Family effect per point the family stands further right, in the Thanksgiving week</caption>
+          <thead><tr><th scope="col">Check</th><th scope="col">Effect</th><th scope="col">95% range</th><th scope="col">Reliable?</th><th scope="col">Answers</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note">“Reliable?” uses a wild cluster bootstrap: yes means p &lt; 0.05, borderline p &lt; 0.10. “Share of spread” divides the effect by the standard deviation of opinions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ: large questions, answers beside ============ -->
+<!-- DRAFT: questions, answers and all page copy are drafts. Rewrite them in your own words before submitting. -->
+<section class="quiz" id="quiz" aria-labelledby="quiz-title">
+  <div class="qa-row qa-head">
+    <h2 id="quiz-title">Test yourself</h2>
+    <p>Three exam-style questions, from easy to hard. Nothing you type leaves this page.</p>
+    <figure class="quiz-pic">
+      <picture>
+        <source srcset="assets/img/keppler-1883-800.webp" type="image/webp">
+        <img src="assets/img/keppler-1883-800.webp" width="800" height="449" loading="lazy" decoding="async" alt="Cartoon from 1883, shown in black and white: Uncle Sam sits down to Thanksgiving dinner with Columbia while framed scenes of world events hang on the wall behind them.">
+      </picture>
+      <figcaption>“Thanksgiving”, J. Keppler, Puck, 1883. Library of Congress, public domain.</figcaption>
+    </figure>
+  </div>
+
+  <div class="qa-row">
+    <div class="q-side">
+      <h3 class="q">Why does the study need Canadians?</h3>
+      <p class="level">Easy: about the comparison group.</p>
+    </div>
+    <form class="a" data-quiz="1" novalidate>
+      <fieldset>
+        <legend class="sr-only">Pick one answer</legend>
+        <label><input type="radio" name="q1" value="a"> To get a bigger sample</label>
+        <label><input type="radio" name="q1" value="b"> Canadians are less polarised, so they are a cleaner group</label>
+        <label><input type="radio" name="q1" value="c"> Their Thanksgiving falls in a different week, so they show what that week looks like without the holiday</label>
+        <label><input type="radio" name="q1" value="d"> To compare the two health systems</label>
+      </fieldset>
+      <button class="btn btn-small" type="submit">Check</button>
+      <p class="feedback" role="status"></p>
+      <div class="model" hidden><p>Week fixed effects remove everything that hits all respondents in a calendar week. Because the two holidays are six weeks apart, the other country serves as the comparison group for the same week, much like a difference-in-differences design.</p></div>
+    </form>
+  </div>
+
+  <div class="qa-row">
+    <div class="q-side">
+      <h3 class="q">You at 3, family at 6: how far do you move?</h3>
+      <p class="level">Medium: reading interaction terms.</p>
+    </div>
+    <form class="a" data-quiz="2" novalidate>
+      <p>In the Thanksgiving week, how many points does the opinion score of someone at 3 on the scale move if their family is at 6? Use the estimates −0.131 (Thanksgiving), 0.050 (× family) and −0.003 (× own position).</p>
+      <label for="q2">Your answer, in score points</label>
+      <input id="q2" name="q2" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 0.12" aria-describedby="q2-hint">
+      <p class="hint" id="q2-hint">A number between −6 and 6, two decimals.</p>
+      <button class="btn btn-small" type="submit">Check</button>
+      <p class="feedback" role="status"></p>
+      <div class="model" hidden><p>−0.131 + 0.050 × 6 − 0.003 × 3 = <strong>+0.16</strong>. The −0.131 alone is the effect for someone at 0 whose family is also at 0, not an average.</p></div>
+    </form>
+  </div>
+
+  <div class="qa-row">
+    <div class="q-side">
+      <h3 class="q">What could still bias the family effect?</h3>
+      <p class="level">Hard: omitted variable bias.</p>
+    </div>
+    <form class="a" data-quiz="3" novalidate>
+      <label for="q3">Name one omitted variable and the direction of the bias it causes (at least 15 words).</label>
+      <textarea id="q3" name="q3" rows="4" maxlength="1200"></textarea>
+      <button class="btn btn-small" type="submit">Show a model answer</button>
+      <p class="feedback" role="status"></p>
+      <div class="model" hidden><p>Week fixed effects only absorb shocks that hit both countries. Canada's 2019 federal election came one week after Canadian Thanksgiving. If the campaign pushed people with right-leaning families further right, the omitted variable raises opinions (γ &gt; 0) and is positively related to Thanksgiving × family (δ &gt; 0), so the bias γ·δ is upward, away from zero. Dropping 2019 leaves the estimate at 0.051 but makes it much less precise.</p></div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ ABOUT: wide photo, colour tile, facts ============ -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <h2 id="about-title">About this replication</h2>
+  <p class="lead">We are students in Empirical Methods at the University of Zurich. We rebuilt the paper's analysis in R from the author's raw survey data, then tested how far the result bends.</p>
+  <div class="about-tiles">
+    <figure class="about-photo">
+      <picture>
+        <source srcset="assets/img/homer-1858-800.webp 800w, assets/img/homer-1858-1200.webp 1200w" sizes="(min-width: 900px) 66vw, 100vw" type="image/webp">
+        <img src="assets/img/homer-1858-1200.webp" width="1200" height="862" loading="lazy" decoding="async" alt="Wood engraving from 1858: a large family and guests crowd around two tables while the host carves the Thanksgiving turkey.">
+      </picture>
+      <p class="overlay">Same sample, same model: our main estimate is 0.050, the paper's 0.048. The small gap comes from how ties are broken in the opinion score.</p>
+    </figure>
+    <div class="about-colour">
+      <svg viewBox="0 0 300 200" role="img" aria-labelledby="cal-title">
+        <title id="cal-title">Two calendar pages: October with the second Monday marked for Canada, November with the fourth Thursday marked for the US.</title>
+        <g id="cal"></g>
+      </svg>
+      <dl class="facts">
+        <div><dt>Paper</dt><dd>Cornelson, Economic Journal, 2026</dd></div>
+        <div><dt>Data</dt><dd>10,092 answers, 2,006 people</dd></div>
+        <div><dt>Years</dt><dd>2019, 2021, 2022</dd></div>
+        <div><dt>Method</dt><dd>Panel regression with fixed effects</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER: name first ============ -->
+<footer class="field field-black foot">
+  <p class="foot-name" aria-hidden="true">Dinner Table Politics</p>
+  <div class="foot-row">
+    <ul class="places">
+      <li><a href="https://doi.org/10.1093/ej/ueaf085" rel="noopener">Read the paper</a></li>
+      <li><a href="https://doi.org/10.5281/zenodo.16962525" rel="noopener">Original data</a></li>
+      <li><a href="https://github.com/dinnertablepolitics/dinnertablepolitics.github.io" rel="noopener">Our code</a></li>
+    </ul>
+    <div class="foot-links">
+      <ul>
+        <li><a href="#how">How we know</a></li>
+        <li><a href="#try">Seat your family</a></li>
+        <li><a href="#sure">How sure</a></li>
+        <li><a href="#quiz">Test yourself</a></li>
+      </ul>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms of use</a></li>
+        <li><button type="button" class="linklike" id="consent-reopen" hidden>Analytics settings</button></li>
+      </ul>
+      <p class="credits">Pictures: Marjory Collins, 1942 (Library of Congress, public domain); Winslow Homer, 1858 (Cleveland Museum of Art, CC0); J. S. Pughe, 1901, and J. Keppler, 1883 (Library of Congress, public domain).</p>
+    </div>
+  </div>
+  <div class="foot-legal">
+    <p>Student project, Empirical Methods, University of Zurich, autumn 2026. Not affiliated with the author or the journal.</p>
+    <a href="#title">Back to top</a>
+  </div>
+</footer>
+
+<div class="consent" id="consent" role="dialog" aria-labelledby="consent-title" hidden>
+  <p id="consent-title"><strong>Count this visit?</strong> We would like to count visits with a privacy-friendly tool that sets no cookies and stores no personal data.</p>
+  <div class="consent-actions">
+    <button type="button" class="btn btn-small" data-consent="yes">Allow counting</button>
+    <button type="button" class="btn btn-small btn-ghost" data-consent="no">No thanks</button>
+  </div>
+</div>
+</body>
+</html>
