@@ -30,7 +30,7 @@
   {"@context": "https://schema.org", "@type": "WebPage", "name": "Dinner Table Politics: does Thanksgiving change your views?",
    "url": "https://dinnertablepolitics.github.io/", "inLanguage": "en",
    "description": "A plain-language replication of Cornelson (2026): in the week of Thanksgiving, Americans and Canadians shift their political opinions towards their family's side.",
-   "author": {"@type": "Organization", "name": "Dinner Table Politics team", "url": "https://github.com/dinnertablepolitics"},
+   "author": {"@type": "Organization", "name": "Dinner Table Politics team", "url": "https://github.com/dinnertablepolitics", "member": [{"@type": "Person", "name": "Julian Hasler"}, {"@type": "Person", "name": "Lilly Schiemann"}, {"@type": "Person", "name": "Yuhan Ye"}]},
    "about": {"@type": "ScholarlyArticle", "name": "Politics at the Dinner Table: Thanksgiving and Social Influences on Political Polarisation",
      "author": {"@type": "Person", "name": "Kirsten Cornelson"}, "isPartOf": {"@type": "Periodical", "name": "The Economic Journal"},
      "datePublished": "2026", "sameAs": "https://doi.org/10.1093/ej/ueaf085"},
@@ -93,7 +93,7 @@
       <div class="summary-grid">
         <div class="sum-item"><h3>The question</h3><p>Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?</p></div>
         <div class="sum-item"><h3>The study</h3><p>Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.</p></div>
-        <div class="sum-item"><h3>The answer</h3><p>In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Nobody became more extreme overall.</p></div>
+        <div class="sum-item"><h3>The answer</h3><p>In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Overall, opinions did not become more extreme.</p></div>
         <div class="sum-item"><h3>Our check</h3><p>We rebuilt the analysis from the raw data and got the same picture.</p></div>
       </div>
     </div>
@@ -155,8 +155,8 @@
     </svg>
     <p class="sr-only" id="chart-data" aria-live="polite"></p>
     <figcaption>Change compared with the week before Thanksgiving (week −1). Dots are estimates, bars the 95% range. Week 0 is the Thanksgiving week.<a class="fn" href="#n2" id="r2" aria-label="Note 2">2</a></figcaption>
-    <noscript><p>The interactive chart needs JavaScript. In short: political talk with close family rises by about 5 percentage points in the Thanksgiving week and falls back afterwards.</p></noscript>
   </figure>
+  <noscript><p>The interactive chart needs JavaScript. In short: political talk with close family rises by about 5 percentage points in the Thanksgiving week and falls back afterwards.</p></noscript>
 </section>
 
 <!-- ============ SHOWCASE: one image across tiles ============ -->
@@ -221,7 +221,7 @@
 <section class="field field-grey sure" id="sure" aria-labelledby="sure-title">
   <div class="sure-top">
     <h2 id="sure-title">How sure are we?</h2>
-    <p class="verdict" id="verdict">The family effect holds in every check we tried. Only the fake Thanksgiving shows nothing, which is what it should do.<a class="fn" href="#n3" id="r3" aria-label="Note 3">3</a></p>
+    <p class="verdict" id="verdict">The family effect keeps about the same size in every check we tried, though it gets less precise when we drop data. Only the fake Thanksgiving shows nothing, which is what it should do.<a class="fn" href="#n3" id="r3" aria-label="Note 3">3</a></p>
   </div>
   <div class="sure-controls">
     <div class="chips" role="group" aria-label="Checks to show" id="chips"></div>
@@ -247,7 +247,7 @@
     </table>
   </div>
   <p class="note">Each bar is the 95% range of the family effect, the dot its estimate; the black line is zero. Reliable means p &lt; 0.05 in a wild cluster bootstrap over country-by-week clusters, borderline p &lt; 0.10. “Share of spread” divides by the standard deviation of opinions, so checks with different scales can be compared.</p>
-  <noscript><p>The interactive table needs JavaScript. In short: the family effect stays between about 0.04 and 0.05 standard deviations per point in every check, and is zero in the placebo week.</p></noscript>
+  <noscript><p>The interactive table needs JavaScript. In short: the family effect stays between about 0.035 and 0.05 standard deviations per point in every check, and is zero in the placebo week.</p></noscript>
 </section>
 
 <!-- ============ QUIZ: large questions, answers beside ============ -->
@@ -274,6 +274,7 @@
         <label><input type="radio" name="q1" value="c"> Their Thanksgiving falls in a different week, so they show what that week looks like without the holiday</label>
         <label><input type="radio" name="q1" value="d"> To compare the two health systems</label>
       </fieldset>
+      <details class="q-hint"><summary>Need a hint?</summary><p>Week fixed effects already remove everything that happens to all respondents in the same calendar week. If both countries celebrated in the same week, what would be left to compare the Thanksgiving week with?</p></details>
       <button class="btn btn-small" type="submit">Check</button>
       <p class="feedback" role="status"></p>
       <div class="model" hidden><p>Week fixed effects remove everything that hits all respondents in a calendar week. Because the two holidays are six weeks apart, the other country serves as the comparison group for the same week, much like a difference-in-differences design.</p></div>
@@ -290,6 +291,7 @@
       <label for="q2">Your answer, in score points</label>
       <input id="q2" name="q2" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 0.12" aria-describedby="q2-hint">
       <p class="hint" id="q2-hint">A number between −6 and 6, two decimals.</p>
+      <details class="q-hint"><summary>Need a hint?</summary><p>The total effect has three parts. Multiply each interaction estimate by the matching position (your family is at 6, you are at 3), then add the Thanksgiving estimate on its own.</p></details>
       <button class="btn btn-small" type="submit">Check</button>
       <p class="feedback" role="status"></p>
       <div class="model" hidden><p>−0.131 + 0.050 × 6 − 0.003 × 3 = <strong>+0.16</strong>. The −0.131 alone is the effect for someone at 0 whose family is also at 0, not an average.</p></div>
@@ -304,6 +306,7 @@
     <form class="a" data-quiz="3" novalidate>
       <label for="q3">Name one omitted variable and the direction of the bias it causes (at least 15 words).</label>
       <textarea id="q3" name="q3" rows="4" maxlength="1200"></textarea>
+      <details class="q-hint"><summary>Need a hint?</summary><p>Look for something that happened in only one country in its Thanksgiving week and could move people differently depending on their family's politics. Then sign the bias with the formula from class: bias = γ·δ, where γ is how the omitted variable moves opinions and δ is how it relates to Thanksgiving × family.</p></details>
       <button class="btn btn-small" type="submit">Show a model answer</button>
       <p class="feedback" role="status"></p>
       <div class="model" hidden><p>Week fixed effects only absorb shocks that hit both countries. Canada's 2019 federal election came one week after Canadian Thanksgiving. If the campaign pushed people with right-leaning families further right, the omitted variable raises opinions (γ &gt; 0) and is positively related to Thanksgiving × family (δ &gt; 0), so the bias γ·δ is upward, away from zero. Dropping 2019 leaves the estimate at 0.051 but makes it much less precise.</p></div>

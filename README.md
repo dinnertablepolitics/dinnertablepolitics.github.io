@@ -8,6 +8,20 @@ explainer and replication of
 
 Plain HTML, CSS and JavaScript. No build step, no libraries, no third-party requests.
 
+**Live site:** https://dinnertablepolitics.github.io/
+**Made by:** Julian Hasler, Lilly Schiemann and Yuhan Ye (team name: Dinner Table Politics)
+
+## Where to find the Problem Set 4 requirements
+
+| Requirement | Where on the site |
+|---|---|
+| Paper summary box in non-technical language | “The short version” (`#summary`): question, study, answer, our check |
+| Intuitive headline for every section | every section starts with a plain-language headline |
+| Table with dynamic functionality | “How sure are we?” (`#sure`): switch robustness checks on and off, switch units (share of spread / score points) |
+| Chart with dynamic functionality | “More politics at the table” (`#table-talk`): outcome toggle and US / Canada filter; also the “Seat your family” calculator (`#try`) with two sliders |
+| Three exam-style questions below the charts, getting harder | “Test yourself” (`#quiz`): multiple choice, a calculation, an omitted-variable-bias question; each with a hint and a model answer |
+| Code | this repository; the R replication is in `replication/` (`00_master.R` runs everything) |
+
 ## Structure
 
 | Path | What it is |
@@ -36,24 +50,18 @@ then open http://127.0.0.1:8766/. Opening `index.html` directly from the file sy
 Run `Rscript 00_master.R` in `../replication`. The last step rewrites `assets/data/results.json`
 and `results.js`; the page picks them up on reload.
 
-## Publish on GitHub Pages
+## Deployment
 
-1. Create a repository on GitHub (public, or private if your account has GitHub Pro/Education),
-   e.g. `dinner-table-politics`, and push this folder to it.
-2. Settings → Pages → Source: “Deploy from a branch”, branch `main`, folder `/ (root)`.
-3. Settings → Pages → tick **Enforce HTTPS** once the site is live.
-4. Put the real address into the files that need it:
-   `node tools/set-site-url.mjs https://<user>.github.io/<repo>/ https://github.com/<user>/<repo>`
-   then commit and push again.
-5. Run `node tools/check-links.mjs` before every push.
-6. If the repository is private, invite the TAs as collaborators.
+The site is served by GitHub Pages from the `main` branch (root folder), with HTTPS enforced.
+Run `node tools/check-links.mjs` before every push. If the address ever changes, update it with
+`node tools/set-site-url.mjs <new-site-url> <new-repo-url>`.
 
 ## Launch checklist
 
 | # | Item | Status |
 |---|---|---|
 | 1 | Privacy policy page | `privacy.html` |
-| 2 | Terms & conditions page | `terms.html` (add the code licence once chosen) |
+| 2 | Terms & conditions page | `terms.html` |
 | 3 | Secrets off the frontend | No keys or tokens exist; `config.js` holds public settings only. |
 | 4 | Force HTTPS | CSP `upgrade-insecure-requests` on every page; tick “Enforce HTTPS” in GitHub Pages (step 3 above). |
 | 5 | Cookie consent banner | Built and consent-gated. It only appears if analytics is switched on, because the site sets no cookies otherwise. |

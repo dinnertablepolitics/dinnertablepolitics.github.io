@@ -307,6 +307,13 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .feedback.no { color: var(--error); }
 .model { background: var(--surface); padding: 16px 18px; }
 .quiz-pic { grid-column: 1 / 7; margin-top: 40px; }
+.q-hint { margin: 16px 0 4px; }
+.q-hint summary { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; font-weight: 600; list-style: none; }
+.q-hint summary:hover { color: var(--ink); opacity: 0.8; }
+.q-hint summary::-webkit-details-marker { display: none; }
+.q-hint summary::before { content: "+"; display: inline-grid; place-items: center; width: 20px; height: 20px; background: var(--mint); color: #000; font-weight: 600; line-height: 1; text-decoration: none; }
+.q-hint[open] summary::before { content: "−"; }
+.q-hint p { margin-top: 8px; padding: 14px 16px; background: var(--surface); max-width: 60ch; line-height: 1.5; }
 .quiz-pic img { width: 100%; }
 .quiz-pic figcaption { margin-top: 10px; font-size: var(--step-small); color: var(--muted); }
 
