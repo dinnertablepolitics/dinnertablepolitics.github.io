@@ -85,6 +85,8 @@ and `results.js`; the page picks them up on reload.
 Pictures: Marjory Collins, “Thanksgiving grace” and “Thanksgiving dinner at the house of Earle
 Landis”, 1942, Library of Congress (public domain); Winslow Homer, “Thanksgiving Day – The Dinner”,
 1858, Cleveland Museum of Art (CC0); J. S. Pughe, “Our international Thanksgiving dinner”, Puck,
-1901, and J. Keppler, “Thanksgiving”, Puck, 1883, Library of Congress (public domain). Source pages
+1901, and J. Keppler, “Thanksgiving”, Puck, 1883, Library of Congress (public domain). Film clips
+(`assets/video/`): “A Day of Thanksgiving”, Centron Corporation, 1951, Internet Archive
+(https://archive.org/details/DayofTha1951, public domain), cut, greyscale, no sound. Source pages
 are listed in `assets/img/credits.json`. Typeface: Bricolage Grotesque, SIL Open Font License 1.1.
 Data: Cornelson (2025), replication package, Zenodo, doi:10.5281/zenodo.16962525, CC BY 4.0.

@@ -133,6 +133,30 @@
     txt(g, 160, 186, "United States", { "font-size": 14, fill: C.ink });
   })();
 
+  /* ---------------- film clips: pause button, reduced motion, play only while visible ---------------- */
+  (function clips() {
+    var vids = document.querySelectorAll("video.clip");
+    Array.prototype.forEach.call(vids, function (v) {
+      var btn = v.parentNode.querySelector(".vid-toggle");
+      v.dataset.user = reduced ? "paused" : "";
+      function sync() { if (btn) { btn.textContent = v.paused ? "Play" : "Pause"; btn.setAttribute("aria-pressed", String(v.paused)); btn.setAttribute("aria-label", (v.paused ? "Play" : "Pause") + " film clip"); } }
+      if (reduced) { v.removeAttribute("autoplay"); v.pause(); }
+      v.addEventListener("play", sync); v.addEventListener("pause", sync); sync();
+      if (btn) btn.addEventListener("click", function () {
+        if (v.paused) { v.dataset.user = ""; v.play().catch(function () {}); } else { v.dataset.user = "paused"; v.pause(); }
+      });
+    });
+    if ("IntersectionObserver" in window) {
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var v = en.target;
+          if (en.isIntersecting) { if (!v.dataset.user) v.play().catch(function () {}); } else if (!v.paused) v.pause();
+        });
+      }, { threshold: 0.2 });
+      Array.prototype.forEach.call(vids, function (v) { vio.observe(v); });
+    }
+  })();
+
   if (!R) return;  // the remaining parts need the data file
 
   /* ---------------- event-study chart with toggles ---------------- */

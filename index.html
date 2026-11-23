@@ -46,10 +46,11 @@
 <!-- ============ HERO: masthead band, title on the axis ============ -->
 <section class="hero" aria-labelledby="title">
   <figure class="masthead">
-    <picture>
-      <source srcset="assets/img/grace-1942-800.webp 800w, assets/img/grace-1942-1600.webp 1600w" sizes="100vw" type="image/webp">
-      <img src="assets/img/grace-1942-1600.webp" width="1600" height="1207" alt="Black-and-white photograph from 1942: a family of nine around a long table bows their heads in grace before a Thanksgiving dinner." fetchpriority="high">
-    </picture>
+    <video class="clip" autoplay muted loop playsinline preload="auto" poster="assets/video/family-table-1951-poster.webp" aria-describedby="masthead-desc">
+      <source src="assets/video/family-table-1951.mp4" type="video/mp4">
+    </video>
+    <figcaption class="sr-only" id="masthead-desc">Film clip from 1951, black and white, no sound: a family of seven sits around a dinner table while the mother serves and sits down.</figcaption>
+    <button class="vid-toggle" type="button" aria-pressed="false">Pause</button>
   </figure>
   <div class="hero-body">
     <h1 id="title" class="mask-title"><span class="line"><span>Family dinner</span></span><span class="line"><span>moves opinions</span></span></h1>
@@ -150,6 +151,13 @@
     <div class="try-head">
       <h2 id="try-title">Seat your family</h2>
       <p>Place yourself and your family on the survey's own scale, from 0 (extremely left wing) to 6 (extremely right wing). We compute how far your opinions would move in the Thanksgiving week, from our replication of the study.</p>
+      <figure class="try-clip">
+        <video class="clip" autoplay muted loop playsinline preload="metadata" poster="assets/video/vote-here-1951-poster.webp" aria-describedby="vote-desc">
+          <source src="assets/video/vote-here-1951.mp4" type="video/mp4">
+        </video>
+        <button class="vid-toggle" type="button" aria-pressed="false">Pause</button>
+        <figcaption id="vote-desc">Election day, 1951: voters step behind the “Vote here” curtain. From the film “A Day of Thanksgiving” (Centron, public domain).</figcaption>
+      </figure>
     </div>
     <form class="calc" id="calc" novalidate>
       <div class="result" aria-live="polite">
@@ -327,7 +335,7 @@
         <li><a href="terms.html">Terms of use</a></li>
         <li><button type="button" class="linklike" id="consent-reopen" hidden>Analytics settings</button></li>
       </ul>
-      <p class="credits">Pictures: Marjory Collins, 1942 (Library of Congress, public domain); Winslow Homer, 1858 (Cleveland Museum of Art, CC0); J. S. Pughe, 1901, and J. Keppler, 1883 (Library of Congress, public domain).</p>
+      <p class="credits">Pictures: Marjory Collins, 1942 (Library of Congress, public domain); Winslow Homer, 1858 (Cleveland Museum of Art, CC0); J. S. Pughe, 1901, and J. Keppler, 1883 (Library of Congress, public domain). Film: “A Day of Thanksgiving”, Centron, 1951 (Internet Archive, public domain).</p>
     </div>
   </div>
   <div class="foot-legal">
