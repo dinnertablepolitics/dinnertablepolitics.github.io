@@ -90,10 +90,12 @@
       <img src="assets/img/3d-turkey-800.webp" srcset="assets/img/3d-turkey-800.webp 800w, assets/img/3d-turkey-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 50vw" width="800" height="800" loading="lazy" decoding="async" alt="3D view from above the table: a roast turkey in the middle, side dishes in orange and mint, and figures in blue and red seated all around.">
     </figure>
     <div class="tile tile-text">
-      <p class="summary-text"><strong>The question.</strong> Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?
-      <strong>The study.</strong> Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.
-      <strong>The answer.</strong> In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Nobody became more extreme overall.
-      <strong>Our check.</strong> We rebuilt the analysis from the raw data and got the same picture.</p>
+      <div class="summary-grid">
+        <div class="sum-item"><h3>The question</h3><p>Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?</p></div>
+        <div class="sum-item"><h3>The study</h3><p>Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.</p></div>
+        <div class="sum-item"><h3>The answer</h3><p>In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Nobody became more extreme overall.</p></div>
+        <div class="sum-item"><h3>Our check</h3><p>We rebuilt the analysis from the raw data and got the same picture.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -323,12 +325,13 @@
       <p class="overlay">Same sample, same model: our main estimate is 0.050, the paper's 0.048. The small gap comes from how ties are broken in the opinion score.</p>
     </figure>
     <div class="about-colour">
-      <div class="cal-tile">
-      <svg viewBox="0 0 300 200" role="img" aria-labelledby="cal-title">
-        <title id="cal-title">Two calendar pages: October with the second Monday marked for Canada, November with the fourth Thursday marked for the US.</title>
-        <g id="cal"></g>
-      </svg>
-      <p>In 2022: Monday 10 October in Canada, Thursday 24 November in the US. Six weeks apart.</p>
+      <div class="cal-tile added-tile">
+        <p class="added-head">What we added</p>
+        <p class="added-big"><span>6</span> robustness checks beyond the main model</p>
+        <ul class="added-list">
+          <li>A fake Thanksgiving two weeks early shows almost exactly zero effect, as it should.</li>
+          <li>A wild cluster bootstrap, because only 11 of 66 country-week clusters have a Thanksgiving week.</li>
+        </ul>
       </div>
       <dl class="facts">
         <div><dt>Paper</dt><dd>Cornelson, Economic Journal, 2026</dd></div>
