@@ -215,7 +215,7 @@
     Array.prototype.forEach.call(vids, function (v) {
       var btn = v.parentNode.querySelector(".vid-toggle");
       v.dataset.user = reduced ? "paused" : "";
-      function sync() { if (btn) { btn.textContent = v.paused ? "Play" : "Pause"; btn.setAttribute("aria-pressed", String(v.paused)); btn.setAttribute("aria-label", (v.paused ? "Play" : "Pause") + " film clip"); } }
+      function sync() { if (btn) { btn.textContent = v.paused ? "Play" : "Pause"; btn.setAttribute("aria-pressed", String(v.paused)); btn.setAttribute("aria-label", (v.paused ? "Play" : "Pause") + " animation"); } }
       if (reduced) { v.removeAttribute("autoplay"); v.pause(); }
       v.addEventListener("play", sync); v.addEventListener("pause", sync); sync();
       if (btn) btn.addEventListener("click", function () {

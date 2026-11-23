@@ -80,11 +80,6 @@ and `results.js`; the page picks them up on reload.
 
 ## Credits
 
-Pictures: Marjory Collins, “Thanksgiving grace” and “Thanksgiving dinner at the house of Earle
-Landis”, 1942, Library of Congress (public domain); Winslow Homer, “Thanksgiving Day – The Dinner”,
-1858, Cleveland Museum of Art (CC0); J. S. Pughe, “Our international Thanksgiving dinner”, Puck,
-1901, and J. Keppler, “Thanksgiving”, Puck, 1883, Library of Congress (public domain). Film clips
-(`assets/video/`): “A Day of Thanksgiving”, Centron Corporation, 1951, Internet Archive
-(https://archive.org/details/DayofTha1951, public domain), cut, greyscale, no sound. Source pages
-are listed in `assets/img/credits.json`. Typeface: Bricolage Grotesque, SIL Open Font License 1.1.
-Data: Cornelson (2025), replication package, Zenodo, doi:10.5281/zenodo.16962525, CC BY 4.0.
+Pictures and animations: 3D scenes built from primitives in Blender 5.3 by the team (script: `tools/blender-scenes.py`). Typeface: Bricolage Grotesque, SIL Open Font License 1.1. Data: Cornelson (2025), replication package, Zenodo, doi:10.5281/zenodo.16962525, CC BY 4.0.
+
+The previous design with archival photographs, cartoons and 1951 film clips is kept as the git tag `v1-archival` and the branch `backup/archival-design`. To switch the live site back: `git checkout main && git reset --hard v1-archival && git push --force-with-lease`, or `git revert` the 3D commit.

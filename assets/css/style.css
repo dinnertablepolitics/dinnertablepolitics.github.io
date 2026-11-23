@@ -193,7 +193,7 @@ input, textarea { caret-color: var(--orange); }
 }
 .cut:not(.ctile)::before {
   content: ""; position: absolute; inset: 0;
-  background-image: url("../img/pughe-1901-board.webp");
+  background-image: url("../img/3d-topdown-1200.webp");
   background-size: 600% 400%;
   background-position: calc(var(--c) * 20%) calc(var(--r) * 33.333%);
   transition: transform 500ms var(--ease-out);
