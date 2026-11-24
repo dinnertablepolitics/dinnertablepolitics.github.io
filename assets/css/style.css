@@ -374,8 +374,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .notfound h1 { font-size: var(--step-display); max-width: 10ch; }
 .notfound p { font-size: var(--step-lead); max-width: 32ch; }
 
-/* ---------- the tile board needs room for its text: switch to the stacked layout earlier ---------- */
-@media (max-width: 1180px) {
+/* ---------- the tile board needs room for its text: stacked layout below 1280px (checked with fit-check) ---------- */
+@media (max-width: 1280px) {
   .cut-board { grid-template-columns: 1fr 1fr; }
   .cut:not(.ctile) { display: none; }
   .ctile { aspect-ratio: auto; min-height: 132px; }
