@@ -93,7 +93,7 @@
       <div class="summary-grid">
         <div class="sum-item"><h3>The question</h3><p>Politics in North America is splitting into camps, and most people mostly talk to people who think like them. Does a meal with relatives who vote differently pull you towards them, or push you further away?</p></div>
         <div class="sum-item"><h3>The study</h3><p>Economist Kirsten Cornelson surveyed 2,006 Americans and Canadians every week around Thanksgiving in 2019, 2021 and 2022.</p></div>
-        <div class="sum-item"><h3>The answer</h3><p>In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Overall, opinions did not become more extreme.</p></div>
+        <div class="sum-item"><h3>The answer</h3><p>In the Thanksgiving week, opinions move towards the family: for every step the family stands further right on a 0–6 scale, people's views move about 0.05 points right.<a class="fn" href="#n1" id="r1" aria-label="Note 1">1</a> Overall, opinions became slightly less polarised: more people held centrist views that week.</p></div>
         <div class="sum-item"><h3>Our check</h3><p>We rebuilt the analysis from the raw data and got the same picture.</p></div>
       </div>
     </div>
@@ -104,7 +104,7 @@
 <section class="how" id="how" aria-labelledby="how-title">
   <div class="how-head">
     <h2 id="how-title">Two holidays, one test</h2>
-    <p>Canada celebrates on the second Monday of October, the US on the fourth Thursday of November. So in any given week, one country has just had dinner with the family and the other has not. That gap is the experiment.</p>
+    <p>Canada celebrates on the second Monday of October, the US on the fourth Thursday of November. So in each Thanksgiving week, one country has just had dinner with the family and the other has not. That gap is the experiment.</p>
   </div>
   <figure class="how-figure">
     <svg id="how-svg" viewBox="0 0 900 200" role="img" aria-labelledby="how-svg-title">
@@ -112,7 +112,7 @@
     </svg>
   </figure>
   <div class="how-steps">
-    <div><h3>Ask</h3><p>2,006 people answered a short survey every week for six weeks: 10,092 answers in all.</p></div>
+    <div><h3>Ask</h3><p>2,006 people were surveyed every week for six weeks; together they gave 10,092 answers, about five each.</p></div>
     <div><h3>Narrow</h3><p>606 of those answers were given in the week right after their own country's Thanksgiving.</p></div>
     <div><h3>Compare</h3><p>Each person is compared with their own other weeks, and with the other country in the same week.</p></div>
   </div>
@@ -122,7 +122,7 @@
       <p class="eq">opinion<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + β<sub>1</sub>·TG<sub>it</sub> + β<sub>2</sub>·TG<sub>it</sub>×family<sub>i</sub> + β<sub>3</sub>·TG<sub>it</sub>×own<sub>i</sub> + γ·controls + ε<sub>it</sub></p>
       <dl class="method-list">
         <div><dt>α<sub>i</sub>, person fixed effects</dt><dd>Everything stable about a person, such as their general political stance, drops out. Each person is compared only with themselves.</dd></div>
-        <div><dt>λ<sub>t</sub>, survey-week fixed effects</dt><dd>Anything that hits all respondents in the same week, such as national news, drops out too.</dd></div>
+        <div><dt>λ<sub>t</sub>, survey-week fixed effects</dt><dd>Anything that hits all respondents in the same week, such as news that reaches both countries, drops out too.</dd></div>
         <div><dt>β<sub>2</sub>, the number we care about</dt><dd>How much more opinions move in the Thanksgiving week for every point the family stands further right: 0.050 in our replication, 0.048 in the paper.</dd></div>
         <div><dt>The key assumption</dt><dd>Without Thanksgiving, people with left- and right-leaning families would have moved alike in that week. The date is fixed by the calendar, which makes this plausible; events that hit only one country in that week are the main worry.</dd></div>
         <div><dt>Uncertainty</dt><dd>Standard errors are clustered as in the paper. Because the holiday varies only by country and week (66 clusters, 11 with a Thanksgiving week), we also report a wild cluster bootstrap.</dd></div>
@@ -246,7 +246,7 @@
       <tfoot><tr><td></td><td class="col-plot"><div class="axis" id="rob-axis" aria-hidden="true"></div></td><td colspan="3"></td></tr></tfoot>
     </table>
   </div>
-  <p class="note">Each bar is the 95% range of the family effect, the dot its estimate; the black line is zero. Reliable means p &lt; 0.05 in a wild cluster bootstrap over country-by-week clusters, borderline p &lt; 0.10. “Share of spread” divides by the standard deviation of opinions, so checks with different scales can be compared.</p>
+  <p class="note">Each bar is the 95% range of the family effect, the dot its estimate; the black line is zero. Reliable means p &lt; 0.05 in a wild cluster bootstrap over country-by-week clusters, borderline p &lt; 0.10. “Share of spread” divides by the standard deviation of opinions, so checks with different scales can be compared. The ranges use the paper's standard errors; the label uses the wild bootstrap, so the two can differ slightly.</p>
   <noscript><p>The interactive table needs JavaScript. In short: the family effect stays between about 0.035 and 0.05 standard deviations per point in every check, and is zero in the placebo week.</p></noscript>
 </section>
 
