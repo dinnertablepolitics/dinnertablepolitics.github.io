@@ -88,7 +88,7 @@ input, textarea { caret-color: var(--orange); }
 
 /* ---------- top row ---------- */
 .top {
-  display: grid; grid-template-columns: var(--axis) 1fr auto; align-items: center;
+  display: grid; grid-template-columns: calc(var(--axis) - 16px) 1fr auto; align-items: center;   /* minus the gap: the menu starts on the axis */
   padding: 28px var(--m); gap: 16px; position: relative; z-index: 5;
 }
 .wordmark { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); justify-self: start; }
