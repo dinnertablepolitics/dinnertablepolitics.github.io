@@ -88,7 +88,7 @@ input, textarea { caret-color: var(--orange); }
 
 /* ---------- top row ---------- */
 .top {
-  display: grid; grid-template-columns: calc(var(--axis) - 16px) 1fr auto; align-items: center;   /* minus the gap: the menu starts on the axis */
+  display: grid; grid-template-columns: auto 1fr; grid-auto-flow: column; align-items: center;   /* wordmark left, menu against the right margin; a button on the subpages adds its own column */
   padding: 28px var(--m); gap: 16px; position: relative; z-index: 5;
 }
 .wordmark { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); justify-self: start; }
@@ -96,7 +96,7 @@ input, textarea { caret-color: var(--orange); }
 .lm-l { fill: var(--blue); } .lm-r { fill: var(--red); } .lm-plate { fill: #fff; } .lm-dot { fill: var(--orange); }
 .logo-text { display: flex; flex-direction: column; font-weight: 600; font-size: 1.125rem; line-height: 0.95; letter-spacing: -0.03em; }
 .logo-text span + span { color: var(--muted); font-weight: 500; }
-.top-links { display: flex; gap: 28px; }
+.top-links { display: flex; gap: 28px; justify-content: flex-end; }
 .top-links a { text-decoration: none; padding: 12px 0; }
 .menu-toggle { display: none; }
 
@@ -409,7 +409,6 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .chart-section, .try-grid, .sure-top { grid-template-columns: 1fr; gap: 24px 40px; }
   #rob-table .col-n, #rob-table .col-range { display: none; }   /* the range is drawn in the plot; too narrow to also print it */
   #rob-table th:nth-child(1) { width: 42%; }
-  .top { grid-template-columns: auto 1fr auto; }
   .top-links { gap: 20px; justify-content: flex-end; }
   .top-links a, .top-action { white-space: nowrap; }
   .tiles { grid-template-columns: 1fr 1fr; grid-template-rows: 30svh auto auto; }
@@ -436,7 +435,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 /* ---------- phone ---------- */
 @media (max-width: 700px) {
   :root { --axis: 0px; --gap: 6px; --step-display: 12.5vw; }
-  .top { grid-template-columns: 1fr auto auto; padding: 20px var(--m); }
+  .top { grid-template-columns: 1fr auto; padding: 20px var(--m); }
   .top-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg); padding: 8px var(--m) 16px; }
   .top-links.open { display: flex; }
   .top-links.always { display: flex; position: static; flex-direction: row; gap: 16px; padding: 0; background: none; }
