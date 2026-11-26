@@ -289,19 +289,17 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 
 /* ---------- quiz: large questions, answers beside ---------- */
 .quiz { padding: var(--section) var(--m) 0; }
-.qa-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 24px; padding-bottom: var(--block); }
-.qa-row > .q-side { grid-column: 1 / 7; }
+/* on the page axis like every other section: question left of the line, answers from the line on */
+.qa-row { display: grid; grid-template-columns: var(--axis) minmax(0, 1fr); padding-bottom: var(--block); }
+.qa-row > .q-side { grid-column: 1; padding-right: clamp(32px, 4vw, 72px); }
 .level { margin-top: 12px; color: var(--muted); }
-.qa-row > h2, .q-side > .q { grid-column: 1 / 7; font-size: var(--step-sub); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
-.qa-row.qa-head > h2 { grid-row: 1; font-size: var(--step-head); font-weight: 600; line-height: 1; color: inherit; }
-.qa-row.qa-head > p { grid-column: 1 / 8; grid-row: 2; margin-top: 24px; max-width: 34ch; font-size: var(--step-lead); line-height: 1.3; }
-/* quiz head: a short index of the three questions fills the left side next to the picture */
-.quiz-index { grid-column: 1 / 8; grid-row: 3; list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 12px; align-content: start; }
-.quiz-index a { display: block; min-height: 44px; padding: 6px 0; font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
-.qi-l { display: inline-block; color: var(--muted); font-weight: 400; letter-spacing: 0; text-decoration: none; }
-@media (hover: hover) { .quiz-index a:hover { text-decoration-color: var(--orange); } }
+.q-side > .q { font-size: var(--step-sub); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
+/* quiz head like "Two holidays" and "About": the title left of the axis, the lead on the right, bottoms aligned */
+.qa-row.qa-head { align-items: end; padding-bottom: calc(var(--block) * 1.5); }   /* the head stands apart from the questions more than they do from each other */
+.qa-row.qa-head > h2 { grid-column: 1; font-size: var(--step-head); padding-right: clamp(32px, 4vw, 72px); }
+.qa-row.qa-head > p { grid-column: 2; max-width: 34ch; font-size: var(--step-lead); line-height: 1.3; padding-bottom: 0.2em; }
 .q { scroll-margin-top: 24px; }
-.qa-row > p, .qa-row > .a { grid-column: 7 / 13; max-width: 56ch; }
+.qa-row > .a { grid-column: 2; max-width: 56ch; }
 .a { display: grid; gap: 16px; align-content: start; }
 .a fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 4px; }
 .a fieldset label { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start; padding: 8px 0; cursor: pointer; }
@@ -316,8 +314,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .feedback.ok { color: var(--ok); }
 .feedback.no { color: var(--error); }
 .model { background: var(--surface); padding: 16px 20px; }
-.quiz-pic { grid-column: 8 / 13; grid-row: 1 / span 4; margin-top: 0; }
-.qa-head .quiz-pic img { aspect-ratio: 16 / 10; object-fit: cover; }
+/* the question-mark figure sits under the first question, in the room its left side leaves empty */
+.quiz-pic { margin-top: 32px; max-width: 280px; }   /* small enough that the first question ends with its answers */
 .q-hint { margin: 16px 0 4px; }
 .q-hint summary { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; font-weight: 600; list-style: none; }
 .q-hint summary:hover { color: var(--ink); opacity: 0.8; }
@@ -410,14 +408,9 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .tile-c { grid-column: 2; grid-row: 2; aspect-ratio: 1; }
   .tile-text { grid-column: 1 / 3; grid-row: 3; }
   .chart-head, .try-head { padding-right: 0; }
-  .qa-row > h2, .qa-row > .q-side { grid-column: 1 / 7; }
-  .qa-row > p, .qa-row > .a { grid-column: 7 / 13; }
   .hero-body { grid-template-columns: 1fr; gap: 28px; }
   .hero h1 { grid-column: 1; grid-row: 1; }
   .hero-side { grid-column: 1; grid-row: 2; padding-right: 0; }
-  .quiz-pic { grid-column: 1 / -1; grid-row: auto; margin-top: var(--block); }
-  .qa-row.qa-head > p { grid-column: 1 / -1; grid-row: auto; max-width: 56ch; }
-  .quiz-index { grid-column: 1 / -1; grid-row: auto; }
   .cut-board { grid-template-columns: 1fr 1fr; }
   .cut:not(.ctile) { display: none; }
   .ctile { aspect-ratio: auto; min-height: 132px; }
@@ -456,7 +449,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .about .lead { margin-top: 20px; }
   .how-steps { grid-template-columns: 1fr; gap: 20px; }
   .qa-row { grid-template-columns: 1fr; gap: 12px; }
-  .qa-row > h2, .qa-row > .q-side, .qa-row > p, .qa-row > .a, .quiz-pic { grid-column: 1; }
+  .qa-row > *, .qa-row > .q-side, .qa-row > .a, .qa-row.qa-head > h2, .qa-row.qa-head > p, .score-line { grid-column: 1; padding-right: 0; }
+  .quiz-pic { display: none; }   /* on a phone it would sit between the question and its answers */
   .overlay { position: static; width: auto; padding: 16px 0 0; }
   .about-photo img { aspect-ratio: 4 / 3; }
   .about-colour { grid-template-columns: 1fr; }
@@ -649,8 +643,8 @@ p, li, dd { text-wrap: pretty; }
 .quiz-score { padding-top: 0; }
 .quiz-score[hidden] { display: none; }   /* .qa-row's display: grid would otherwise override [hidden] and leave an empty 80px row */
 .qa-row:has(+ .quiz-score[hidden]) { padding-bottom: 0; }   /* the last question: the section gap alone separates it from About */
-.score-line { grid-column: 1 / 7; font-size: var(--step-sub); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
-.score-tips { grid-column: 7 / 13; }
+.score-line { grid-column: 1; padding-right: clamp(32px, 4vw, 72px); font-size: var(--step-sub); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.score-tips { grid-column: 2; }
 .quiz-score:not([hidden]) { animation: drop 500ms var(--ease-out); }
 
 /* easter egg */
@@ -669,7 +663,7 @@ p, li, dd { text-wrap: pretty; }
 }
 @media (max-width: 700px) {
   .method-body { padding-left: 0; }
-  .score-line, .score-tips { grid-column: 1; }
+  .score-line, .score-tips { grid-column: 1; padding-right: 0; }
   .leopard { width: 160px; right: 8px; }
   .leopard p { right: 128px; top: -28px; }
 }
