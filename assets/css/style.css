@@ -297,7 +297,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .quiz-index { grid-column: 1 / 8; grid-row: 3; list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 14px; align-content: start; }
 .quiz-index a { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; text-decoration: none; }
 .qi-n { width: 44px; height: 44px; display: grid; place-items: center; background: var(--mint); color: #000; font-weight: 600; font-size: var(--step-lead); }
-.qi-t { font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.qi-t { font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; }
 .qi-t small { display: block; margin-top: 4px; font-size: var(--step-small); font-weight: 400; letter-spacing: 0; color: var(--muted); }
 @media (hover: hover) { .quiz-index a:hover .qi-t { text-decoration: underline; text-decoration-color: var(--orange); } }
 .q { scroll-margin-top: 24px; }
