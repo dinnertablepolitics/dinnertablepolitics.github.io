@@ -46,8 +46,8 @@
   --m: clamp(20px, 3.4vw, 48px);           /* the page's one pair of outer margins */
   --gap: 8px;
   --axis: calc((100vw - 2 * var(--m)) * 5 / 12);  /* the column line, ~42% */
-  --section: clamp(56px, 5vw, 96px);     /* space between sections; capped so wide screens get no empty bands */
-  --field-pad: clamp(48px, 5vw, 88px);
+  --section: clamp(80px, 9vw, 160px);    /* space between sections: 120-240px on desktop, ~80px on a phone (skill rhythm) */
+  --field-pad: clamp(64px, 7vw, 112px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -287,7 +287,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 
 /* ---------- quiz: large questions, answers beside ---------- */
 .quiz { padding: var(--section) var(--m) 0; }
-.qa-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 24px; padding-bottom: 56px; }
+.qa-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 24px; padding-bottom: 80px; }
 .qa-row > .q-side { grid-column: 1 / 7; }
 .level { margin-top: 14px; color: var(--muted); }
 .qa-row > h2, .q-side > .q { grid-column: 1 / 7; font-size: var(--step-sub); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
@@ -295,11 +295,9 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .qa-row.qa-head > p { grid-column: 1 / 8; grid-row: 2; margin-top: 24px; max-width: 34ch; font-size: var(--step-lead); line-height: 1.3; }
 /* quiz head: a short index of the three questions fills the left side next to the picture */
 .quiz-index { grid-column: 1 / 8; grid-row: 3; list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 14px; align-content: start; }
-.quiz-index a { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; text-decoration: none; }
-.qi-n { width: 44px; height: 44px; display: grid; place-items: center; background: var(--mint); color: #000; font-weight: 600; font-size: var(--step-lead); }
-.qi-t { font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; }
-.qi-t small { display: block; margin-top: 4px; font-size: var(--step-small); font-weight: 400; letter-spacing: 0; color: var(--muted); }
-@media (hover: hover) { .quiz-index a:hover .qi-t { text-decoration: underline; text-decoration-color: var(--orange); } }
+.quiz-index a { display: block; min-height: 44px; padding: 6px 0; font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+.qi-l { display: inline-block; color: var(--muted); font-weight: 400; letter-spacing: 0; text-decoration: none; }
+@media (hover: hover) { .quiz-index a:hover { text-decoration-color: var(--orange); } }
 .q { scroll-margin-top: 24px; }
 .qa-row > p, .qa-row > .a { grid-column: 7 / 13; max-width: 56ch; }
 .a { display: grid; gap: 14px; align-content: start; }
@@ -341,7 +339,6 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .cal-tile p { padding: 0 8px; font-weight: 500; }
 .added-tile { padding: 20px; display: grid; gap: 14px; }
 .added-tile p { padding: 0; }
-.added-head { font-size: var(--step-small); font-weight: 600; text-transform: none; }
 .added-big { font-size: var(--step-body); font-weight: 500; line-height: 1.25; }
 .added-big span { display: block; font-size: var(--step-head); font-weight: 600; line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 4px; }
 .added-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: var(--step-body); line-height: 1.4; font-weight: 500; }
@@ -679,6 +676,10 @@ p, li, dd { text-wrap: pretty; }
   }
   .stage-box { background: #e6f1e2; }
   .btn-ghost:hover { background: rgba(255, 255, 255, 0.1); }
+  /* black is almost the page colour here: a black tile or field would read as an empty hole */
+  .tile-a { background: var(--mint); color: #000; }
+  .tile-a :focus-visible { outline-color: #000; }
+  .field-black { margin-top: 0; }   /* no empty band before a field that has the page's own colour */
 }
 
 /* closed details really take their content out of the layout */
