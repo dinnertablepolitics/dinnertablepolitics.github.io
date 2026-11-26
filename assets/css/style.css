@@ -340,11 +340,13 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 /* head like "Two holidays": the title left of the axis, the lead on the right, so the wide screen has no empty half */
 .about h2 { font-size: var(--step-head); padding-right: clamp(32px, 4vw, 72px); max-width: 11ch; }
 .about .lead { font-size: var(--step-lead); line-height: 1.35; max-width: 44ch; padding-bottom: 0.2em; }
-.about-tiles { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: var(--block); align-items: start; }
-.about-photo { grid-column: 1 / 9; position: relative; }
-.about-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+/* the closing block ends flush: the right column sets the height, the sources keep their own, and the photo fills the rest (cropped) */
+.about-tiles { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 1fr auto; gap: 16px; margin-top: var(--block); }
+.about-photo { grid-column: 1 / 9; grid-row: 1; position: relative; min-height: 320px; }
+.about-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .overlay { position: absolute; top: 0; right: 0; width: 340px; padding: 20px; background: var(--bg); font-size: var(--step-body); }
-.about-colour { grid-column: 9 / 13; display: grid; gap: 20px; }
+/* right column: the added checks, the research design and how to cite, next to the photo and the sources under it */
+.about-colour { grid-column: 9 / 13; grid-row: 1 / span 2; display: grid; gap: 24px; align-content: start; }
 .cal-tile { background: var(--orange); color: #000; padding: 12px 12px 20px; }
 .cal-tile svg { width: 100%; aspect-ratio: 3 / 2; }
 .cal-tile p { padding: 0 8px; font-weight: 500; }
@@ -425,7 +427,9 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .ctile-head { grid-column: span 2; order: -1; min-height: 0; }
   .show-photo { display: block; margin-top: var(--gap); }
   .show-photo img { width: 100%; }
-  .about-photo { grid-column: 1 / 13; }
+  .about-tiles { grid-template-rows: auto; }
+  .about-photo { grid-column: 1 / 13; min-height: 0; }
+  .about-photo img { position: static; height: auto; aspect-ratio: 16 / 10; }
   .about-colour { grid-column: 1 / 13; grid-template-columns: 1fr 1fr; align-items: start; }
 }
 
@@ -637,10 +641,9 @@ p, li, dd { text-wrap: pretty; }
 
 /* footnotes and citations */
 .fn { font-size: 0.7em; vertical-align: super; line-height: 0; margin-left: 2px; color: inherit; font-weight: 600; padding: 0 2px; text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
-.about-extra { display: grid; grid-template-columns: var(--axis) minmax(0, 1fr); gap: 32px 0; margin-top: var(--block); }   /* on the page axis */
-.notes { grid-column: 1; padding-right: clamp(32px, 4vw, 72px); }
-.cite { grid-column: 2; max-width: 64ch; display: grid; gap: 12px; align-content: start; justify-items: start; }
-.about-extra h3 { font-size: var(--step-lead); letter-spacing: -0.02em; margin: 0 0 12px; }
+.notes { grid-column: 1 / 9; grid-row: 2; margin-top: calc(var(--block) - 16px); max-width: 72ch; }   /* the sources sit under the photo */
+.cite { display: grid; gap: 12px; align-content: start; justify-items: start; border-top: 1px solid var(--rule); padding-top: 24px; }
+.notes h3, .cite h3 { font-size: var(--step-lead); letter-spacing: -0.02em; margin: 0 0 12px; }
 .cite h3:not(:first-child) { margin-top: 16px; }
 .notes ol { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
 .notes li:target, .notes li:focus-within { background: var(--surface); }
@@ -667,7 +670,8 @@ p, li, dd { text-wrap: pretty; }
 
 @media (max-width: 1000px) {
   .method-list { grid-template-columns: 1fr; }
-  .notes, .cite { grid-column: 1 / -1; padding-right: 0; }
+  .notes, .cite { grid-column: 1 / -1; grid-row: auto; }
+  .about-colour { grid-row: auto; }
 }
 @media (max-width: 700px) {
   .method-body { padding-left: 0; }
