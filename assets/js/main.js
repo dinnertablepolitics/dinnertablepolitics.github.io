@@ -122,7 +122,7 @@
     Array.prototype.forEach.call(document.querySelectorAll(".big-figure"), function (n) {
       var target = parseFloat(n.textContent.replace("\u2212", "-").replace("+", "")), dec = (n.textContent.split(".")[1] || "").length;
       n.textContent = "+" + (0).toFixed(dec);
-      onView(n, function () { tween(1400, function (p) { n.textContent = "+" + (target * ease(p)).toFixed(dec); }); });
+      onView(n, function () { tween(1618, function (p) { n.textContent = "+" + (target * ease(p)).toFixed(dec); }); });
     });
 
     // footer name: letters rise one after another
@@ -340,7 +340,7 @@
       var from = shownVals || { week: target.week, b: target.b.map(function () { return 0; }), se: target.se.map(function () { return 0; }) };
       if (!seen) { render(from, target); return; }          // wait until the chart is on screen
       if (stopT) stopT();
-      stopT = tween(instant ? 0 : 700, function (p) {
+      stopT = tween(instant ? 0 : 618, function (p) {
         var e = easeIO(p);
         var mid = { week: target.week, b: target.b.map(function (v, i) { return from.b[i] + (v - from.b[i]) * e; }), se: target.se.map(function (v, i) { return from.se[i] + (v - from.se[i]) * e; }) };
         render(mid, target); shownVals = mid;
@@ -451,7 +451,7 @@
       var rf = document.getElementById("res-figure");
       var from = shownEst === null ? est : shownEst;
       if (stopNum) stopNum();
-      stopNum = tween(Math.abs(est - from) < 1e-9 ? 0 : 450, function (p) { shownEst = from + (est - from) * ease(p); rf.textContent = fmt(shownEst); });
+      stopNum = tween(Math.abs(est - from) < 1e-9 ? 0 : 382, function (p) { shownEst = from + (est - from) * ease(p); rf.textContent = fmt(shownEst); });
       rf.classList.remove("bump"); void rf.offsetWidth; if (from !== est) rf.classList.add("bump");
       rf.classList.toggle("to-right", est >= 0.005); rf.classList.toggle("to-left", est <= -0.005);
       var dir = Math.abs(est) < 0.005 ? "would hardly move" : "would move " + Math.abs(est).toFixed(2) + " points to the " + (est > 0 ? "right" : "left");
@@ -478,7 +478,7 @@
       function next() {
         if (touched || k >= seq.length) { hint.classList.remove("show"); return; }
         var a = Number(fam.value), z = seq[k++];
-        tween(900, function (p) { if (touched) return; var v = Math.round(a + (z - a) * easeIO(p)); if (v !== Number(fam.value)) { fam.value = v; update(); } }, function () { setTimeout(next, 500); });
+        tween(1000, function (p) { if (touched) return; var v = Math.round(a + (z - a) * easeIO(p)); if (v !== Number(fam.value)) { fam.value = v; update(); } }, function () { setTimeout(next, 500); });
       }
       setTimeout(next, 600);
     }, "0px 0px -30% 0px");
