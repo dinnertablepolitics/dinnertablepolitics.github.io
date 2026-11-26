@@ -299,7 +299,15 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .qa-row.qa-head > h2 { grid-column: 1; font-size: var(--step-head); padding-right: clamp(32px, 4vw, 72px); }
 .qa-row.qa-head > p { grid-column: 2; max-width: 34ch; font-size: var(--step-lead); line-height: 1.3; padding-bottom: 0.2em; }
 .q { scroll-margin-top: 24px; }
-.qa-row > .a { grid-column: 2; max-width: 56ch; }
+.qa-row > .a { grid-column: 2; }
+/* the answer column runs to the right margin like the chart and the table; only text keeps a reading measure,
+   and buttons are as wide as their label, so no full-width bar ends in the middle of the screen */
+.a > * { max-width: 64ch; }
+.a .btn { justify-self: start; min-width: 160px; }
+.a input[type="text"] { max-width: 320px; }
+@media (min-width: 1280px) {
+  .a fieldset { grid-template-columns: 1fr 1fr; gap: 4px 32px; max-width: none; }   /* four options as two pairs: the row uses the width */
+}
 .a { display: grid; gap: 16px; align-content: start; }
 .a fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 4px; }
 .a fieldset label { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start; padding: 8px 0; cursor: pointer; }
@@ -350,12 +358,12 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .facts dd { font-weight: 500; }
 
 /* ---------- footer ---------- */
-.foot { min-height: 80svh; display: grid; grid-template-rows: auto 1fr auto; gap: var(--block); }
+.foot { display: grid; gap: var(--block); }   /* as tall as its content: no forced screen height pushing the last line down */
 .foot-name { font-size: var(--step-display); font-weight: 600; letter-spacing: -0.05em; line-height: 0.9; }
-.foot-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; align-items: start; }
-.places { grid-column: 1 / 6; list-style: none; padding: 0; display: grid; gap: 8px; }
+.foot-row { display: grid; grid-template-columns: var(--axis) minmax(0, 1fr); gap: 24px 0; align-items: start; }   /* on the page axis */
+.places { grid-column: 1; list-style: none; padding: 0; display: grid; gap: 8px; }
 .places a { color: var(--mint); font-size: var(--step-sub); font-weight: 500; letter-spacing: -0.02em; text-decoration: none; }
-.foot-links { grid-column: 7 / 13; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-size: var(--step-body); }
+.foot-links { grid-column: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-size: var(--step-body); }
 .foot-links ul { list-style: none; padding: 0; display: grid; gap: 2px; align-content: start; }
 .foot-links a { text-decoration: none; display: inline-block; padding: 6px 0; }
 .credits { grid-column: 1 / -1; color: var(--soft-on-dark); font-size: var(--step-small); max-width: 60ch; }
@@ -629,9 +637,9 @@ p, li, dd { text-wrap: pretty; }
 
 /* footnotes and citations */
 .fn { font-size: 0.7em; vertical-align: super; line-height: 0; margin-left: 2px; color: inherit; font-weight: 600; padding: 0 2px; text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
-.about-extra { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-top: var(--block); }
-.notes { grid-column: 1 / 7; }
-.cite { grid-column: 8 / 13; display: grid; gap: 12px; align-content: start; justify-items: start; }
+.about-extra { display: grid; grid-template-columns: var(--axis) minmax(0, 1fr); gap: 32px 0; margin-top: var(--block); }   /* on the page axis */
+.notes { grid-column: 1; padding-right: clamp(32px, 4vw, 72px); }
+.cite { grid-column: 2; max-width: 64ch; display: grid; gap: 12px; align-content: start; justify-items: start; }
 .about-extra h3 { font-size: var(--step-lead); letter-spacing: -0.02em; margin: 0 0 12px; }
 .cite h3:not(:first-child) { margin-top: 16px; }
 .notes ol { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
@@ -659,7 +667,7 @@ p, li, dd { text-wrap: pretty; }
 
 @media (max-width: 1000px) {
   .method-list { grid-template-columns: 1fr; }
-  .notes, .cite { grid-column: 1 / 13; }
+  .notes, .cite { grid-column: 1 / -1; padding-right: 0; }
 }
 @media (max-width: 700px) {
   .method-body { padding-left: 0; }
