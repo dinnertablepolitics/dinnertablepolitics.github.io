@@ -224,7 +224,7 @@ input, textarea { caret-color: var(--orange); }
 .try-head { padding-right: 40px; display: grid; gap: 24px; }
 .try-head h2 { font-size: var(--step-head); }
 .try-head p { max-width: 34ch; }
-.calc { display: grid; gap: 28px; max-width: 760px; }
+.calc { display: grid; gap: 28px; }
 .scale-row { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 10px 16px; }
 .scale-row input { grid-column: 1 / -1; }
 .scale-row label { font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.02em; }
@@ -291,7 +291,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .qa-row > .q-side { grid-column: 1 / 7; }
 .level { margin-top: 14px; color: var(--muted); }
 .qa-row > h2, .q-side > .q { grid-column: 1 / 7; font-size: var(--step-sub); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
-.qa-row.qa-head > h2 { font-size: var(--step-head); font-weight: 600; line-height: 1; color: inherit; }
+.qa-row.qa-head > h2 { grid-row: 1; font-size: var(--step-head); font-weight: 600; line-height: 1; color: inherit; }
+.qa-row.qa-head > p { grid-column: 1 / 7; grid-row: 2; margin-top: 24px; max-width: 34ch; }
 .qa-row > p, .qa-row > .a { grid-column: 7 / 13; max-width: 56ch; }
 .a { display: grid; gap: 14px; align-content: start; }
 .a fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
@@ -306,7 +307,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .feedback.ok { color: var(--ok); }
 .feedback.no { color: var(--error); }
 .model { background: var(--surface); padding: 16px 18px; }
-.quiz-pic { grid-column: 1 / 7; margin-top: 40px; }
+.quiz-pic { grid-column: 7 / 13; grid-row: 1 / span 3; margin-top: 0; }
 .q-hint { margin: 16px 0 4px; }
 .q-hint summary { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; font-weight: 600; list-style: none; }
 .q-hint summary:hover { color: var(--ink); opacity: 0.8; }
@@ -395,7 +396,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .hero-body { grid-template-columns: 1fr; gap: 28px; }
   .hero h1 { grid-column: 1; grid-row: 1; }
   .hero-side { grid-column: 1; grid-row: 2; padding-right: 0; }
-  .quiz-pic { grid-column: 1 / 13; }
+  .quiz-pic { grid-column: 1 / -1; grid-row: auto; margin-top: 40px; }
+  .qa-row.qa-head > p { grid-column: 1 / -1; grid-row: auto; max-width: 56ch; }
   .cut-board { grid-template-columns: 1fr 1fr; }
   .cut:not(.ctile) { display: none; }
   .ctile { aspect-ratio: auto; min-height: 132px; }
