@@ -389,7 +389,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .cut-board { grid-template-columns: 1fr 1fr; }
   .cut:not(.ctile) { display: none; }
   .ctile { aspect-ratio: auto; min-height: 132px; }
-  .ctile-head { grid-column: span 2; order: -1; }
+  .ctile-head { grid-column: span 2; order: -1; min-height: 0; }
   .show-photo { display: block; margin-top: var(--gap); }
   .show-photo img { width: 100%; }
 }
@@ -397,8 +397,16 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 /* ---------- tablet ---------- */
 @media (max-width: 1000px) {
   .chart-section, .try-grid, .sure-top { grid-template-columns: 1fr; gap: 24px 40px; }
-  #rob-table .col-n { display: none; }
-  #rob-table th:nth-child(1) { width: 38%; }
+  #rob-table .col-n, #rob-table .col-range { display: none; }   /* the range is drawn in the plot; too narrow to also print it */
+  #rob-table th:nth-child(1) { width: 42%; }
+  .top { grid-template-columns: auto 1fr auto; }
+  .top-links { gap: 20px; justify-content: flex-end; }
+  .top-links a, .top-action { white-space: nowrap; }
+  .tiles { grid-template-columns: 1fr 1fr; grid-template-rows: 30svh auto auto; }
+  .tile-a { grid-column: 1 / 3; grid-row: 1; }
+  .tile-b { grid-column: 1; grid-row: 2; aspect-ratio: 1; }
+  .tile-c { grid-column: 2; grid-row: 2; aspect-ratio: 1; }
+  .tile-text { grid-column: 1 / 3; grid-row: 3; padding: 32px 0 0; }
   .chart-head, .try-head { padding-right: 0; }
   .qa-row > h2, .qa-row > .q-side { grid-column: 1 / 7; }
   .qa-row > p, .qa-row > .a { grid-column: 7 / 13; }
@@ -411,7 +419,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .cut-board { grid-template-columns: 1fr 1fr; }
   .cut:not(.ctile) { display: none; }
   .ctile { aspect-ratio: auto; min-height: 132px; }
-  .ctile-head { grid-column: span 2; order: -1; }
+  .ctile-head { grid-column: span 2; order: -1; min-height: 0; }
   .show-photo { display: block; margin-top: var(--gap); }
   .show-photo img { width: 100%; }
   .about-photo { grid-column: 1 / 13; }
@@ -450,7 +458,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .about-colour { grid-template-columns: 1fr; }
   .foot-row { grid-template-columns: 1fr; }
   .places, .foot-links { grid-column: 1; }
-  .foot-legal { flex-direction: column; }
+  .foot-legal { flex-direction: column; align-items: flex-start; gap: 12px; }
   .foot { min-height: 0; gap: 48px; }
   /* phone: each check becomes a small card row: name and value on top, its range plot underneath */
   .table-wrap { padding: 4px 16px 12px; }
@@ -459,7 +467,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   #rob-table thead th.col-plot { display: block; width: auto; border-bottom: 2px solid var(--ink); padding: 14px 0 12px; }
   #rob-table tbody tr { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
   #rob-table tbody tr.is-base { padding-left: 10px; padding-right: 10px; margin: 0 -10px; }
-  #rob-table tbody th, #rob-table tbody td { display: block; border: 0; padding: 0; width: auto; }
+  #rob-table tbody th, #rob-table tbody td, #rob-table tbody th:nth-child(1) { display: block; border: 0; padding: 0; width: auto; }
   #rob-table tbody tr.is-base th { padding-left: 0; }
   #rob-table td.col-plot { grid-column: 1 / -1; grid-row: 2; padding-top: 6px; }
   #rob-table tbody td.num:not(.col-range):not(.col-n) { grid-column: 2; grid-row: 1; }
