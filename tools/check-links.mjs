@@ -15,7 +15,7 @@ for (const p of pages) {
       if (!ref || ref.startsWith("mailto:")) continue;
       if (/^https?:/.test(ref)) { external.add(ref); continue; }
       if (ref.startsWith("/")) continue; // <base> path of the 404 page
-      const [path, hash] = ref.split("#");
+      const [path, hash] = ref.split("?")[0].split("#").length > 1 ? [ref.split("#")[0].split("?")[0], ref.split("#")[1]] : [ref.split("?")[0], undefined];
       const target = path === "" ? p : path === "./" ? "index.html" : join(base, path);
       if (path !== "" && !existsSync(target)) { console.log(`MISSING  ${p}: ${ref}`); bad++; continue; }
       if (hash) {
