@@ -46,8 +46,8 @@
   --m: clamp(20px, 3.4vw, 48px);           /* the page's one pair of outer margins */
   --gap: 8px;
   --axis: calc((100vw - 2 * var(--m)) * 5 / 12);  /* the column line, ~42% */
-  --section: clamp(80px, 9vw, 160px);    /* space between sections: 120-240px on desktop, ~80px on a phone (skill rhythm) */
-  --field-pad: clamp(64px, 7vw, 112px);
+  --section: clamp(72px, 8vw, 120px);    /* space between sections; with --field-pad, content of two sections sits 120-220px apart on desktop, 72-130px on a phone */
+  --field-pad: clamp(56px, 6vw, 96px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -326,9 +326,11 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .quiz-pic figcaption { margin-top: 10px; font-size: var(--step-small); color: var(--muted); }
 
 /* ---------- about ---------- */
-.about { padding: var(--section) var(--m) 0; }
-.about h2 { font-size: var(--step-head); }
-.about .lead { margin-top: 24px; font-size: var(--step-lead); line-height: 1.35; max-width: 44ch; }
+.about { padding: var(--section) var(--m) 0; display: grid; grid-template-columns: var(--axis) minmax(0, 1fr); align-items: end; }
+.about > :not(h2):not(.lead) { grid-column: 1 / -1; }
+/* head like "Two holidays": the title left of the axis, the lead on the right, so the wide screen has no empty half */
+.about h2 { font-size: var(--step-head); padding-right: clamp(32px, 4vw, 72px); max-width: 11ch; }
+.about .lead { font-size: var(--step-lead); line-height: 1.35; max-width: 44ch; padding-bottom: 0.2em; }
 .about-tiles { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 72px; align-items: start; }
 .about-photo { grid-column: 1 / 9; position: relative; }
 .about-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
@@ -447,6 +449,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
   .tile-text { grid-column: 1 / 3; grid-row: 3; padding: 24px 0 0; display: block; }
   .summary-text { font-size: var(--step-lead); }
   .how-head { grid-template-columns: 1fr; gap: 20px; }
+  .about { grid-template-columns: 1fr; }
+  .about .lead { margin-top: 20px; }
   .how-steps { grid-template-columns: 1fr; gap: 20px; }
   .qa-row { grid-template-columns: 1fr; gap: 12px; padding-bottom: 56px; }
   .qa-row > h2, .qa-row > .q-side, .qa-row > p, .qa-row > .a, .quiz-pic { grid-column: 1; }
@@ -640,6 +644,8 @@ p, li, dd { text-wrap: pretty; }
 
 /* quiz score */
 .quiz-score { padding-top: 0; }
+.quiz-score[hidden] { display: none; }   /* .qa-row's display: grid would otherwise override [hidden] and leave an empty 80px row */
+.qa-row:has(+ .quiz-score[hidden]) { padding-bottom: 0; }   /* the last question: the section gap alone separates it from About */
 .score-line { grid-column: 1 / 7; font-size: var(--step-sub); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
 .score-tips { grid-column: 7 / 13; }
 .quiz-score:not([hidden]) { animation: drop 500ms var(--ease-out); }
