@@ -80,7 +80,7 @@ Run `node tools/check-links.mjs` before every push. If the address ever changes,
 | 1 | Privacy policy page | `privacy.html` |
 | 2 | Terms & conditions page | `terms.html` |
 | 3 | Secrets off the frontend | No keys or tokens exist; `config.js` holds public settings only. |
-| 4 | Force HTTPS | CSP `upgrade-insecure-requests` on every page; tick “Enforce HTTPS” in GitHub Pages (step 3 above). |
+| 4 | Force HTTPS | CSP `upgrade-insecure-requests` on every page; “Enforce HTTPS” is switched on in GitHub Pages. |
 | 5 | Cookie consent banner | Built and consent-gated. It only appears if analytics is switched on, because the site sets no cookies otherwise. |
 | 6 | Meta titles + descriptions | On every page, plus canonical links. |
 | 7 | Social preview image | `assets/img/social-preview.jpg`, 1200×630, Open Graph and Twitter tags. |
@@ -88,20 +88,21 @@ Run `node tools/check-links.mjs` before every push. If the address ever changes,
 | 9 | Sitemap + robots.txt | Present; the real address is set with `tools/set-site-url.mjs`. |
 | 10 | Alt text on images | Every picture has a description; charts and drawings have SVG titles. |
 | 11 | Compress your images | WebP, 39–320 KB each, responsive `srcset`, lazy loading below the fold. |
-| 12 | Check page load speed | About 410 KB in total, no third-party requests, font preloaded. Run Lighthouse once live. |
+| 12 | Check page load speed | About 410 KB in total, no third-party requests, font preloaded. |
 | 13 | Fix color contrast | All text meets WCAG AA (black on mint, grey and orange; grey text #595959 on white is 7:1). |
 | 14 | Make it mobile friendly | Own phone layout; checked at 390, 768 and 1440 px. |
 | 15 | Custom 404 page | `404.html` (“This seat is empty”). |
 | 16 | Fix broken links | `node tools/check-links.mjs` checks every local link, file and anchor. |
 | 17 | Form validation | Quiz answers are validated in the browser with clear messages. |
 | 18 | Spam protection | Nothing is ever submitted to a server, so there is nothing to spam. A contact form, if added later, needs a honeypot field or a service with spam filtering. |
-| 19 | Set up analytics | Prepared for GoatCounter (cookieless) behind the consent banner; switched off until you create an account (see `config.js`). |
+| 19 | Set up analytics | Deliberately off: no analytics, no cookies. A cookieless GoatCounter setup behind the consent banner is prepared in `config.js`. |
 | 20 | One clear call to action | “Seat your family”: the calculator, in the top bar, the hero and the picture board. |
 
-## Still to do before submission
+## Licence
 
-- Decide the code licence and add a `LICENSE` file.
-- Optional: switch on GoatCounter (see `assets/js/config.js`).
+Our code may be read, rerun and reused for learning; please cite the site (see `terms.html`).
+The survey data come from the author's replication package and are licensed CC BY 4.0.
+The typeface is licensed under the SIL Open Font License 1.1.
 
 ## Credits
 
