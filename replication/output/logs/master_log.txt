@@ -1,0 +1,196 @@
+Run started 2026-11-27 16:01:48 
+
+Cleaning, tie rule = random : N = 10092 , individuals = 2006 
+               raw             merged    own_orientation family_orientation 
+             11998              11853              11628              11400 
+     opinion_index         not_french        native_born at_least_two_weeks 
+             11398              11181              10385              10092 
+Cleaning, tie rule = missing : N = 10092 , individuals = 2006 
+               raw             merged    own_orientation family_orientation 
+             11998              11853              11628              11400 
+     opinion_index         not_french        native_born at_least_two_weeks 
+             11398              11181              10385              10092 
+
+== Table 1 ==
+   column     n      b_T paper_T     b_x paper_x
+   <char> <int>    <num>   <num>   <num>   <num>
+1:     c1 10092 -0.13120  -0.123  0.0499   0.048
+2:     c2 10092  0.01332   0.013  0.0152   0.016
+3:     c3  7619  0.01837   0.015  0.0158   0.016
+4:     c4 10092 -0.03341  -0.037      NA      NA
+5:     c5 10092 -0.00348  -0.009 -0.0239  -0.022
+6:     c6  7619  0.04514   0.040 -0.0591  -0.060
+7:     c7 10092 -0.01600  -0.011  0.0139   0.012
+8:     c8  7619 -0.01798  -0.004  0.0147   0.009
+Indice : <term>
+     term       lo       hi share10 share05
+   <char>    <num>    <num>   <num>   <num>
+1:      T -0.15838 -0.11443       1    0.78
+2:    fam  0.04524  0.05750       1    1.00
+3:   self -0.00656  0.00501       0    0.00
+
+== Figures ==
+      sample  week       b     se
+      <fctr> <num>   <num>  <num>
+ 1:   Canada    -2  0.0690 0.0384
+ 2:   Canada    -1  0.0000 0.0000
+ 3:   Canada     0  0.0551 0.0375
+ 4:   Canada     1  0.0158 0.0725
+ 5:   Canada     2 -0.0480 0.0343
+ 6:   Canada     3 -0.0896 0.0370
+ 7:       US    -2  0.0231 0.0133
+ 8:       US    -1  0.0000 0.0000
+ 9:       US     0  0.0581 0.0278
+10:       US     1 -0.0310 0.0216
+11:       US     2 -0.0661 0.0154
+12:       US     3 -0.0265 0.0190
+13: Combined    -2  0.0252 0.0142
+14: Combined    -1  0.0000 0.0000
+15: Combined     0  0.0529 0.0235
+16: Combined     1 -0.0173 0.0250
+17: Combined     2 -0.0625 0.0182
+18: Combined     3 -0.0684 0.0288
+      sample  week        b     se
+      <fctr> <num>    <num>  <num>
+ 1:   Canada    -2 -0.04122 0.0175
+ 2:   Canada    -1  0.00000 0.0000
+ 3:   Canada     0 -0.02038 0.0146
+ 4:   Canada     1 -0.06401 0.0233
+ 5:   Canada     2 -0.07375 0.0412
+ 6:   Canada     3  0.01126 0.0204
+ 7:       US    -2  0.00206 0.0174
+ 8:       US    -1  0.00000 0.0000
+ 9:       US     0  0.04122 0.0298
+10:       US     1  0.01358 0.0205
+11:       US     2  0.01473 0.0251
+12:       US     3 -0.01636 0.0190
+13: Combined    -2 -0.00406 0.0140
+14: Combined    -1  0.00000 0.0000
+15: Combined     0  0.02503 0.0250
+16: Combined     1  0.00104 0.0173
+17: Combined     2 -0.00694 0.0255
+18: Combined     3 -0.01086 0.0218
+
+== Extension ==
+Indice : <term>
+                  col   term         b      se       p se_week  p_week p_wild
+               <char> <char>     <num>   <num>   <num>   <num>   <num>  <num>
+ 1:          Baseline      T -0.131200 0.06607 0.04722 0.07831 0.09864     NA
+ 2:          Baseline    fam  0.049864 0.01997 0.01261 0.01581 0.00244 0.0246
+ 3:          Baseline   self -0.002789 0.01551 0.85730 0.01615 0.86345     NA
+ 4:      Simple index      T -0.037557 0.02039 0.06569 0.02390 0.12094     NA
+ 5:      Simple index    fam  0.015038 0.00573 0.00872 0.00570 0.01048 0.0506
+ 6:      Simple index   self -0.001538 0.00510 0.76308 0.00457 0.73757     NA
+ 7: Excl. low-quality      T -0.087844 0.07189 0.22190 0.08012 0.27693     NA
+ 8: Excl. low-quality    fam  0.040741 0.02090 0.05137 0.01316 0.00289 0.0336
+ 9: Excl. low-quality   self -0.000571 0.01553 0.97068 0.01699 0.97330     NA
+10:      Placebo week      T  0.065720 0.06960 0.34516 0.07966 0.41239     NA
+11:      Placebo week    fam -0.001617 0.02085 0.93817 0.01981 0.93518 0.9348
+12:      Placebo week   self -0.021200 0.01449 0.14368 0.01155 0.07098     NA
+        G  sd_y     n   ids treated
+    <num> <num> <int> <int>   <num>
+ 1:    66 1.131 10092  2006     606
+ 2:    66 1.131 10092  2006     606
+ 3:    66 1.131 10092  2006     606
+ 4:    66 0.297 10092  2006     606
+ 5:    66 0.297 10092  2006     606
+ 6:    66 0.297 10092  2006     606
+ 7:    66 1.137  9038  1862     553
+ 8:    66 1.137  9038  1862     553
+ 9:    66 1.137  9038  1862     553
+10:    66 1.130  9460  1980     974
+11:    66 1.130  9460  1980     974
+12:    66 1.130  9460  1980     974
+
+== Threats ==
+Person-week grid: 10592 cells, 2006 people
+   country tg_week response_rate cells
+    <char>   <num>         <num> <int>
+1:      CA       0         0.651  1901
+2:      CA       1         0.799   303
+3:      US       0         0.758  7903
+4:      US       1         0.746   485
+                              model              term         b      se       t
+                             <char>            <char>     <num>   <num>   <num>
+1:              responded ~ TG week           tg_week  0.030206 0.03316  0.9110
+2: responded ~ TG week x family/own           tg_week  0.025022 0.05291  0.4729
+3: responded ~ TG week x family/own tg_week:rw_family  0.002042 0.01255  0.1628
+4: responded ~ TG week x family/own   tg_week:rw_self -0.000452 0.00715 -0.0632
+       p
+   <num>
+1: 0.366
+2: 0.638
+3: 0.871
+4: 0.950
+Indice : <term>
+           col   term        b     se       p p_wild     n   ids treated
+        <char> <char>    <num>  <num>   <num>  <num> <int> <int>   <int>
+ 1:  All waves      T -0.13120 0.0661 0.04722     NA 10092  2006     606
+ 2:  All waves    fam  0.04986 0.0200 0.01261 0.0246 10092  2006     606
+ 3:  All waves   self -0.00279 0.0155 0.85730     NA 10092  2006     606
+ 4:    No 2019      T -0.17430 0.0949 0.06656     NA  6668  1347     260
+ 5:    No 2019    fam  0.05115 0.0306 0.09494 0.1618  6668  1347     260
+ 6:    No 2019   self -0.01542 0.0236 0.51291     NA  6668  1347     260
+ 7: No CA 2019      T -0.23185 0.0699 0.00093     NA  9075  1813     484
+ 8: No CA 2019    fam  0.05656 0.0213 0.00786 0.0379  9075  1813     484
+ 9: No CA 2019   self  0.00284 0.0173 0.86950     NA  9075  1813     484
+10: No US 2019      T -0.07069 0.0893 0.42870     NA  7685  1540     382
+11: No US 2019    fam  0.03960 0.0267 0.13805 0.1264  7685  1540     382
+12: No US 2019   self -0.01885 0.0192 0.32665     NA  7685  1540     382
+    clusters
+       <num>
+ 1:       66
+ 2:       66
+ 3:       66
+ 4:       42
+ 5:       42
+ 6:       42
+ 7:       54
+ 8:       54
+ 9:       54
+10:       54
+11:       54
+12:       54
+
+== Website data ==
+
+Copied tables and figures to the local Overleaf clone (not pushed)
+
+Run finished 2026-11-27 16:04:13 
+
+R version 4.5.2 (2025-10-31)
+Platform: aarch64-apple-darwin20
+Running under: macOS Tahoe 26.6.2
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+
+locale:
+[1] de_CH/de_CH/de_CH/C/de_CH/de_CH
+
+time zone: Europe/Zurich
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ggplot2_4.0.3       fixest_0.14.2       data.table_1.18.6.1
+[4] haven_2.5.5        
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0      gtable_0.3.6        dplyr_1.2.1        
+ [4] compiler_4.5.2      tidyselect_1.2.1    Rcpp_1.1.2         
+ [7] textshaping_1.0.5   systemfonts_1.3.2   scales_1.4.0       
+[10] lattice_0.22-7      readr_2.2.0         R6_2.6.1           
+[13] labeling_0.4.3      generics_0.1.4      Formula_1.2-6      
+[16] forcats_1.0.1       tibble_3.3.1        pillar_1.11.1      
+[19] RColorBrewer_1.1-3  tzdb_0.5.0          rlang_1.3.0        
+[22] S7_0.2.2            stringmagic_1.3.0   cli_3.6.6          
+[25] withr_3.0.3         magrittr_2.0.5      grid_4.5.2         
+[28] hms_1.1.4           sandwich_3.1-3      lifecycle_1.0.5    
+[31] nlme_3.1-168        vctrs_0.7.3         glue_1.8.1         
+[34] farver_2.1.2        numDeriv_2016.8-1.1 ragg_1.5.2         
+[37] zoo_1.9-1           dreamerr_1.5.0      tools_4.5.2        
+[40] pkgconfig_2.0.3    

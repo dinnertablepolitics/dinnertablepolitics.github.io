@@ -1,8 +1,9 @@
 # 06_website_data.R: exports the numbers shown on the PS4 website
-# Output: ../website/assets/data/results.json (only if the website folder exists)
+# Output: ../assets/data/results.json and results.js (the website lives in the repository root)
 
 source("code/00_functions.R")
-if (!dir.exists("../website")) { message("no ../website folder, skipping"); } else {
+site_data <- "../assets/data"
+if (!file.exists("../index.html")) { message("website not found in the parent folder, skipping"); } else {
 
 d <- prep(fread("data/derived/data_clean_random.csv"))
 m <- est_main(d)
@@ -43,9 +44,9 @@ out <- list(
   selection = list(tg_week = r3(sel[term == "tg_week"][1]$b), tg_week_se = r3(sel[term == "tg_week"][1]$se),
                    fam = r3(sel[term == "tg_week:rw_family"]$b), fam_se = r3(sel[term == "tg_week:rw_family"]$se))
 )
-dir.create("../website/assets/data", recursive = TRUE, showWarnings = FALSE)
-jsonlite::write_json(out, "../website/assets/data/results.json", auto_unbox = TRUE, digits = NA, pretty = TRUE)
+dir.create(site_data, recursive = TRUE, showWarnings = FALSE)
+jsonlite::write_json(out, file.path(site_data, "results.json"), auto_unbox = TRUE, digits = NA, pretty = TRUE)
 # same data as a script, so the page also works when opened straight from the file system
-writeLines(c("window.RESULTS = ", readLines("../website/assets/data/results.json"), ";"), "../website/assets/data/results.js")
-message("wrote ../website/assets/data/results.json and results.js")
+writeLines(c("window.RESULTS = ", readLines(file.path(site_data, "results.json")), ";"), file.path(site_data, "results.js"))
+message("wrote ", site_data, "/results.json and results.js")
 }

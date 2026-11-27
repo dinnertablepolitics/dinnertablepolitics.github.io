@@ -1,9 +1,9 @@
 # 00_master.R: runs the whole replication from the raw data.
 # Run from this folder:   Rscript 00_master.R
-# Requires R >= 4.3 and the packages haven, data.table, fixest, ggplot2.
+# Requires R >= 4.3 and the packages haven, data.table, fixest, ggplot2, jsonlite.
 
 stopifnot(file.exists("data/raw/data_raw.dta"))   # must be run from the project folder
-for (p in c("haven", "data.table", "fixest", "ggplot2"))
+for (p in c("haven", "data.table", "fixest", "ggplot2", "jsonlite"))
   if (!requireNamespace(p, quietly = TRUE)) stop("Please install the R package '", p, "'")
 
 N_SEEDS <- 50      # random tie-break seeds for the sensitivity column of Table 1
@@ -26,13 +26,14 @@ cat("\n== Extension ==\n");  source("code/04_extension.R")
 cat("\n== Threats ==\n");    source("code/05_threats.R")
 cat("\n== Website data ==\n"); source("code/06_website_data.R")
 
-# copy the tables and figures used in the report into the local clone of the Overleaf
-# project (../overleaf); pushing to Overleaf is a separate, manual git step
-if (dir.exists("../overleaf")) {
-  dir.create("../overleaf/tables", showWarnings = FALSE); dir.create("../overleaf/figures", showWarnings = FALSE)
-  file.copy(c("output/tables/table1.tex", "output/tables/table_extension.tex", "output/tables/table_threats.tex"), "../overleaf/tables", overwrite = TRUE)
-  file.copy(c("output/figures/figure1.pdf", "output/figures/figure2.pdf"), "../overleaf/figures", overwrite = TRUE)
-  cat("\nCopied tables and figures to ../overleaf (not pushed)\n")
+# Optional, for the authors only: copy the report's tables and figures into a local clone of
+# the Overleaf project if one sits next to the repository. Does nothing anywhere else.
+ol <- "../../overleaf"
+if (dir.exists(ol)) {
+  dir.create(file.path(ol, "tables"), showWarnings = FALSE); dir.create(file.path(ol, "figures"), showWarnings = FALSE)
+  file.copy(c("output/tables/table1.tex", "output/tables/table_extension.tex", "output/tables/table_threats.tex"), file.path(ol, "tables"), overwrite = TRUE)
+  file.copy(c("output/figures/figure1.pdf", "output/figures/figure2.pdf"), file.path(ol, "figures"), overwrite = TRUE)
+  cat("\nCopied tables and figures to the local Overleaf clone (not pushed)\n")
 }
 
 cat("\nRun finished", format(Sys.time()), "\n\n"); print(sessionInfo())

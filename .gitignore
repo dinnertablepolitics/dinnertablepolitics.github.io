@@ -2,3 +2,6 @@
 .claude/
 .DS_Store
 assets/img/src/
+.impeccable/
+.Rhistory
+.RData

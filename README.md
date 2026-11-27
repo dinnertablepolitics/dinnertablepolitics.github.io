@@ -1,7 +1,7 @@
 # Dinner Table Politics
 
-Interactive website for Problem Set 4 (Empirical Methods, UZH, HS 2026): a plain-language
-explainer and replication of
+Replication package (Problem Set 3) and interactive website (Problem Set 4) for Empirical
+Methods, UZH, HS 2026: our replication of
 
 > Cornelson, K. (2026). Politics at the Dinner Table: Thanksgiving and Social Influences on
 > Political Polarisation. *The Economic Journal*, 136(675), 1125–1139.
@@ -10,6 +10,22 @@ Plain HTML, CSS and JavaScript. No build step, no libraries, no third-party requ
 
 **Live site:** https://dinnertablepolitics.github.io/
 **Made by:** Julian Hasler, Lilly Schiemann and Yuhan Ye (team name: Dinner Table Politics)
+
+## Problem Set 3: replication package
+
+Everything for the PS3 report is in [`replication/`](replication/): our R code, the data we
+used and the tables and figures in the report. Run `Rscript 00_master.R` inside `replication/`
+to reproduce all of them; [`replication/README.md`](replication/README.md) explains the folder
+structure, the order of the scripts and which script produces which table and figure.
+
+The author's original replication package is not included. We used its raw data file and
+read its Stata do-files: Cornelson, K. (2025), replication package, Zenodo,
+https://doi.org/10.5281/zenodo.16962525 (CC BY 4.0).
+
+| Folder | Problem set |
+|---|---|
+| `replication/` | PS3: replication code, data, output |
+| everything else (`index.html`, `assets/`, …) | PS4: the website |
 
 ## Where to find the Problem Set 4 requirements
 
@@ -36,6 +52,7 @@ Plain HTML, CSS and JavaScript. No build step, no libraries, no third-party requ
 | `assets/fonts/` | Bricolage Grotesque (SIL Open Font License), self-hosted |
 | `robots.txt`, `sitemap.xml`, `.nojekyll` | for search engines and GitHub Pages |
 | `tools/` | helper scripts (not needed by visitors): local server, link check, URL setter |
+| `replication/` | the PS3 replication package (R code, data, output); see its README |
 
 ## Preview locally
 
@@ -47,7 +64,7 @@ then open http://127.0.0.1:8766/. Opening `index.html` directly from the file sy
 
 ## Update the numbers
 
-Run `Rscript 00_master.R` in `../replication`. The last step rewrites `assets/data/results.json`
+Run `Rscript 00_master.R` in `replication/`. The last step rewrites `assets/data/results.json`
 and `results.js`; the page picks them up on reload.
 
 ## Deployment
